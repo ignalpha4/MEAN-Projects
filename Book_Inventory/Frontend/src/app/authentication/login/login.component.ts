@@ -39,6 +39,8 @@ export class LoginComponent {
           localStorage.setItem('token', res.token);
 
           this.errorMsg= '';
+          
+          this.router.navigate(['/pages/admin/dashboard'])
 
         } else {
           this.errorMsg = res.message;
