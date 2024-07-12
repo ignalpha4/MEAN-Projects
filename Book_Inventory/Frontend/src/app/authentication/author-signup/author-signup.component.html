@@ -1,0 +1,98 @@
+<div class="container-fluid bg-secondary d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+    <div class="col-lg-4 col-md-6 col-sm-8 mt-5">
+      <div class="card shadow-sm">
+        <div class="card-body">
+
+          <h4 class="card-title text-center mb-4">Author Signup</h4>
+          
+          <form [formGroup]="authorSignupForm" (ngSubmit)="signup()">
+            <div class="mb-3">
+              <label for="name" class="form-label">Name</label>
+              <input type="text" class="form-control" id="name" placeholder="Enter your name" formControlName="name">
+  
+              <div *ngIf="authorSignupForm.get('name')?.invalid && authorSignupForm.get('name')?.touched">
+                <div *ngIf="authorSignupForm.get('name')?.errors?.['required']">
+                    <p style="color: red;">This field is required !!!</p>
+                </div>
+              </div>
+  
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email address</label>
+              <input type="email" class="form-control" id="email" placeholder="Enter your email" formControlName="email">
+  
+              <div *ngIf="authorSignupForm.get('email')?.invalid && authorSignupForm.get('email')?.touched">
+                <div *ngIf="authorSignupForm.get('email')?.errors?.['required']">
+                    <p style="color: red;">This field is required !!!</p>
+                </div>
+              </div>
+  
+              <div *ngIf="authorSignupForm.get('email')?.errors?.['email']">
+                <p style="color: red;">Please enter valid email !!!</p>
+              </div>
+  
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password" placeholder="Enter your password" formControlName="password">
+  
+              <div *ngIf="authorSignupForm.get('password')?.invalid && authorSignupForm.get('password')?.touched">
+                <div *ngIf="authorSignupForm.get('password')?.errors?.['required']">
+                    <p style="color: red;">This field is required !!!</p>
+                </div>
+              </div>
+  
+            </div>
+            <div class="mb-3">
+              <label for="role" class="form-label">Role</label>
+              <select class="form-select form-control" id="role" formControlName="role">
+                <option value="author">Author</option>
+              </select>
+  
+              <div *ngIf="authorSignupForm.get('role')?.invalid && authorSignupForm.get('role')?.touched">
+                <div *ngIf="authorSignupForm.get('role')?.errors?.['required']">
+                    <p style="color: red;">This field is required !!!</p>
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="mb-3">
+              <label for="biography" class="form-label">Biography :</label>
+              <textarea name="biography" id="bio" class="form-control" formControlName="biography"></textarea>
+  
+              <div *ngIf="authorSignupForm.get('biography')?.invalid && authorSignupForm.get('biography')?.touched">
+                <div *ngIf="authorSignupForm.get('biography')?.errors?.['required']">
+                    <p style="color: red;">This field is required !!!</p>
+                </div>
+              </div>
+  
+            </div>
+
+            <div class="mb-3">
+              <label for="nationality" class="form-label">Nationality :</label>
+              <input type="text" class="form-control" id="nationality" placeholder="Enter your nationality" formControlName="nationality">
+  
+              <div *ngIf="authorSignupForm.get('nationality')?.invalid && authorSignupForm.get('nationality')?.touched">
+                <div *ngIf="authorSignupForm.get('nationality')?.errors?.['required']">
+                    <p style="color: red;">This field is required !!!</p>
+                </div>
+              </div>
+            </div>
+
+
+            <div>
+              <p style="color: red;" *ngIf="errorMsg">{{errorMsg}}</p>
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary mb-2" [disabled]="authorSignupForm.invalid ==true">Sign Up</button>
+              <a class="btn btn-outline-primary" routerLink="/login">Already have an account?</a>
+              <a class="btn btn-outline-primary mt-2" routerLink="/signup">Signup as user ?</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  

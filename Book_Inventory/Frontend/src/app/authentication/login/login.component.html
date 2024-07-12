@@ -1,0 +1,45 @@
+<div class="container-fluid bg-secondary d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+  <div class="col-lg-4 col-md-6 col-sm-8 mt-5">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h4 class="card-title text-center mb-4">Login Form</h4>
+        <form [formGroup]="loginForm" (ngSubmit)="login()">
+          <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="email" placeholder="Enter your email" formControlName="email">
+
+            <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+              <div *ngIf="loginForm.get('email')?.errors?.['required']">
+                  <p style="color: red;">This field is required !!!</p>
+              </div>
+            </div>
+
+            <div *ngIf="loginForm.get('email')?.errors?.['email']">
+              <p style="color: red;">Please enter valid email !!!</p>
+            </div>
+
+
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="Enter your password" formControlName="password">
+
+            <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+              <div *ngIf="loginForm.get('password')?.errors?.['required']">
+                  <p style="color: red;">This field is required !!!</p>
+              </div>
+            </div>
+            <div>
+              <p style="color: red;" *ngIf="errorMsg">{{errorMsg}}</p>
+            </div>
+
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary mb-2" [disabled]="loginForm.invalid==true">Login</button>
+            <a class="btn btn-outline-primary" routerLink="/signup">New User?</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
