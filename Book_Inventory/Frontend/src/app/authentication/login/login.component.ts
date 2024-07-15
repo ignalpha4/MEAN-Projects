@@ -15,9 +15,11 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
   ) {
     this.initForm();
+
+
   }
 
   initForm() {
@@ -40,8 +42,15 @@ export class LoginComponent {
 
           this.errorMsg= '';
           
-          this.router.navigate(['/pages/admin/dashboard/managebook'])
-
+          console.log(res.role);
+          
+          if(res.role=='user'){
+            console.log("inside");
+            this.router.navigate(['/pages/user/dashboard'])
+          }else{
+            this.router.navigate(['/pages/admin/dashboard/managebook'])
+          }
+          
         } else {
           this.errorMsg = res.message;
         }

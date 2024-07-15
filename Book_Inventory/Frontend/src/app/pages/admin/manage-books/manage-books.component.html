@@ -74,6 +74,11 @@
             <label for="bookPrice" class="form-label">Price</label>
             <input type="number" class="form-control" id="bookPrice" [(ngModel)]="selectedBook.price" name="price" required>
           </div>
+
+          <div class="mb-3">
+            <label for="bookImage" class="form-label">Book Image</label>
+            <input type="file" class="form-control" id="bookImage" (change)="onFileChange($event)">
+          </div>
         </form>
       </div>
       <div class="modal-footer">

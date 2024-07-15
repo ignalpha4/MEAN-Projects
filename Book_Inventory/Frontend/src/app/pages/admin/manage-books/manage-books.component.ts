@@ -16,6 +16,7 @@ export class ManageBooksComponent {
   categories: any;
   selectedBook: any = { title: '', author: '', category: '', ISBN: '', description: '', price: '' };
   isEditMode: boolean = false;
+  bookImageBase64:any;
 
   @ViewChild('bookModal') bookModal!: ElementRef;
 
@@ -74,6 +75,9 @@ export class ManageBooksComponent {
   }
 
   saveBook() {
+
+    this.selectedBook.bookImage = this.bookImageBase64;
+
     if (this.isEditMode) {
       this.bookService.updateBook(this.selectedBook._id, this.selectedBook).subscribe((res: any) => {
         if (res.success) {
@@ -97,7 +101,20 @@ export class ManageBooksComponent {
     }
   }
 
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.bookImageBase64 = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+
   deleteBook(_id: string) {
+
     this.bookService.deleteBook(_id).subscribe((res: any) => {
       if (res.success) {
         alert('Book Deleted!');

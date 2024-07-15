@@ -60,7 +60,7 @@ export const login = async (req: any, res: Response) => {
 
         const token = await generateUserToken(payload);
 
-        return res.json({ success:true,message: "User logged In successfully", token: token});
+        return res.json({ success:true,message: "User logged In successfully", token: token,role:foundUser.role});
 
     } catch (error) {
         return res.json({success:false, message: "Internal Server Error" });

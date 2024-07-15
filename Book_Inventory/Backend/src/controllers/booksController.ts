@@ -89,7 +89,8 @@ export const listBooks = async (req: any, res: Response) => {
                     'categoryDetails.name': 1,
                     ISBN: 1,
                     description: 1,
-                    price: 1
+                    price: 1,
+                    bookImage:1
                 }
             }
         ]);

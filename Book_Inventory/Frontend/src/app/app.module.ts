@@ -8,6 +8,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { PagesModule } from './pages/pages.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthInterceptor } from './core/intercepters/auth.interceptor';
+import { AgGridModule } from 'ag-grid-angular';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { AuthInterceptor } from './core/intercepters/auth.interceptor';
     AuthenticationModule,
     HttpClientModule,
     PagesModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    AgGridModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
