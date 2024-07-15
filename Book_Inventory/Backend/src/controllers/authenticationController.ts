@@ -9,11 +9,11 @@ import authorModel from "../models/authorModel";
 export const signup =async(req:any,res:Response)=>{
     try {
 
-        const {email,password,role} = req.body;
+        const {email,password,role,profileImage} = req.body;
 
         const hashedPassword  = await bcrypt.hash(password,10);
     
-        const createdUser = await userModel.create({email,password:hashedPassword,role});
+        const createdUser = await userModel.create({email,password:hashedPassword,role,profileImage});
     
         if(!createdUser){
 
@@ -60,31 +60,28 @@ export const login = async (req: any, res: Response) => {
 
         const token = await generateUserToken(payload);
 
-        console.log("User logged In");
         return res.json({ success:true,message: "User logged In successfully", token: token});
 
     } catch (error) {
-        console.log(error);
         return res.json({success:false, message: "Internal Server Error" });
     }
 };
 
 
-
+//signup author
 export const authorSignup = async(req:any,res:Response)=>{
 
     try {
 
-        console.log("hit author signup");
         
         let role="author";
 
-        const {email,password,name,biography,nationality} = req.body;
+        const {email,password,name,biography,nationality,profileImage} = req.body;
 
 
         const hashedPassword  = await bcrypt.hash(password,10);
     
-        const createdUser = await userModel.create({email,password:hashedPassword,role});
+        const createdUser = await userModel.create({email,password:hashedPassword,role,profileImage});
 
         const createdAuthor = await authorModel.create({nationality,biography,name,userId:createdUser._id});
 
@@ -114,3 +111,50 @@ export const authorSignup = async(req:any,res:Response)=>{
     }
 }
 
+
+// List authors
+export const listUsers = async (req: any, res: any) => {
+    try {
+        const foundUsers = await userModel.find();
+
+        if (!foundUsers) {
+            console.log("No users found");
+            return res.status(404).json({ message: "No users found" });
+        }
+        res.status(200).json({ message: "List of users", users: foundUsers });
+    } catch (error) {
+        console.error('Error listing users:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+//getcurrent user
+
+export const getCurrentUser = async(req:any,res:any)=>{
+    try {
+        let id = req.user.id;
+
+        let user = await userModel.findById(id);
+    
+        if(!user){
+            return res.json({success:false,message:"No current user found"});
+        }   
+        return res.json({success:true,message:"current user found",user:{email:user.email,role:user.role,profileImage:user.profileImage}});  
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+//updateProfile Image
+
+export const updateProfileImage = async(req:any,res:any)=>{
+
+        const { profileImage } = req.body;
+        const userId = req.user.id; 
+        try {
+          await userModel.findByIdAndUpdate(userId, { profileImage });
+          res.status(200).json({ success: true, message: 'Profile image updated successfully' });
+        } catch (error) {
+          res.status(500).json({ success: false, message: 'Failed to update profile image' });
+        }
+}

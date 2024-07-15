@@ -40,7 +40,7 @@ export class LoginComponent {
 
           this.errorMsg= '';
           
-          this.router.navigate(['/pages/admin/dashboard'])
+          this.router.navigate(['/pages/admin/dashboard/managebook'])
 
         } else {
           this.errorMsg = res.message;

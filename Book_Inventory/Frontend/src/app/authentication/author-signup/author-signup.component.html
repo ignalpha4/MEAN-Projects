@@ -81,6 +81,11 @@
               </div>
             </div>
 
+            <div class="mb-3">
+              <label for="profileImage" class="form-label">Profile Image</label>
+              <input type="file" class="form-control" id="profileImage" (change)="onFileChange($event)">
+            </div>
+
 
             <div>
               <p style="color: red;" *ngIf="errorMsg">{{errorMsg}}</p>

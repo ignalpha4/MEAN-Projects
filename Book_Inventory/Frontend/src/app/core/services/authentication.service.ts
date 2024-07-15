@@ -22,7 +22,17 @@ export class AuthenticationService {
   login(formdata:any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/user/login`, formdata);
   }
-}
 
-//object
-//
+  getUsers():Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/user/listusers`);
+  }
+
+  getCurrentUser():Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/user/currentuser`);
+  }
+
+  updateProfileImage(data: { profileImage: string }): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/user/updateProfileImage`, data);
+  }
+  
+}

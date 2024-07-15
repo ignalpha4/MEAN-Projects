@@ -1,0 +1,83 @@
+<div class="container mt-4 d-flex justify-content-end">
+    <button class="btn btn-primary mb-3" (click)="openAddModal()">Add Author</button>
+  </div>
+  
+  <div class="container mt-2">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Author Name</th>
+          <th>Author Email</th>
+          <th>Biography</th>
+          <th>Nationality</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let author of authors">
+          <td>{{ author.name }}</td>
+          <td>{{author.email}}</td>
+          <td>{{author.biography}}</td>
+          <td>{{author.nationality}}</td>
+          <td>
+            <button class="btn btn-primary btn-sm" (click)="openEditModal(author)">Edit</button>
+            <button class="btn btn-danger btn-sm mx-2" (click)="deleteAuthor(author._id)">Delete</button>
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  
+  <!-- Bootstrap Modal -->
+  <div #authorModal class="modal fade" tabindex="-1" aria-labelledby="authorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="authorModalLabel">{{ isEditMode ? 'Edit Author' : 'Add Author' }}</h5>
+          <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="authorName" class="form-label">Author Name</label>
+              <input type="text" class="form-control" id="authorName" [(ngModel)]="selectedAuthor.name" name="name" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="authorEmail" class="form-label">Author Email</label>
+                <input type="text" class="form-control" id="authorEmail" [(ngModel)]="selectedAuthor.email" name="email" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="authorPassword" class="form-label">Author Password</label>
+                <input type="password" class="form-control" id="authorPassword" [(ngModel)]="selectedAuthor.password" name="password" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="authorBiography" class="form-label">Author Biography</label>
+                <textarea class="form-control" id="authorBiography" [(ngModel)]="selectedAuthor.biography" name="biography" required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="authorNationality" class="form-label">Author Nationality</label>
+                <input type="text" class="form-control" id="authorNationality" [(ngModel)]="selectedAuthor.nationality" name="nationality" required>
+            </div>
+            
+            <div class="mb-3">
+              <label for="profileImage" class="form-label">Profile Image</label>
+              <input type="file" class="form-control" id="profileImage" (change)="onFileChange($event)">
+            </div>
+
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+          <button type="button" class="btn btn-primary" (click)="saveAuthor()">{{ isEditMode ? 'Update' : 'Save' }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

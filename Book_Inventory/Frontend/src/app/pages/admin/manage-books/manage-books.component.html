@@ -1,0 +1,85 @@
+<div class="container mt-4 d-flex justify-content-end">
+  <button class="btn btn-primary mb-3" (click)="openAddModal()">Add Book</button>
+</div>
+
+<div class="container mt-2">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Book Title</th>
+        <th>Author</th>
+        <th>Category</th>
+        <th>ISBN</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let book of books">
+        <td>{{ book.title }}</td>
+        <td>{{ book.authorDetails.name }}</td>
+        <td>{{ book.categoryDetails.name }}</td>
+        <td>{{ book.ISBN }}</td>
+        <td>{{ book.description }}</td>
+        <td>{{ book.price }}</td>
+        <td>
+          <button class="btn btn-primary btn-sm" (click)="openEditModal(book)">Edit</button>
+          <button class="btn btn-danger btn-sm mx-2" (click)="deleteBook(book._id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Bootstrap Modal -->
+<div #bookModal class="modal fade" tabindex="-1" aria-labelledby="bookModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bookModalLabel">{{ isEditMode ? 'Edit Book' : 'Add Book' }}</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="bookTitle" class="form-label">Book Title</label>
+            <input type="text" class="form-control" id="bookTitle" [(ngModel)]="selectedBook.title" name="title" required>
+          </div>
+          <div class="mb-3">
+            <label for="bookAuthor" class="form-label">Author</label>
+            <select id="bookAuthor" class="form-control" [(ngModel)]="selectedBook.author" name="author" required>
+              <option *ngFor="let author of authors" [value]="author._id">
+                {{ author.name }}
+              </option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="bookCategory" class="form-label">Category</label>
+            <select id="bookCategory" class="form-control" [(ngModel)]="selectedBook.category" name="category" required>
+              <option *ngFor="let category of categories" [value]="category._id">
+                {{ category.name }}
+              </option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="bookISBN" class="form-label">ISBN</label>
+            <input type="number" class="form-control" id="bookISBN" [(ngModel)]="selectedBook.ISBN" name="ISBN" required>
+          </div>
+          <div class="mb-3">
+            <label for="bookDescription" class="form-label">Description</label>
+            <textarea class="form-control" id="bookDescription" [(ngModel)]="selectedBook.description" name="description" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="bookPrice" class="form-label">Price</label>
+            <input type="number" class="form-control" id="bookPrice" [(ngModel)]="selectedBook.price" name="price" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="saveBook()">{{ isEditMode ? 'Update' : 'Save' }}</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -11,7 +11,8 @@ import { AuthenticationService } from 'src/app/core/services/authentication.serv
 export class AuthorSignupComponent{
 
   authorSignupForm!:FormGroup;
-  errorMsg:string =''
+  errorMsg:string ='';
+  profileImageBase64: string | ArrayBuffer | null = null;
   constructor(private fb:FormBuilder, private authService:AuthenticationService,private router:Router){
     this.initForm();
   }
@@ -30,10 +31,22 @@ export class AuthorSignupComponent{
     )
   }
 
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.profileImageBase64 = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   signup(){
 
     const formData =this.authorSignupForm.value;
-
+    formData.profileImage = this.profileImageBase64;
+    
     this.authService.authorSignup(formData).subscribe((res)=>{
 
       if(res.success){

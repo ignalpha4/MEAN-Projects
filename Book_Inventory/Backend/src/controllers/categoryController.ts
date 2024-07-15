@@ -6,14 +6,14 @@ export const addCategory =async(req:any,res:any)=>{
     try {
         const category =req.body;
    
-        const addedCat =await categoryModel.create(category);
+        const addedCat = await categoryModel.create(category);
      
         if(!addedCat){
           console.log("provide the necessary details to add Category ");
-          res.status(400).json({message:"provide the necessary details to add Category"})
+          res.json({success:false,message:"provide the necessary details to add Category"})
         }
         console.log("Added Category",addedCat);
-        res.status(200).json({message:"Category added",Category:addedCat});
+        res.status(200).json({success:true,message:"Category added",Category:addedCat});
 
     } catch (error) {
         console.log(error);
@@ -26,7 +26,7 @@ export const listCategory = async(req:any,res:any)=>{
 
         if(!foundCat){
             console.log("No Category found ");
-            res.status(400).json({message:"No Category found"})
+            res.json({message:"No Category found"})
         }
 
         console.log("Available Categories \n",foundCat);
@@ -42,18 +42,18 @@ export const listCategory = async(req:any,res:any)=>{
 export const deleteCategory = async(req:any,res:any)=>{
     
     try{
-        const {id} = req.body;
-
-        const deletedCat = await categoryModel.findByIdAndDelete(id);
+        const _id = req.params.id;
+        
+        const deletedCat = await categoryModel.findByIdAndDelete(_id);
 
         if(!deletedCat){
             console.log("No Category found to delete");
-            res.status(400).json({message:"No Category found to delete"})
+            res.json({success:false,message:"No Category found to delete"})
         }
 
         console.log("Category Deleted \n",deletedCat);
 
-        res.status(200).json({message:"Deleted Category \n",Category:deletedCat});
+        res.json({success:true,message:"Deleted Category \n",Category:deletedCat});
 
 
     } catch (error) {
@@ -65,19 +65,16 @@ export const deleteCategory = async(req:any,res:any)=>{
 export const updateCategory=async(req:any,res:any)=>{
 
     try {
-        
-        const {id} = req.body;
+        const changedCat = await categoryModel.findByIdAndUpdate(req.params.id,req.body);
 
-        const updatedCat = await categoryModel.findByIdAndUpdate(id,req.body);
-
-        if(!updatedCat){
+        if(!changedCat){
             console.log("No Category found to update");
-            res.status(400).json({message:"No Category found to update"})
+            res.json({success:false,message:"No Category found to update"})
         }
 
-        console.log("Category updated \n",updatedCat);
+        console.log("Category updated \n",changedCat);
 
-        res.status(200).json({message:" Category updated \n",Category:updatedCat});
+        res.json({success:true,message:" Category updated \n",Category:changedCat});
 
     } catch (error) {
         console.log(error); 
