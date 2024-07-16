@@ -45,7 +45,6 @@ export class LoginComponent {
           console.log(res.role);
           
           if(res.role=='user'){
-            console.log("inside");
             this.router.navigate(['/pages/user/dashboard'])
           }else{
             this.router.navigate(['/pages/admin/dashboard/managebook'])

@@ -171,7 +171,6 @@ export const updateBook = async (req: any, res: Response) => {
                 return res.json({success:false, message: "No author found for this user" });
             }
             
-
             if (foundBook?.author.toString() === authorFound._id.toString()) {
                 req.body.author = authorFound._id;
                 updatedBook = await bookModel.findByIdAndUpdate(id, req.body);

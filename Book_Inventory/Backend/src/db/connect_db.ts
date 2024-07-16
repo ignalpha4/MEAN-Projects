@@ -1,7 +1,7 @@
 import mongoose, { Mongoose } from "mongoose";
 
 export const connect_db =()=>{
-    mongoose.connect("mongodb://127.0.0.1:27017/Book_Inventory")
+    mongoose.connect("mongodb+srv://shubhamtempacc:kjkszpj@cluster0.dzumnro.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
     .then(()=>{
         console.log("Connected To DB");
     })
