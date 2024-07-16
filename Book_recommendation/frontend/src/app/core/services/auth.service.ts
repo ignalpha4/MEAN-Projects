@@ -31,5 +31,4 @@ export class AuthService {
     return this.http.put<any>(`${this.apiUrl}/user/updateProfileImage`, data);
   }
 
-
 }
