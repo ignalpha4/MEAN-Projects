@@ -43,8 +43,7 @@ export const listAuthors = async (req: any, res: any) => {
         let foundAuthors;
         let authordetails;
 
-       
-
+    
         if(req.user.role==='author'){
             foundAuthors =  await authorModel.find({userId:req.user.id});
         }else{

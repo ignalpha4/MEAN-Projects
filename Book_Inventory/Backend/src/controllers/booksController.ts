@@ -25,7 +25,7 @@ export const addBook = async (req: any, res: Response) => {
             return res.json({success:false, message: "Provide the necessary details to add a book" });
         }
 
-        console.log("Added Book", addedBook);
+
         return res.json({success:true, message: "Book added", book: addedBook });
 
     } catch (error) {
@@ -171,6 +171,7 @@ export const updateBook = async (req: any, res: Response) => {
                 return res.json({success:false, message: "No author found for this user" });
             }
             
+
             if (foundBook?.author.toString() === authorFound._id.toString()) {
                 req.body.author = authorFound._id;
                 updatedBook = await bookModel.findByIdAndUpdate(id, req.body);
@@ -189,7 +190,7 @@ export const updateBook = async (req: any, res: Response) => {
             return res.json({success:false, message: "No book found to update" });
         }
 
-        console.log("Book updated");
+        
         return res.json({success:true, message: "Book updated", book: updatedBook });
 
     } catch (error) {
