@@ -12,7 +12,7 @@ export const addCategory =async(req:any,res:any)=>{
           console.log("provide the necessary details to add Category ");
           res.json({success:false,message:"provide the necessary details to add Category"})
         }
-        console.log("Added Category",addedCat);
+      
         res.status(200).json({success:true,message:"Category added",Category:addedCat});
 
     } catch (error) {
@@ -29,7 +29,6 @@ export const listCategory = async(req:any,res:any)=>{
             res.json({message:"No Category found"})
         }
 
-        console.log("Available Categories \n",foundCat);
 
         res.status(200).json({message:"Available Category \n",Category:foundCat});
 
@@ -51,7 +50,7 @@ export const deleteCategory = async(req:any,res:any)=>{
             res.json({success:false,message:"No Category found to delete"})
         }
 
-        console.log("Category Deleted \n",deletedCat);
+  
 
         res.json({success:true,message:"Deleted Category \n",Category:deletedCat});
 
@@ -72,7 +71,7 @@ export const updateCategory=async(req:any,res:any)=>{
             res.json({success:false,message:"No Category found to update"})
         }
 
-        console.log("Category updated \n",changedCat);
+    
 
         res.json({success:true,message:" Category updated \n",Category:changedCat});
 

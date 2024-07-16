@@ -43,7 +43,7 @@ export const listAuthors = async (req: any, res: any) => {
         let foundAuthors;
         let authordetails;
 
-        console.log(req.user.id);
+       
 
         if(req.user.role==='author'){
             foundAuthors =  await authorModel.find({userId:req.user.id});
@@ -56,7 +56,6 @@ export const listAuthors = async (req: any, res: any) => {
             return res.json({success:false, message: "No authors found" });
         }
 
-        console.log("List of Authors \n", foundAuthors);
         res.status(200).json({ message: "List of Authors", authors: foundAuthors });
 
     } catch (error) {
@@ -73,8 +72,7 @@ export const deleteAuthor = async (req: any, res: any) => {
         let deletedAuthor:any;
         let deletedUser:any
 
-        console.log(req.user.role);
-        
+  
 
         if(req.user.role === 'author'){
             let foundAuthorDetials =  await authorModel.findById(req.params.id);
@@ -100,7 +98,6 @@ export const deleteAuthor = async (req: any, res: any) => {
         }
 
 
-        console.log("Author Deleted  and assosiated user credentials as well\n", deletedAuthor,deletedUser);
         res.json({ success:true,message: "Deleted Author and user assosiated:", author: deletedAuthor ,user:deletedUser});
         
     } catch (error:any) {
@@ -121,7 +118,7 @@ export const updateAuthor = async (req: any, res: any) => {
         
         if(req.user.role ==='author'){
             if(req.user.id === req.body.userId){
-                console.log("inside");
+             
                 updatedAuthor= await authorModel.findByIdAndUpdate(id,req.body);
                 updatedUser =  await userModel.findByIdAndUpdate(updatedAuthor.userId,{email:req.body.email,password:hashedPassword,profileImage:req.body.profileImage});
             }else{
@@ -132,8 +129,7 @@ export const updateAuthor = async (req: any, res: any) => {
             updatedUser =  await userModel.findByIdAndUpdate(updatedAuthor.userId,{email:req.body.email,password:hashedPassword});
         }
 
-        console.log("author",updatedAuthor);
-        console.log("user",updatedUser);
+
         
     
         if (!updatedAuthor || !updatedUser) {
@@ -141,7 +137,6 @@ export const updateAuthor = async (req: any, res: any) => {
             return res.json({success:false, message:"No author details found to update"});
         }
 
-        console.log("Author Details updated \n", updatedAuthor,updatedUser);
         res.json({ success:true,message: "Author Details updated", author: updatedAuthor , user:updatedUser });
 
     } catch (error:any) {

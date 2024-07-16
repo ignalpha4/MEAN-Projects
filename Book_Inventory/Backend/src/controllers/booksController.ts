@@ -189,7 +189,7 @@ export const updateBook = async (req: any, res: Response) => {
             return res.json({success:false, message: "No book found to update" });
         }
 
-        console.log("Book updated:\n", updatedBook);
+        console.log("Book updated");
         return res.json({success:true, message: "Book updated", book: updatedBook });
 
     } catch (error) {
