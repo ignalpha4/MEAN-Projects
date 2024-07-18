@@ -18,9 +18,7 @@ connect_db()
 
 app.use(cors())
 
-
 app.use('/user',allroutes);
-
 
 app.listen(PORT,()=>{
     console.log(`Server is running on Port ${PORT}!`);

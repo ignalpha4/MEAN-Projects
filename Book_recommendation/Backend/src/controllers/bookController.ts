@@ -8,7 +8,7 @@ const ObjectId = mongoose.Types.ObjectId;
 // Add a book
 
 export const addBook = async (req: Request, res: Response) => {
-    upload(req, res, async (err) => {
+    upload(req, res, async (err:any) => {
         if (err) {
             console.error('Error uploading image:', err);
             return res.status(500).json({ message: 'Error uploading image' });
@@ -25,7 +25,7 @@ export const addBook = async (req: Request, res: Response) => {
                 ISBN,
                 description,
                 price,
-                bookImage // Save the image path in the database
+                bookImage 
             });
 
             const addedBook = await newBook.save();
@@ -68,7 +68,6 @@ export const deleteBook = async (req: any, res: Response) => {
         }else{
             return res.json({success:true, message: "Book deleted", book: deletedBook });
         }
-
 
     } catch (error) {
         console.error('Error deleting book:', error);
@@ -138,8 +137,6 @@ export const getBookById= async(req:any,res:Response)=>{
         console.log("Error getting the book",error);
         return res.json({success:false,message:'internal server error'});
     }
-
-
 
 }
 

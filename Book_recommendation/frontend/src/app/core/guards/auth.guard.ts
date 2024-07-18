@@ -22,7 +22,6 @@ export const authGuard: CanActivateFn = (route, state) => {
         alert("User not authorized");
         return false;
       }
-
       return true;
     }),
   );

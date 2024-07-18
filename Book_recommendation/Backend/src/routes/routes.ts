@@ -14,7 +14,6 @@ router.get('/currentuser',verifyToken,getCurrentUser);
 router.put('/updateProfileImage', verifyToken, updateProfileImage);
 
 //book rating
-
 router.post('/ratebook',verifyToken,rateBook);
 
 //crud books
