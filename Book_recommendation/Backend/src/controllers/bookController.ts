@@ -2,28 +2,43 @@ import { Request, Response } from 'express';
 import bookModel from '../models/book.model';
 import mongoose from 'mongoose';
 import userModel from '../models/user.model';
+import upload from '../middleware/bookUpload';
 
 const ObjectId = mongoose.Types.ObjectId;
 // Add a book
-export const addBook = async (req: any, res: Response) => {
-    try {
 
-        const book = req.body;
-
-        const addedBook = await bookModel.create(book);
-
-        if (!addedBook) {
-            console.log("Provide the necessary details to add a book");
-            return res.json({success:false, message: "Provide the necessary details to add a book" });
+export const addBook = async (req: Request, res: Response) => {
+    upload(req, res, async (err) => {
+        if (err) {
+            console.error('Error uploading image:', err);
+            return res.status(500).json({ message: 'Error uploading image' });
         }
 
-        return res.json({success:true, message: "Book added", book: addedBook });
+        try {
+            const { title, author, category, ISBN, description, price } = req.body;
+            const bookImage = req.file ? `/uploads/books/${req.file.filename}` : '';
 
-    } catch (error) {
-        console.error('Error adding book:', error);
-        return res.status(500).json({ message: 'Internal server error' });
-    }
+            const newBook = new bookModel({
+                title,
+                author,
+                category,
+                ISBN,
+                description,
+                price,
+                bookImage // Save the image path in the database
+            });
+
+            const addedBook = await newBook.save();
+
+            return res.json({ success: true, message: 'Book added', book: addedBook });
+
+        } catch (error) {
+            console.error('Error adding book:', error);
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+    });
 };
+
 
 // books list
 export const listBooks = async (req: any, res: Response) => {
@@ -62,26 +77,48 @@ export const deleteBook = async (req: any, res: Response) => {
 };
 
 // Update a book
-export const updateBook = async (req: any, res: Response) => {
-    try {
-        const id = req.params.id;
-
-        let updatedBook = await bookModel.findByIdAndUpdate(id, req.body);
-
-        if (!updatedBook) {
-            console.log("No book found to update");
-            return res.json({success:false, message: "No book found to update" });
+export const updateBook = async (req: Request, res: Response) => {
+    upload(req, res, async (err: any) => {
+        if (err) {
+            console.error('Error uploading image:', err);
+            return res.status(500).json({ message: 'Error uploading image' });
         }
 
-        
-        return res.json({success:true, message: "Book updated", book: updatedBook });
+        try {
+            const id = req.params.id;
 
-    } catch (error) {
-        console.error('Error updating book:', error);
-        return res.json({success:false, message: 'Internal server error' });
-    }
+            // Find the existing book
+            const existingBook = await bookModel.findById(id);
+            if (!existingBook) {
+                console.log("No book found to update");
+                return res.status(404).json({ success: false, message: "No book found to update" });
+            }
+
+            // Update book details
+            const { title, author, category, ISBN, description, price } = req.body;
+            const bookImage = req.file ? `/uploads/books/${req.file.filename}` : existingBook.bookImage;
+
+            // Ensure to handle empty fields by checking the body parameters
+            const updatedBookData = {
+                title: title || existingBook.title,
+                author: author || existingBook.author,
+                category: category || existingBook.category,
+                ISBN: ISBN || existingBook.ISBN,
+                description: description || existingBook.description,
+                price: price || existingBook.price,
+                bookImage: bookImage
+            };
+
+            const updatedBook = await bookModel.findByIdAndUpdate(id, updatedBookData, { new: true });
+
+            return res.json({ success: true, message: "Book updated", book: updatedBook });
+
+        } catch (error) {
+            console.error('Error updating book:', error);
+            return res.status(500).json({ success: false, message: 'Internal server error' });
+        }
+    });
 };
-
 
 export const getBookById= async(req:any,res:Response)=>{
 

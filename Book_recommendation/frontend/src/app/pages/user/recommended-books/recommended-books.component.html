@@ -7,7 +7,7 @@
       <div *ngFor="let book of recommendedBooks" class="col-lg-3 col-md-4 col-sm-6 mb-4">
         <div class="card h-100 shadow-sm">
           <div class="card-body d-flex flex-column">
-            <img [src]="" [alt]="book.title" class="card-img-top" alt="Book Image">
+            <img [src]="'http://localhost:5000' + book.bookImage" [alt]="book.title" class="card-img-top" style="max-height: 500px;" alt="Book Image">
             <hr>
             <h5 class="card-title mb-2"><strong>Name:</strong> {{ book.title }}</h5>
             <p class="card-text mb-2"><strong>Description:</strong> {{ book.description }}</p>

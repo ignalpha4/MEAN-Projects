@@ -12,6 +12,7 @@ export class ViewbookComponent {
   book: any;
   rating: number = 1;
   ratings: number[] = [1, 2, 3, 4, 5];
+  rated: boolean = false; 
 
   constructor(
     private route: ActivatedRoute,
@@ -33,6 +34,7 @@ export class ViewbookComponent {
     this.userService.rateBook(bookId, this.rating).subscribe((data: any) => {
       if (data.success) {
         alert('Rating submitted successfully!');
+        this.rated = true;
       } else {
         alert('Error submitting rating');
       }
