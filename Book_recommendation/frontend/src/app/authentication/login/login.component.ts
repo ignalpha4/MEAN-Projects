@@ -44,7 +44,7 @@ export class LoginComponent {
           
           
           if(res.role=='user'){
-            this.router.navigate(['/pages/user/dashboard/asd'])
+            this.router.navigate(['/pages/user/dashboard'])
           }else{
             this.router.navigate(['/pages/admin/dashboard'])
           }

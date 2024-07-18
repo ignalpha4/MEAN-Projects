@@ -1,0 +1,26 @@
+
+<div class="container mt-5" *ngIf="book">
+    <div class="row">
+      <div class="col-12">
+        <h2 class="text-center mb-4">{{ book.title }}</h2>
+      </div>
+      <div class="col-md-6">
+        <img src="" [alt]="book.title" class="img-fluid">
+      </div>
+      <div class="col-md-6">
+        <p><strong>Description:</strong> {{ book.description }}</p>
+        <p><strong>Category:</strong> {{ book.category }}</p>
+        <p><strong>Author:</strong> {{ book.author }}</p>
+        <p><strong>Price:</strong> ₹ {{ book.price }}</p>
+  
+        <div class="form-group">
+          <label for="rating">Rate this book:</label>
+          <select id="rating" class="form-control" [(ngModel)]="rating">
+            <option *ngFor="let r of ratings" [value]="r">{{ r }}</option>
+          </select>
+          <button class="btn btn-primary mt-2" (click)="rateBook()">Submit Rating</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

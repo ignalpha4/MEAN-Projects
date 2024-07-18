@@ -3,6 +3,7 @@ import userModel from '../models/user.model';
 import upload from '../middleware/fileUpload';
 import { Request, Response } from 'express';
 import { generateUserToken } from '../utils/jwtToken';
+import bookModel from '../models/book.model';
 
 // User signup
 export const signup = (req: Request, res: Response) => {
@@ -79,7 +80,7 @@ export const getCurrentUser = async(req:any,res:any)=>{
       if(!user){
           return res.json({success:false,message:"No current user found"});
       }   
-      return res.json({success:true,message:"current user found",user:{email:user.email,role:user.role,profileImage:user.profileImage}});  
+      return res.json({success:true,message:"current user found",user:{_id:user._id,email:user.email,role:user.role,profileImage:user.profileImage}});  
   } catch (error) {
       console.log(error);
   }
@@ -110,4 +111,39 @@ export const updateProfileImage = (req: any, res: Response) => {
       res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
   });
+};
+
+export const rateBook = async (req: any, res: Response) => {
+  try {
+      const userId = req.user.id;
+      const { bookId, rating } = req.body;
+
+      if (rating < 1 || rating > 5) {
+          return res.status(400).json({ success: false, message: 'Rating must be between 1 and 5' });
+      }
+
+      const bookExists = await bookModel.findById(bookId);
+      if (!bookExists) {
+          return res.status(404).json({ success: false, message: 'Book not found' });
+      }
+
+      const user = await userModel.findById(userId);
+      if (!user) {
+          return res.status(404).json({ success: false, message: 'User not found' });
+      }
+
+      const existingRating = user.ratings.find((r: any) => r.bookId.toString() === bookId);
+      if (existingRating) {
+          existingRating.rating = rating;
+      } else {
+          user.ratings.push({ bookId, rating });
+      }
+
+      await user.save();
+
+      res.json({ success: true, message: 'Rating added/updated successfully', ratings: user.ratings });
+  } catch (error) {
+      console.error('Error rating book:', error);
+      res.status(500).json({ success: false, message: 'Internal server error' });
+  }
 };

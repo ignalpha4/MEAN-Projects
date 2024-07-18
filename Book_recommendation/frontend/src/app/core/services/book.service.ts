@@ -26,5 +26,13 @@ export class BookService {
   deleteBook(id:any){
     return this.http.delete<any>(`${this.apiUrl}/user/deletebook/${id}`)
   }
-  
+
+  getBookById(bookId:any){
+    return this.http.get<any>(`${this.apiUrl}/user/getbook/${bookId}`);
+  }
+
+  getRecommendations(userId:any){
+    return this.http.get<any>(`${this.apiUrl}/user/recommendations/${userId}`)
+  }
+
 }

@@ -31,4 +31,9 @@ export class AuthService {
     return this.http.put<any>(`${this.apiUrl}/user/updateProfileImage`, data);
   }
 
+  
+  rateBook(bookId: string, rating: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/user/ratebook`, { bookId, rating });
+  }
+
 }
