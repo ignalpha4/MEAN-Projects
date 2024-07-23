@@ -1,0 +1,65 @@
+<div class="container-fluid bg-secondary d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+  <div class="col-lg-4 col-md-6 col-sm-8 mt-5">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h4 class="card-title text-center mb-4">Sign Up Form</h4>
+        <form [formGroup]="signupForm" (ngSubmit)="signup()">
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Enter your name" formControlName="name">
+            <div *ngIf="signupForm.get('name')?.invalid && signupForm.get('name')?.touched">
+              <div *ngIf="signupForm.get('name')?.errors?.['required']">
+                  <p style="color: red;">This field is required !!!</p>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="email" placeholder="Enter your email" formControlName="email">
+            <div *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched">
+              <div *ngIf="signupForm.get('email')?.errors?.['required']">
+                  <p style="color: red;">This field is required !!!</p>
+              </div>
+            </div>
+            <div *ngIf="signupForm.get('email')?.errors?.['email']">
+              <p style="color: red;">Please enter valid email !!!</p>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="Enter your password" formControlName="password">
+            <div *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched">
+              <div *ngIf="signupForm.get('password')?.errors?.['required']">
+                  <p style="color: red;">This field is required !!!</p>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="role" class="form-label">Role</label>
+            <select class="form-select form-control" id="role" formControlName="role">
+              <option value="admin">Admin</option>
+              <option value="user">User</option>
+            </select>
+            <div *ngIf="signupForm.get('role')?.invalid && signupForm.get('role')?.touched">
+              <div *ngIf="signupForm.get('role')?.errors?.['required']">
+                  <p style="color: red;">This field is required !!!</p>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="profileImage" class="form-label">Profile Image</label>
+            <input type="file" class="form-control" id="profileImage" (change)="onFileChange($event)">
+          </div>
+          <div>
+            <p style="color: red;" *ngIf="errorMsg">{{errorMsg}}</p>
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary mb-2" [disabled]="signupForm.invalid">Sign Up</button>
+            <a class="btn btn-outline-primary" routerLink="/login">Already have an account?</a>
+            <a class="btn btn-outline-primary mt-2" routerLink="/authorSignup">Sign Up as Author ?</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

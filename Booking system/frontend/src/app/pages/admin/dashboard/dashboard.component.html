@@ -1,0 +1,18 @@
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-3 sidebar">
+            <div class="list-group">
+                <a routerLink="routes" routerLinkActive="active" class="list-group-item list-group-item-action">Route
+                    Creation</a>
+                <a routerLink="buses" routerLinkActive="active" class="list-group-item list-group-item-action">Bus
+                    Details</a>
+                <button (click)="logout()" class="list-group-item list-group-item-action logout-button">Logout</button>
+            </div>
+        </div>
+      
+        <div class="col-md-9 main-content">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

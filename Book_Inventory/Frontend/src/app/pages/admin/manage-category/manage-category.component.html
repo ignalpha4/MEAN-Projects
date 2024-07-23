@@ -1,0 +1,48 @@
+<div class="container mt-4 d-flex justify-content-end">
+  <button class="btn btn-primary mb-3" (click)="openAddModal()">Add Category</button>
+</div>
+
+<div class="container mt-2">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Category Name</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let category of categories">
+        <td>{{ category.name }}</td>
+        <td>
+          <button class="btn btn-primary btn-sm" (click)="openEditModal(category)">Edit</button>
+          <button class="btn btn-danger btn-sm mx-2" (click)="deleteCategory(category._id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- Bootstrap Modal -->
+<div #categoryModal class="modal fade" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="categoryModalLabel">{{ isEditMode ? 'Edit Category' : 'Add Category' }}</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="categoryName" class="form-label">Category Name</label>
+            <input type="text" class="form-control" id="categoryName" [(ngModel)]="selectedCategory.name" name="name" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="saveCategory()">{{ isEditMode ? 'Update' : 'Save' }}</button>
+      </div>
+    </div>
+  </div>
+</div>

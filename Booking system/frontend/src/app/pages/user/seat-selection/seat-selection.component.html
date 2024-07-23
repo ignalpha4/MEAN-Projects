@@ -1,0 +1,80 @@
+<div class="container mt-4">
+  <h3 class="text-center mb-4">Select a Seat</h3>
+  <div class="row seat-container">
+    <!-- Left Column -->
+    <div class="col-2 mt-4 mb-4">
+      <div class="row">
+        <div class="col-12">
+          <div class="seat-grid">
+            <div *ngFor="let pair of leftSeats" class="seat-pair">
+              <div 
+                *ngIf="pair[0]"
+                [ngClass]="{
+                  'seat': true,
+                  'booked': pair[0].isBooked,
+                  'available': !pair[0].isBooked && !isSeatDisabled(pair[0]),
+                  'selected': pair[0]._id === selectedSeatId,
+                  'disabled': isSeatDisabled(pair[0])
+                }"
+                (click)="selectSeat(pair[0])">
+                {{ pair[0]?.seatNumber }}
+              </div>
+              <div 
+                *ngIf="pair[1]"
+                [ngClass]="{
+                  'seat': true,
+                  'booked': pair[1].isBooked,
+                  'available': !pair[1].isBooked && !isSeatDisabled(pair[1]),
+                  'selected': pair[1]._id === selectedSeatId,
+                  'disabled': isSeatDisabled(pair[1])
+                }"
+                (click)="selectSeat(pair[1])">
+                {{ pair[1]?.seatNumber }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Gap -->
+    <div class="col-2 mt-4 mb-4"></div>
+    <!-- Right Column -->
+    <div class="col-2 mt-4 mb-4">
+      <div class="row">
+        <div class="col-12">
+          <div class="seat-grid">
+            <div *ngFor="let pair of rightSeats" class="seat-pair">
+              <div 
+                *ngIf="pair[0]"
+                [ngClass]="{
+                  'seat': true,
+                  'booked': pair[0].isBooked,
+                  'available': !pair[0].isBooked && !isSeatDisabled(pair[0]),
+                  'selected': pair[0]._id === selectedSeatId,
+                  'disabled': isSeatDisabled(pair[0])
+                }"
+                (click)="selectSeat(pair[0])">
+                {{ pair[0]?.seatNumber }}
+              </div>
+              <div 
+                *ngIf="pair[1]"
+                [ngClass]="{
+                  'seat': true,
+                  'booked': pair[1].isBooked,
+                  'available': !pair[1].isBooked && !isSeatDisabled(pair[1]),
+                  'selected': pair[1]._id === selectedSeatId,
+                  'disabled': isSeatDisabled(pair[1])
+                }"
+                (click)="selectSeat(pair[1])">
+                {{ pair[1]?.seatNumber }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="text-center mt-4">
+    <button class="btn btn-primary btn-lg" (click)="confirmSelection()">Confirm Selection</button>
+  </div>
+</div>

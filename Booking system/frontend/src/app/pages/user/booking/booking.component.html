@@ -1,0 +1,71 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">Book a Seat</h4>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label for="route">Selected Route</label>
+              <select id="route" class="form-control" formControlName="routeId">
+                <option *ngFor="let route of routes" [value]="route._id">
+                  {{ getFormattedStations(route) }} (Distance: {{ getTotalDistance(route) }} km)
+                </option>
+              </select>
+            </div>
+            
+            <div class="form-group mt-3">
+              <label for="date">Journey Date</label>
+              <input type="date" id="date" class="form-control" formControlName="date" min="2024-07-19" max="2024-08-22">
+            </div>
+
+            <div class="form-group mt-3">
+              <div class="row">
+                <div class="col-lg-6">
+                  <label for="from">From</label>
+                  <select id="from" class="form-control" formControlName="from">
+                    <option *ngFor="let stop of selectedRoute?.stations" [value]="stop.name">{{ stop.name }}</option>
+                  </select>
+                </div>
+                <div class="col-lg-6">
+                  <label for="to">To</label>
+                  <select id="to" class="form-control" formControlName="to">
+                    <option *ngFor="let stop of selectedRoute?.stations" [value]="stop.name">{{ stop.name }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group mt-3">
+              <label for="seat">Selected Seat</label>
+              <p id="seat" class="form-control-plaintext">{{ seatNumber }}</p>
+            </div>
+
+            <div class="form-group mt-3">
+              <label for="paymentType">Payment Type</label>
+              <select id="paymentType" class="form-control form-control-lg" formControlName="paymentType" (change)="calculateFare()">
+                <option value="cash">Cash</option>
+                <option value="card">Card</option>
+                <option value="upi">UPI</option>
+              </select>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="form-group">
+              <label for="totalFare">Total Fare</label>
+              <p id="totalFare" class="form-control-plaintext">
+                {{ bookingForm.get('totalFare')?.value }} INR 
+                (Handling Charge: {{ handlingCharge }} INR)
+              </p>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Book Seat</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

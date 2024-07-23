@@ -1,0 +1,94 @@
+<nav class="navbar navbar-dark bg-dark" style="position: sticky; top: 0; z-index: 1000;">
+  <div class="container-fluid justify-content-between">
+    <a class="navbar-brand">ADMIN DASHBOARD</a>
+    <div class="profile-container d-flex align-items-center">
+      <div class="dropdown">
+        <div class="profile-info" data-bs-toggle="dropdown" aria-expanded="false">
+          <div class="d-flex align-items-center">
+            <img [src]="'http://localhost:5000' + profileImage" alt="Profile Image" class="rounded-circle profile-image" style="width: 40px; height: 40px; margin-right: 10px;">
+            <span class="text-white profile-name">{{ username }}</span>
+          </div>
+        </div>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+          <li><a class="dropdown-item" (click)="openUpdateProfileModal()">Update Profile</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-2 col-md-3 col-sm-4 sidebar" style="min-height: 94.8vh; background-color: rgb(51, 56, 77);">
+      <div class="list-group mt-5 mx-3">
+        <button type="button" class="list-group-item btn" routerLink="manageusers">Manage Users</button>
+      </div>
+      <div class="justify-content-center d-flex mt-3">
+        <button class="btn btn-danger" (click)="logout()">Logout</button>
+      </div>
+    </div>
+    <div class="col-lg-10 col-md-9 col-sm-8 main-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+
+ <!-- update self profile  -->
+<div #userModal class="modal fade" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="userModalLabel">Update Profile</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="userForm">
+          <div class="mb-3">
+            <label for="username" class="form-label">User Name</label>
+            <input type="text" class="form-control" id="username" formControlName="name">
+            <div *ngIf="userForm.get('name')?.invalid && userForm.get('name')?.touched" class="text-danger">
+              Name is required
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="useremail" class="form-label">Email</label>
+            <input type="text" class="form-control" id="useremail" formControlName="email">
+            <div *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched" class="text-danger">
+              Valid email is required
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="userpassword" class="form-label">Password</label>
+            <input type="password" class="form-control" id="userpassword" formControlName="password">
+            <div *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched" class="text-danger">
+              Password is required
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="userrole" class="form-label">Role</label>
+            <select class="form-control" id="userrole" formControlName="role">
+              <option value="admin">Admin</option>
+            </select>
+            <div *ngIf="userForm.get('role')?.invalid && userForm.get('role')?.touched" class="text-danger">
+              Role is required
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="profileImage" class="form-label">Profile Image</label>
+            <input type="file" class="form-control" id="profileImage" (change)="onFileChange($event)">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+        <button type="button" class="btn btn-primary" [disabled]="userForm.invalid" (click)="submitProfileUpdate()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

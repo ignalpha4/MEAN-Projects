@@ -1,0 +1,76 @@
+<div class="container mt-4">
+  
+  <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+
+  <div class="container px-5">
+
+    <div class="row mb-4">
+      <div class="col-lg-12">
+        <label for="from">From:</label>
+        <select id="from" formControlName="from" class="form-control">
+          <option value="" disabled selected>Select From</option>
+          <option *ngFor="let stop of stops" [value]="stop">{{ stop }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-lg-12">
+        <label for="to">To:</label>
+        <select id="to" formControlName="to" class="form-control">
+          <option value="" disabled selected>Select To</option>
+          <option *ngFor="let stop of stops" [value]="stop">{{ stop }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-lg-12">
+        <label for="date">Date:</label>
+        <input type="date" id="date" formControlName="date" class="form-control" />
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div class="col-lg-12 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100">Search</button>
+      </div>
+    </div>
+  </div>
+  </form>
+
+  <!-- Buses List -->
+  <div class="row" *ngIf="filteredBuses.length > 0">
+    <div class="col-md-4 mb-4" *ngFor="let bus of filteredBuses">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <div>
+            <h5 class="card-title mb-0">{{ bus.stops[0]?.station | uppercase }} --> {{ bus.stops[bus.stops.length - 1]?.station | uppercase }}</h5>
+            <small class="text-muted">Bus Number: {{ bus.busNumber }}</small>
+          </div>
+        </div>
+        <div class="card-body">
+          <p><strong>DATE: {{ bus.date | date:'yyyy-MM-dd' }}</strong></p>
+          <hr>
+          <span class="card-text">
+            <div class=" justify-content-between mb-2 d-flex">
+              <span><strong>Stops:</strong></span>
+              <span><strong>Time:</strong></span>
+            </div>
+          </span>
+          <ul class="list-unstyled">
+            <li *ngFor="let stop of bus.stops" class="d-flex justify-content-between mb-2">
+              <span>{{ stop.station | uppercase }}</span>
+              <span>{{ stop.time }}</span>
+            </li>
+          </ul>
+          <button class="btn btn-primary w-100" (click)="bookBus(bus._id)">Book</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="alert alert-info" *ngIf="buses.length === 0 && searchPerformed">
+    No buses found for the selected criteria.
+  </div>
+</div>

@@ -1,0 +1,67 @@
+<div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card mt-5">
+          <div class="card-header">Create Route</div>
+          <div class="card-body">
+            <form [formGroup]="routeForm" (ngSubmit)="onSubmit()">
+              <div class="form-group">
+                <label for="uniqueIdentifier">ID</label>
+                <input type="text" id="uniqueIdentifier" class="form-control" formControlName="uniqueIdentifier" [class.is-invalid]="routeForm.get('uniqueIdentifier')?.invalid && (routeForm.get('uniqueIdentifier')?.dirty || routeForm.get('uniqueIdentifier')?.touched)">
+                <div *ngIf="routeForm.get('uniqueIdentifier')?.invalid && (routeForm.get('uniqueIdentifier')?.dirty || routeForm.get('uniqueIdentifier')?.touched)" class="invalid-feedback">
+                 This field is required.
+                </div>
+              </div>
+              <div formArrayName="stations" *ngFor="let station of stations.controls; let i = index" class="form-group">
+                <hr>
+                <div class="row mb-2" [formGroupName]="i">
+                  <div class="col-lg-5">
+                    <ng-container *ngIf="stations.length === 2">
+                      <ng-container *ngIf="i === 0">
+                        <label for="stationName{{i}}">Source Station</label>
+                      </ng-container>
+                      <ng-container *ngIf="i === 1">
+                        <label for="stationName{{i}}">Destination Station</label>
+                      </ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="stations.length !== 2">
+                      <ng-container *ngIf="i === 0">
+                        <label for="stationName{{i}}">Source Station</label>
+                      </ng-container>
+                      <ng-container *ngIf="i > 0 && i < stations.length - 1">
+                        <label for="stationName{{i}}">Middle Stops</label>
+                      </ng-container>
+                      <ng-container *ngIf="i === stations.length - 1">
+                        <label for="stationName{{i}}">Destination Station</label>
+                      </ng-container>
+                    </ng-container>
+                    <input type="text" id="stationName{{i}}" class="form-control" formControlName="name" [class.is-invalid]="station.get('name')?.invalid && (station.get('name')?.dirty || station.get('name')?.touched)">
+                    <div *ngIf="station.get('name')?.invalid && (station.get('name')?.dirty || station.get('name')?.touched)" class="invalid-feedback">
+                      Station name is required.
+                    </div>
+                  </div>
+  
+                  <div class="col-lg-5">
+                    <label for="stationDistance{{i}}">Distance (km)</label>
+                    <input type="number" id="stationDistance{{i}}" class="form-control" formControlName="distance" [class.is-invalid]="station.get('distance')?.invalid && (station.get('distance')?.dirty || station.get('distance')?.touched)">
+                    <div *ngIf="station.get('distance')?.invalid && (station.get('distance')?.dirty || station.get('distance')?.touched)" class="invalid-feedback">
+                      Distance is required.
+                    </div>
+                  </div>
+                  <div class="col-lg-2 mt-3">
+                    <button type="button" class="btn btn-danger mt-2" (click)="removeStation(i)" *ngIf="i > 0 && i < stations.length - 1">Remove</button>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="justify-content-center d-flex mt-4">
+                <button type="button" class="btn btn-secondary mx-4" (click)="addStation()">Add Station +</button>
+                <button type="submit" class="btn btn-primary" [disabled]="routeForm.invalid">Create Route</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

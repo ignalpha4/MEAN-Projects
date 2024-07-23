@@ -1,0 +1,29 @@
+<div class="container mt-5" *ngIf="book">
+  <div class="row justify-content-center">
+    <div class="col-10">
+      <h2 class="text-center mb-4">{{ book.title }}</h2>
+    </div>
+    <div class="col-md-6 d-flex justify-content-center align-items-center">
+      <img [src]="'http://localhost:5000' + book.bookImage" [alt]="book.title" class="img-fluid rounded shadow-sm" style="max-width: 100%; max-height: 600px; object-fit: cover;">
+    </div>
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Book Details</h5>
+          <p class="card-text"><strong>Description:</strong> {{ book.description }}</p>
+          <p class="card-text"><strong>Category:</strong> {{ book.category }}</p>
+          <p class="card-text"><strong>Author:</strong> {{ book.author }}</p>
+          <p class="card-text"><strong>Price:</strong> ₹ {{ book.price }}</p>
+          <div class="form-group mt-3">
+            <label for="rating">Rate this book:</label>
+            <select id="rating" class="form-control" [(ngModel)]="rating" [disabled]="rated">
+              <option *ngFor="let r of ratings" [value]="r">{{ r }}</option>
+            </select>
+            <button class="btn btn-primary mt-2" (click)="rateBook()" [disabled]="rated">Submit Rating</button>
+            <small *ngIf="rated" class="text-muted mx-2"> Rating Done</small>
+          </div> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

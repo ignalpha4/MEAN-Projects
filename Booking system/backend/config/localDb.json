@@ -1,0 +1,4 @@
+{
+    "PortNumber" : "5000",
+    "MongoUrl": "mongodb+srv://shubhamtempacc:kjkszpj@cluster0.dzumnro.mongodb.net/new_test?retryWrites=true&w=majority&appName=Cluster0"
+}
