@@ -70,23 +70,25 @@ export const addSeats = async (req: any, res: any) => {
   try {
     const { busId, totalSeats, date } = req.body;
 
-    const seats :any= [];
+    const seats:any[] = [];
     for (let i = 1; i <= totalSeats; i++) {
-      seats.push({ busId, seatNumber: i, isBooked: false, date,isFemale:false });
+      seats.push({ number: i, isBooked: false, isFemale: false });
     }
 
-    await Seat.insertMany(seats);
+    const seatDocument = new Seat({
+      busId,
+      date,
+      seats
+    });
 
-
+    await seatDocument.save();
 
     res.json({ success: true, message: 'Seats added successfully' });
-
   } catch (error) {
     console.error('Error adding seats:', error);
     res.status(500).json({ success: false, message: 'Failed to add seats', error });
   }
 };
-
 
 export const filteredBuses =async(req:any,res:any)=>{
 

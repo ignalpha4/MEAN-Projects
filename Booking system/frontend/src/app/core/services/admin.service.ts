@@ -29,8 +29,8 @@ export class AdminService {
     return this.http.get(`/availableSeats/${busId}/${date}`);
   }
 
-  updateSeatStatus(seatId: string,gender:string) {
-    return this.http.post(`/updateSeatStatus`, { seatId,gender });
+  updateSeatStatus(busId:any,seatId: string,gender:string,seatNumber:number) {
+    return this.http.post(`/updateSeatStatus`, { seatId,gender,seatNumber,busId });
   }
   addSeats(busId: any, totalSeats: any,date:any) {
     return this.http.post(`/addSeats`, { busId, totalSeats,date });

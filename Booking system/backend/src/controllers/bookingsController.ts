@@ -2,8 +2,7 @@ import bookingModel from "../models/bookingmodel";
 import busModel from "../models/busesmodel";
 
 
-export const bookSeat = async (req:any, res:any) => {
-
+export const bookSeat = async (req: any, res: any) => {
   try {
     const {
       userId,
@@ -15,48 +14,33 @@ export const bookSeat = async (req:any, res:any) => {
       paymentType,
       totalFare,
       seatId,
-      gender 
+      gender
     } = req.body;
 
-    
-    const requiredFields = [ "userId",
-      "busId",
-      "from",
-      "to",
-      "date",
-      "seatNumber",
-      "paymentType",
-      "totalFare",
-       "seatId" ]
-      const missingFields=  requiredFields.filter((fields) =>{
-        !req.body
-      })
+    // Check for missing fields
+    const requiredFields = ["userId", "busId", "from", "to", "date", "seatNumber", "paymentType", "totalFare", "seatId"];
+    const missingFields = requiredFields.filter((field) => !req.body[field]);
 
-      if(missingFields.length > 0){
-        console.log("missing fields");
-        return res.json({success:false, message: `Missing required fields ${missingFields}` });
-        
-      }
+    if (missingFields.length > 0) {
+      console.log("missing fields");
+      return res.json({ success: false, message: `Missing required fields: ${missingFields.join(', ')}` });
+    }
 
-
+    // Find the bus
     const bus = await busModel.findById(busId).populate("route");
-
     if (!bus) {
-      return res.status(404).json({success:false, message: "Bus not found" });
+      return res.status(404).json({ success: false, message: "Bus not found" });
     }
 
-    const existingBooking = await bookingModel.findOne({
-      bus: busId,
-      seatNumber,
-      date,
-    });
-
+    // Check if the seat is already booked
+    const existingBooking = await bookingModel.findOne({ bus: busId, seatNumber, date });
     if (existingBooking) {
-      return res.json({succcess:false, message: "Seat is already booked" });
+      return res.json({ success: false, message: "Seat is already booked" });
     }
 
+    // Create a new booking
     const newBooking = new bookingModel({
-      userId: userId,
+      userId,
       bus: busId,
       from,
       to,
@@ -64,16 +48,14 @@ export const bookSeat = async (req:any, res:any) => {
       seatNumber,
       paymentType,
       totalFare,
-      seatId
+      seatId,
+      gender
     });
+
     await newBooking.save();
-
-
-
-    res.json({success:true});
-  }
-  catch (error) {
-    console.log(error)
-    res.json({ message: error});
+    res.json({ success: true, message: 'Seat booked successfully' });
+  } catch (error) {
+    console.log("Error booking seat:", error);
+    res.json({ success: false, message: "Failed to book seat", error });
   }
 };

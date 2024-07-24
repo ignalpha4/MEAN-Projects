@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import Seat from "../models/seatsmodel";
-import { AnyArray } from "mongoose";
 
 export const availableSeats = async (req: Request, res: Response) => {
   try {
@@ -14,15 +13,14 @@ export const availableSeats = async (req: Request, res: Response) => {
 
     console.log(busId);
     
-    const seats = await Seat.find({ busId, date: parsedDate });
+    const busSeat = await Seat.findOne({ busId, date: parsedDate });
 
-    if (!seats) {
+    if (!busSeat) {
       console.log("Seats not found");
-      return res.json({ success: false, message: "seats not found" });
-      
+      return res.json({ success: false, message: "Seats not found" });
     }
 
-    return res.json({ success: true, seats });
+    return res.json({ success: true, busSeats: busSeat.seats });
   } catch (error) {
     console.error("Error fetching available seats:", error);
     res.json({
@@ -35,57 +33,37 @@ export const availableSeats = async (req: Request, res: Response) => {
 
 export const updateSeatStatus = async (req: Request, res: Response) => {
   try {
-    const { seatId,gender } = req.body;
+    const { busId, seatId, seatNumber, gender } = req.body;
 
-    console.log("Updating seat status for:", seatId);
+    console.log("Updating seat status for bus:", busId, "seat ID:", seatId, "seat number:", seatNumber);
 
-
-    if (!seatId) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Seat ID is required" });
+ 
+    if (!busId || !seatId || seatNumber === undefined) {
+      return res.status(400).json({ success: false, message: "Bus ID, seat ID, and seat number are required" });
     }
 
-    let seat:any;
-    console.log("gender is :",gender);
-    
-    if (gender == "female") {
-        seat = await Seat.findByIdAndUpdate(
-        seatId,
-        { isBooked: true,isFemale:true},
-        { new: true }
-      );
-    }else{
-      seat = await Seat.findByIdAndUpdate(
-        seatId,
-        { isBooked: true},
-        { new: true }
-      );
-    }
+    console.log("Gender is:", gender);
 
 
-    console.log("Updated seat:", seat);
+    const update = gender === "female"
+      ? { "seats.$.isBooked": true, "seats.$.isFemale": true }
+      : { "seats.$.isBooked": true };
+
+    const seat = await Seat.findOneAndUpdate(
+      { busId, "seats._id": seatId, "seats.number": seatNumber },
+      { $set: update },
+      { new: true }
+    );
+
+    console.log("Updated seat status:", seat);
 
     if (!seat) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Seat not found" });
+      return res.status(404).json({ success: false, message: "Unable to update the status" });
     }
 
-    if (!seat.isBooked) {
-      return res
-        .status(500)
-        .json({ success: false, message: "Failed to update seat status" });
-    }
-
-    return res.json({ success: true, seat });
+    return res.json({ success: true, seat: seat });
   } catch (error) {
     console.error("Error updating seat status:", error);
-    return res
-      .status(500)
-      .json({
-        success: false,
-        message: "An error occurred while updating seat status",
-      });
+    return res.status(500).json({ success: false, message: "An error occurred while updating seat status" });
   }
 };

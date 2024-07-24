@@ -177,7 +177,7 @@ export class BookingComponent implements OnInit {
       (response: any) => {
         if (response.success) {
 
-          this.adminService.updateSeatStatus(bookingData.seatId,bookingData.gender).subscribe(
+          this.adminService.updateSeatStatus(bookingData.busId,bookingData.seatId,bookingData.gender,this.seatNumber).subscribe(
             (response:any) => {
               if(response.success){
                 alert("Booking done successfully!");

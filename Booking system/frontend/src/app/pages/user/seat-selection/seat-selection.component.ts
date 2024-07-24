@@ -52,10 +52,9 @@ export class SeatSelectionComponent implements OnInit {
   getAvailableSeats(busId: any, date: any) {
     this.adminService.getAvailableSeats(busId, date).subscribe(
       (response: any) => {
-        console.log(response);
         if (response.success) {
-          console.log(response.seats);
-          this.seats = response.seats;
+          this.seats = response.busSeats;
+          console.log(response);
           this.arrangeSeats();
         } else {
           console.error('Failed to load available seats');
@@ -93,16 +92,16 @@ export class SeatSelectionComponent implements OnInit {
   selectSeat(seat: any) {
     if (!seat.isBooked && !this.isSeatDisabled(seat)) {
       this.selectedSeatId = seat._id;
-      this.selectedSeatNumber = seat.seatNumber;
+      this.selectedSeatNumber = seat.number;
     }
   }
 
   isSeatDisabled(seat: any): boolean {
-    const seatNumber = seat.seatNumber;
+    const seatNumber = seat.number;
     const isAdjacentFemaleSeatBooked = this.seats.some((s: any) => {
       return (s.isFemale && s.isBooked && (
-        (seatNumber % 2 === 1 && s.seatNumber === seatNumber + 1) ||
-        (seatNumber % 2 === 0 && s.seatNumber === seatNumber - 1)
+        (seatNumber % 2 === 1 && s.number === seatNumber + 1) ||
+        (seatNumber % 2 === 0 && s.number === seatNumber - 1)
       ));
     });
 
