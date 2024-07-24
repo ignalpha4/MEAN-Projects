@@ -19,43 +19,52 @@ export class SeatSelectionComponent implements OnInit {
   selectedSeatId: string | null = null;
   selectedSeatNumber!: number;
   leftSeats: any[] = [];
-  gender!: string;
   rightSeats: any[] = [];
+  availableSeats: number[] = [];
+  totalSeats: number = 0;
+  allSeats: number[] = [];
 
-  constructor(private adminService: AdminService, private router: Router, private route: ActivatedRoute, private userService: UserService, private authService: AuthService) { }
+  constructor(private userService:UserService,private adminService:AdminService, private router: Router, private route: ActivatedRoute, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: any) => {
       this.busId = params['busId'];
       this.from = params['from'];
       this.to = params['to'];
+      this.date = params['date'];
 
-      console.log("bus id :", this.busId);
-
-      this.authService.getcurrentuser().subscribe((res: any) => {
-        this.gender = res.user.gender;
-
-        this.userService.getBusById(this.busId).subscribe((res: any) => {
-          if (res.bus.date) {
-            const busDate = new Date(res.bus.date);
-            const formattedDate = busDate.toISOString().split('T')[0];
-            this.date = formattedDate;
-
-            this.getAvailableSeats(this.busId, this.date);
-          }
-        });
-
-      })
+      this.authService.getcurrentuser().subscribe(() => {
+        this.getBusDetails(this.busId, this.date);
+      });
     });
   }
 
-  getAvailableSeats(busId: any, date: any) {
-    this.adminService.getAvailableSeats(busId, date).subscribe(
+  getBusDetails(busId: any, date: any) {
+    this.userService.getBusById(busId).subscribe(
       (response: any) => {
         if (response.success) {
-          this.seats = response.busSeats;
-          console.log(response);
-          this.arrangeSeats();
+          this.totalSeats = response.bus.seatingCapacity; 
+          this.allSeats = Array.from({ length: this.totalSeats }, (_, i) => i + 1);
+          this.getAvailableSeats(busId, date);
+        } else {
+          console.error('Failed to load bus details');
+        }
+      },
+      (error) => {
+        console.error('Error fetching bus details', error);
+      }
+    );
+  }
+
+  getAvailableSeats(busId: any, date: any) {
+    this.adminService.getAvailableSeats(busId, date,this.from,this.to).subscribe(
+      (response: any) => {
+        if (response.success) {
+          this.availableSeats = response.availableSeats;
+
+          console.log(this.availableSeats);
+          
+          this.updateSeats();
         } else {
           console.error('Failed to load available seats');
         }
@@ -64,6 +73,14 @@ export class SeatSelectionComponent implements OnInit {
         console.error('Error fetching available seats', error);
       }
     );
+  }
+
+  updateSeats() {
+    this.seats = this.allSeats.map(seatNumber => ({
+      seatNumber,
+      isAvailable: this.availableSeats.includes(seatNumber)
+    }));
+    this.arrangeSeats();
   }
 
   arrangeSeats() {
@@ -79,8 +96,6 @@ export class SeatSelectionComponent implements OnInit {
     this.leftSeats = pairs.slice(0, middleIndex);
     this.rightSeats = pairs.slice(middleIndex);
 
-    console.log(this.leftSeats, this.rightSeats);
-
     while (this.leftSeats.length < seatsPerColumn) {
       this.leftSeats.push([]);
     }
@@ -90,27 +105,16 @@ export class SeatSelectionComponent implements OnInit {
   }
 
   selectSeat(seat: any) {
-    if (!seat.isBooked && !this.isSeatDisabled(seat)) {
-      this.selectedSeatId = seat._id;
-      this.selectedSeatNumber = seat.number;
+    if (seat.isAvailable) {
+      this.selectedSeatId = seat.seatNumber; // Adjust this if needed
+      this.selectedSeatNumber = seat.seatNumber;
     }
-  }
-
-  isSeatDisabled(seat: any): boolean {
-    const seatNumber = seat.number;
-    const isAdjacentFemaleSeatBooked = this.seats.some((s: any) => {
-      return (s.isFemale && s.isBooked && (
-        (seatNumber % 2 === 1 && s.number === seatNumber + 1) ||
-        (seatNumber % 2 === 0 && s.number === seatNumber - 1)
-      ));
-    });
-
-    return isAdjacentFemaleSeatBooked && this.gender === 'male';
   }
 
   confirmSelection() {
     if (this.selectedSeatId) {
-      this.router.navigate(['pages/user/dashboard/booking'], { queryParams: { seatId: this.selectedSeatId, seatNumber: this.selectedSeatNumber, busId: this.busId, from: this.from, to: this.to } });
+
+      this.router.navigate(['pages/user/dashboard/booking'], { queryParams: { seatNumber: this.selectedSeatNumber, busId: this.busId, from: this.from, to: this.to,date:this.date } });
     } else {
       alert('Please select a seat before confirming.');
     }

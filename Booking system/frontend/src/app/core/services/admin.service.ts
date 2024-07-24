@@ -25,14 +25,14 @@ export class AdminService {
     return this.http.get<any>(`/getRouteById/${routeId}`)
   }
 
-  getAvailableSeats(busId: string, date: string) {
-    return this.http.get(`/availableSeats/${busId}/${date}`);
+  getAvailableSeats(busId: string, date: string,from:string,to:string) {
+    return this.http.get(`/availableSeats/${busId}/${date}/${from}/${to}`);
   }
 
   updateSeatStatus(busId:any,seatId: string,gender:string,seatNumber:number) {
     return this.http.post(`/updateSeatStatus`, { seatId,gender,seatNumber,busId });
   }
-  addSeats(busId: any, totalSeats: any,date:any) {
-    return this.http.post(`/addSeats`, { busId, totalSeats,date });
+  addSeats(busId: any, totalSeats: any) {
+    return this.http.post(`/addSeats`, { busId, totalSeats });
   }
 }

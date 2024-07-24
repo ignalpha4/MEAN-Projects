@@ -17,6 +17,7 @@ export class ListbusesComponent implements OnInit {
   from!: string;
   to!: string;
   searchPerformed = false;
+  date!:Date;
 
 
   constructor(
@@ -60,9 +61,10 @@ export class ListbusesComponent implements OnInit {
     const { from, to, date } = this.searchForm.value;
     this.from = from;
     this.to = to;
+    this.date = date;
     this.searchPerformed = true;
 
-    this.userService.getFilteredBuses(from, to, date).subscribe(
+    this.userService.getFilteredBuses(from, to).subscribe(
       (data: any) => {
         this.filteredBuses = data.buses;
       },
@@ -73,8 +75,10 @@ export class ListbusesComponent implements OnInit {
   }
 
   bookBus(busId: string) {
+
     this.router.navigate(['pages/user/dashboard/select-seat'], {
-      queryParams: { busId, from: this.from, to: this.to },
+      queryParams: { busId, from: this.from, to: this.to,date:this.date },
     });
+    
   }
 }

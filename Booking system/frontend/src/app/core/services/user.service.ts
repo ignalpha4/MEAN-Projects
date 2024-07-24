@@ -18,11 +18,11 @@ export class UserService {
     return this.http.get<any>(`/getBusById/${id}`)
   }
   
-  getFilteredBuses(from: string, to: string, date: string): Observable<any> {
-    console.log(from,to,date);
+  getFilteredBuses(from: string, to: string): Observable<any> {
+    console.log(from,to);
     
     return this.http.get<any>(`/filteredBuses`, {
-      params: { from, to, date }
+      params: { from, to }
     });
   }
 

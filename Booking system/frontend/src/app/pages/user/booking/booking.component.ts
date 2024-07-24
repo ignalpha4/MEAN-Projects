@@ -9,25 +9,24 @@ import { UserService } from 'src/app/core/services/user.service';
 @Component({
   selector: 'app-booking',
   templateUrl: './booking.component.html',
-  styleUrls: ['./booking.component.scss']
+  styleUrls: ['./booking.component.scss'],
 })
 export class BookingComponent implements OnInit {
-
   farePerKm!: number;
   taxPercentage!: number;
-  seatId!:string;
-  seatNumber!:number;
+  seatId!: string;
+  seatNumber!: number;
   currentUser: any;
   routes: any[] = [];
-  from!:string;
-  to!:string;
+  from!: string;
+  to!: string;
   routeId: any;
   busId: any;
   date!: string;
   selectedRoute: any = null;
   bookingForm: FormGroup;
   handlingCharge = 0;
-  gender!:string;
+  gender!: string;
 
   constructor(
     private bookingService: BookingService,
@@ -45,62 +44,46 @@ export class BookingComponent implements OnInit {
       from: [{ value: '', disabled: true }, Validators.required],
       to: [{ value: '', disabled: true }, Validators.required],
       date: [{ value: '', disabled: true }, Validators.required],
-      seatId: ['', Validators.required],
       paymentType: ['cash', Validators.required],
       totalFare: [{ value: 0, disabled: true }],
-      seatNumber:['',Validators.required],
-      gender:['',Validators.required]
+      seatNumber: ['', Validators.required],
+      gender: ['', Validators.required],
     });
   }
 
   ngOnInit() {
-
-    this.authService.getcurrentuser().subscribe((res:any)=>{
+    this.authService.getcurrentuser().subscribe((res: any) => {
       this.currentUser = res.user._id;
       this.gender = res.user.gender;
 
-
-      
-
       this.route.queryParams.subscribe((params: any) => {
         this.busId = params['busId'];
-        this.seatId = params['seatId'];
         this.seatNumber = params['seatNumber'];
-      
         this.from = params['from'];
-        this.to =params['to']; 
-        
+        this.to = params['to'];
+        this.date = params['date'];
+
         if (this.busId) {
           this.loadBusDetails(this.busId);
         }
-  
       });
-      
-    })
-
+    });
   }
 
   loadBusDetails(busId: any) {
-
     this.userService.getBusById(busId).subscribe(
       (res: any) => {
-
         const bus = res.bus;
         this.routeId = bus.route;
-
-   
-        const busDate = new Date(bus.date);
-        this.date = busDate.toISOString().split('T')[0];
 
         this.bookingForm.patchValue({
           busId: this.busId,
           date: this.date,
-          seatNumber:this.seatNumber,
-          seatId:this.seatId,
-          userId:this.currentUser,
-          from:this.from,
-          to:this.to,
-          gender:this.gender
+          seatNumber: this.seatNumber,
+          userId: this.currentUser,
+          from: this.from,
+          to: this.to,
+          gender: this.gender,
         });
 
         this.taxPercentage = bus.tax;
@@ -115,8 +98,7 @@ export class BookingComponent implements OnInit {
   }
 
   loadRoutes(routeId: any) {
-
-    console.log("got routeid",routeId)
+    console.log('got routeid', routeId);
     if (routeId) {
       this.adminService.getRouteById(routeId).subscribe(
         (res: any) => {
@@ -142,26 +124,33 @@ export class BookingComponent implements OnInit {
     return 0;
   }
 
-
   calculateFare() {
     const bookingData = this.bookingForm.getRawValue();
 
     if (this.selectedRoute && bookingData.from && bookingData.to) {
-      
-      const fromIndex = this.selectedRoute.stations.findIndex((station: any) => station.name === bookingData.from);
-      const toIndex = this.selectedRoute.stations.findIndex((station: any) => station.name === bookingData.to);
+      const fromIndex = this.selectedRoute.stations.findIndex(
+        (station: any) => station.name === bookingData.from
+      );
+      const toIndex = this.selectedRoute.stations.findIndex(
+        (station: any) => station.name === bookingData.to
+      );
 
       if (fromIndex !== -1 && toIndex !== -1 && fromIndex < toIndex) {
-        const distance = this.selectedRoute.stations[toIndex].distance - this.selectedRoute.stations[fromIndex].distance;
+        const distance =
+          this.selectedRoute.stations[toIndex].distance -
+          this.selectedRoute.stations[fromIndex].distance;
         const fare = distance * this.farePerKm;
 
         const totalFareBeforeTax = fare + (fare * this.taxPercentage) / 100;
-        this.handlingCharge = (bookingData.paymentType === 'card' || bookingData.paymentType === 'upi') ? 26 : 0;
+        this.handlingCharge =
+          bookingData.paymentType === 'card' ||
+          bookingData.paymentType === 'upi'
+            ? 26
+            : 0;
 
         this.bookingForm.patchValue({
-          totalFare: totalFareBeforeTax + this.handlingCharge
+          totalFare: totalFareBeforeTax + this.handlingCharge,
         });
-
       } else {
         console.error('Invalid route or stations');
       }
@@ -169,31 +158,16 @@ export class BookingComponent implements OnInit {
   }
 
   onSubmit() {
-
     const bookingData = this.bookingForm.getRawValue();
     console.log(bookingData);
 
     this.bookingService.bookSeat(bookingData).subscribe(
       (response: any) => {
         if (response.success) {
-
-          this.adminService.updateSeatStatus(bookingData.busId,bookingData.seatId,bookingData.gender,this.seatNumber).subscribe(
-            (response:any) => {
-              if(response.success){
-                alert("Booking done successfully!");
-              }
-              else{
-                console.log(response.message)
-              }
-            },
-            (error) => {
-              console.error('Error updating seat status', error);
-            }
-          );
-        }else{
-          console.error("error addding to db",response.message)
+          alert('Booking done successfully!');
+        } else {
+          console.error('error addding to db', response.message);
         }
-
       },
       (error) => {
         console.error('Error booking seat', error);

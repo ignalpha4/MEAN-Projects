@@ -22,7 +22,6 @@ export class BusManagementComponent implements OnInit {
     this.busForm = this.fb.group({
       busNumber: ['', Validators.required],
       seatingCapacity: [null, Validators.required],
-      date: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
       amenities: ['', Validators.required],
       routeId: ['', Validators.required],
       stops: this.fb.array([]),
@@ -79,6 +78,7 @@ export class BusManagementComponent implements OnInit {
   
 
   onSubmit() {
+
     if (this.busForm.invalid) {
       console.log("form is invalid")
       return;
@@ -86,23 +86,12 @@ export class BusManagementComponent implements OnInit {
 
     const busData = this.busForm.value;
 
-    console.log(this.busForm.value);
     this.adminService.addBus(busData).subscribe(
       response => {
         if (response.success) {
           alert('Bus added successfully');
-          this.adminService.addSeats(response.bus._id, busData.seatingCapacity, busData.date).subscribe(
-            (seatResponse:any) => {
-              if (seatResponse.success) {
-                alert('Seats added successfully');
-              } else {
-                console.error('Error adding seats', seatResponse.message);
-              }
-            },
-            error => {
-              console.error('Error adding seats', error);
-            }
-          );
+        }else{
+          console.log(response.message);
         }
       },
       error => {
