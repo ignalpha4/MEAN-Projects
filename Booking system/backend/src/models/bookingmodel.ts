@@ -6,7 +6,7 @@ const bookingSchema = new mongoose.Schema({
   from: { type: String, required: true },
   to: { type: String, required: true },
   date: { type: Date, required: true },
-  seatNumber: { type: String, required: true },
+  seatNumber: { type: Number, required: true },
   seatId:{type:String,requird:true},
   paymentType: { type: String, required: true },
   totalFare: { type: Number, required: true },

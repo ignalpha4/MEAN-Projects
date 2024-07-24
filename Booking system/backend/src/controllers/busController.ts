@@ -1,15 +1,12 @@
 import busModel from "../models/busesmodel";
-import routeModel from "../models/routesmodel";
-import Seat from "../models/seatsmodel";
 
 export const addBus = async (req:any, res:any) => {
 
   try {
 
+    const { busNumber, seatingCapacity, amenities, routeId, stops,fare,tax } = req.body;
 
-    const { busNumber, seatingCapacity, amenities, routeId, stops,date,fare,tax } = req.body;
-
-    if (!busNumber || !seatingCapacity || !routeId || !stops || !date || !fare || !tax) {
+    if (!busNumber || !seatingCapacity || !routeId || !stops  || !fare || !tax) {
       return res.json({ message: "All fields are required." });
     }
 
@@ -18,7 +15,6 @@ export const addBus = async (req:any, res:any) => {
       seatingCapacity,
       amenities: amenities.split(",").map((item:any) => item.trim()), 
       route:routeId,
-      date,
       fare,
       tax,
       stops
@@ -28,6 +24,7 @@ export const addBus = async (req:any, res:any) => {
 
   } catch (error) {
     console.log(error);
+    return res.json("Error adding the bus",error)
   }
 };
 
@@ -66,29 +63,6 @@ export const getBusById = async (req:any,res:any)=>{
   }
 }
 
-export const addSeats = async (req: any, res: any) => {
-  try {
-    const { busId, totalSeats, date } = req.body;
-
-    const seats:any[] = [];
-    for (let i = 1; i <= totalSeats; i++) {
-      seats.push({ number: i, isBooked: false, isFemale: false });
-    }
-
-    const seatDocument = new Seat({
-      busId,
-      date,
-      seats
-    });
-
-    await seatDocument.save();
-
-    res.json({ success: true, message: 'Seats added successfully' });
-  } catch (error) {
-    console.error('Error adding seats:', error);
-    res.status(500).json({ success: false, message: 'Failed to add seats', error });
-  }
-};
 
 export const filteredBuses =async(req:any,res:any)=>{
 
@@ -100,7 +74,6 @@ export const filteredBuses =async(req:any,res:any)=>{
       {
         $match: {
           "stops.station": { $all: [from, to] },
-          date: new Date(date)
         }
       },
       {
