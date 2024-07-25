@@ -3,6 +3,7 @@ import config from "config";
 
 
 const connectDatabase = async () => {
+
   try {
     await mongoose.connect(
       config.get("MongoUrl")
@@ -11,6 +12,7 @@ const connectDatabase = async () => {
   } catch (err) {
     console.error(err);
   }
+  
 };
 
 export default connectDatabase;

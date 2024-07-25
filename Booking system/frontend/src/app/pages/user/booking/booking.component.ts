@@ -159,7 +159,6 @@ export class BookingComponent implements OnInit {
 
   onSubmit() {
     const bookingData = this.bookingForm.getRawValue();
-    console.log(bookingData);
 
     this.bookingService.bookSeat(bookingData).subscribe(
       (response: any) => {

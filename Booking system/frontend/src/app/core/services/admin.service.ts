@@ -25,8 +25,8 @@ export class AdminService {
     return this.http.get<any>(`/getRouteById/${routeId}`)
   }
 
-  getAvailableSeats(busId: string, date: string,from:string,to:string) {
-    return this.http.get(`/availableSeats/${busId}/${date}/${from}/${to}`);
+  getAvailableSeats(busId: string, date: string,from:string,to:string,gender:string) {
+    return this.http.get(`/availableSeats/${busId}/${date}/${from}/${to}/${gender}`);
   }
 
   updateSeatStatus(busId:any,seatId: string,gender:string,seatNumber:number) {

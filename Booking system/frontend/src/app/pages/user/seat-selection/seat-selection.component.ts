@@ -13,6 +13,7 @@ export class SeatSelectionComponent implements OnInit {
 
   seats: any[] = [];
   busId: any;
+  gender: any;
   date: string = '';
   from!: string;
   to!: string;
@@ -24,7 +25,13 @@ export class SeatSelectionComponent implements OnInit {
   totalSeats: number = 0;
   allSeats: number[] = [];
 
-  constructor(private userService:UserService,private adminService:AdminService, private router: Router, private route: ActivatedRoute, private authService: AuthService) { }
+  constructor(
+    private userService: UserService,
+    private adminService: AdminService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private authService: AuthService
+  ) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: any) => {
@@ -33,7 +40,9 @@ export class SeatSelectionComponent implements OnInit {
       this.to = params['to'];
       this.date = params['date'];
 
-      this.authService.getcurrentuser().subscribe(() => {
+      this.authService.getcurrentuser().subscribe((res: any) => {
+        this.gender = res.user.gender;
+        console.log(this.gender);
         this.getBusDetails(this.busId, this.date);
       });
     });
@@ -43,7 +52,7 @@ export class SeatSelectionComponent implements OnInit {
     this.userService.getBusById(busId).subscribe(
       (response: any) => {
         if (response.success) {
-          this.totalSeats = response.bus.seatingCapacity; 
+          this.totalSeats = response.bus.seatingCapacity;
           this.allSeats = Array.from({ length: this.totalSeats }, (_, i) => i + 1);
           this.getAvailableSeats(busId, date);
         } else {
@@ -57,13 +66,11 @@ export class SeatSelectionComponent implements OnInit {
   }
 
   getAvailableSeats(busId: any, date: any) {
-    this.adminService.getAvailableSeats(busId, date,this.from,this.to).subscribe(
+    this.adminService.getAvailableSeats(busId, date, this.from, this.to,this.gender).subscribe(
       (response: any) => {
         if (response.success) {
           this.availableSeats = response.availableSeats;
-
           console.log(this.availableSeats);
-          
           this.updateSeats();
         } else {
           console.error('Failed to load available seats');
@@ -78,9 +85,23 @@ export class SeatSelectionComponent implements OnInit {
   updateSeats() {
     this.seats = this.allSeats.map(seatNumber => ({
       seatNumber,
-      isAvailable: this.availableSeats.includes(seatNumber)
+      isAvailable: this.availableSeats.includes(seatNumber),
+      adjacentSeats: this.getAdjacentSeats(seatNumber)
     }));
     this.arrangeSeats();
+  }
+
+  getAdjacentSeats(seatNumber: number): number[] {
+    const adjacentSeats: number[] = [];
+    const column = (seatNumber - 1) % 2;
+
+    if (column === 0) {
+      adjacentSeats.push(seatNumber + 1);
+    } else {
+      adjacentSeats.push(seatNumber - 1);
+    }
+
+    return adjacentSeats;
   }
 
   arrangeSeats() {
@@ -106,15 +127,17 @@ export class SeatSelectionComponent implements OnInit {
 
   selectSeat(seat: any) {
     if (seat.isAvailable) {
-      this.selectedSeatId = seat.seatNumber; // Adjust this if needed
+      this.selectedSeatId = seat.seatNumber;
       this.selectedSeatNumber = seat.seatNumber;
     }
   }
-
+  
+  
   confirmSelection() {
     if (this.selectedSeatId) {
-
-      this.router.navigate(['pages/user/dashboard/booking'], { queryParams: { seatNumber: this.selectedSeatNumber, busId: this.busId, from: this.from, to: this.to,date:this.date } });
+      this.router.navigate(['pages/user/dashboard/booking'], {
+        queryParams: { seatNumber: this.selectedSeatNumber, busId: this.busId, from: this.from, to: this.to, date: this.date }
+      });
     } else {
       alert('Please select a seat before confirming.');
     }

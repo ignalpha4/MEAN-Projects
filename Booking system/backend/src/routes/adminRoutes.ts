@@ -17,7 +17,6 @@ router.get("/currentUser", verifyToken, getCurrentUser);
 router.post("/create", createRoute);
 router.get("/getRoutes", getRoutes);
 router.get("/getRouteById/:id", getRoutesById);
-
 router.get("/availableSeats/:busId/:date/:from/:to/:gender",availableSeats)
 
 //bus mgmt
@@ -26,7 +25,6 @@ router.get("/getBuses", getBuses);
 router.get("/getBusById/:id",getBusById);
 router.post("/booking", bookSeat);
 router.get('/filteredBuses',filteredBuses);
-
 
 
 export default router;

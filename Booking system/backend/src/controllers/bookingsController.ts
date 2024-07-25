@@ -2,8 +2,9 @@
 import mongoose from "mongoose";
 import bookingModel from "../models/bookingmodel";
 import busModel from "../models/busesmodel";
+import { Request,Response } from "express";
 
-export const availableSeats = async (req: any, res: any) => {
+export const availableSeats = async (req: Request, res: Response) => {
   try {
     const { busId, date, from, to, gender } = req.params;
     const parsedDate = new Date(date);
@@ -71,9 +72,6 @@ export const availableSeats = async (req: any, res: any) => {
     res.status(500).json({ success: false, message: "Failed to fetch available seats", error });
   }
 };
-
-
-
 
 export const bookSeat = async (req: any, res: any) => {
   try {
