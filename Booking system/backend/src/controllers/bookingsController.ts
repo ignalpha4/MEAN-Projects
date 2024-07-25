@@ -3,79 +3,66 @@ import mongoose from "mongoose";
 import bookingModel from "../models/bookingmodel";
 import busModel from "../models/busesmodel";
 
-
 export const availableSeats = async (req: any, res: any) => {
   try {
-    const { busId, date, from, to } = req.params;
+    const { busId, date, from, to, gender } = req.params;
     const parsedDate = new Date(date);
 
     if (isNaN(parsedDate.getTime())) {
-      return res.status(400).json({ success: false, message: "incorrect date format" });
+      return res.status(400).json({ success: false, message: "Incorrect date format" });
     }
 
-   
     const bus = await busModel.findById(busId);
     if (!bus) {
-      return res.status(404).json({ success: false, message: "no bus found" });
+      return res.status(404).json({ success: false, message: "No bus found" });
     }
 
-  
-    const startOfDay = new Date(parsedDate.setHours(0, 0, 0, 0));
-    const endOfDay = new Date(parsedDate.setHours(23, 59, 59, 999));
-
     const stops = bus.stops.map((stop) => stop.station);
-    console.log("stops array:", stops);
-
     let fromIndex = stops.indexOf(from);
     let toIndex = stops.indexOf(to);
 
-    let bookedSeats: any[] = [];
-
-    for (let i = fromIndex; i <= toIndex; i++) {
-      for (let j = i + 1; j <= toIndex; j++) {
-        const pipeline = [
-          {
-            $match: {
-              bus: new mongoose.Types.ObjectId(busId),
-              date: { $gte: startOfDay, $lte: endOfDay },
-              from: stops[i],
-              to: stops[j]
-            }
-          },
-          {
-            $group: {
-              _id: null,
-              seatNumbers: {
-                $push: "$seatNumber"
-              }
-            }
-          },
-          {
-            $project: {
-              _id: 0,
-              seatNumbers: 1
-            }
-          }
-        ];
-
-        const result = await bookingModel.aggregate(pipeline);
-  
-        if (result.length > 0 && result[0].seatNumbers !== undefined) {
-          bookedSeats = bookedSeats.concat(result[0].seatNumbers);
-        }
-      }
+    if (fromIndex === -1 || toIndex === -1) {
+      return res.status(400).json({ success: false, message: "Invalid route" });
     }
 
-    console.log("total seaats boooked:", bookedSeats);
+    let bookedSeats = new Set<number>();
+    const bookings = await bookingModel.find({
+      bus: new mongoose.Types.ObjectId(busId),
+      date: {
+        $gte: new Date(parsedDate.setHours(0, 0, 0, 0)),
+        $lt: new Date(parsedDate.setHours(24, 0, 0, 0))
+      }
+    });
+
+    bookings.forEach((booking) => {
+      const bookingFromIndex = stops.indexOf(booking.from);
+      const bookingToIndex = stops.indexOf(booking.to);
+
+      if ((bookingFromIndex <= fromIndex && bookingToIndex > fromIndex) ||
+          (bookingFromIndex < toIndex && bookingToIndex >= toIndex) ||
+          (bookingFromIndex >= fromIndex && bookingToIndex <= toIndex)) {
+        bookedSeats.add(booking.seatNumber);
+      }
+    });
 
     const allSeats = Array.from({ length: bus.seatingCapacity }, (_, i) => i + 1);
+    let availableSeats = allSeats.filter(seat => !bookedSeats.has(seat));
+
+    console.log(gender);
     
-    console.log("total seats:", allSeats);
-  
-    const availableSeats = allSeats.filter((seat) => !bookedSeats.includes(seat));
+    if (gender === 'male') {
+      availableSeats = availableSeats.filter(seat => {
+        if (seat % 2 === 1) { 
+          return !bookedSeats.has(seat + 1); 
+        }
+        if (seat % 2 === 0) { 
+          return !bookedSeats.has(seat - 1); 
+        }
+        return true;
+      });
+    }
 
-    console.log("Available seats:", availableSeats);
-
+    console.log(availableSeats);
     return res.json({ success: true, availableSeats });
 
     
@@ -84,6 +71,7 @@ export const availableSeats = async (req: any, res: any) => {
     res.status(500).json({ success: false, message: "Failed to fetch available seats", error });
   }
 };
+
 
 
 

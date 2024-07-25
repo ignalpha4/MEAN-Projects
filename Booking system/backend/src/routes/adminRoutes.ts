@@ -18,7 +18,7 @@ router.post("/create", createRoute);
 router.get("/getRoutes", getRoutes);
 router.get("/getRouteById/:id", getRoutesById);
 
-router.get("/availableSeats/:busId/:date/:from/:to",availableSeats)
+router.get("/availableSeats/:busId/:date/:from/:to/:gender",availableSeats)
 
 //bus mgmt
 router.post("/add", addBus);
