@@ -1,0 +1,16 @@
+.current-player {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  
+  &.occupied {
+    cursor: not-allowed;
+    background-color: #cccccc;
+  }
+}

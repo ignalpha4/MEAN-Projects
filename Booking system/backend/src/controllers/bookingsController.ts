@@ -66,7 +66,6 @@ export const availableSeats = async (req: Request, res: Response) => {
     console.log(availableSeats);
     return res.json({ success: true, availableSeats });
 
-    
   } catch (error) {
     console.error("Error fetching available seats:", error);
     res.status(500).json({ success: false, message: "Failed to fetch available seats", error });

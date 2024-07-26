@@ -1,0 +1,39 @@
+<div class="container-fluid bg-secondary d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+  <div class="col-lg-4 col-md-8 col-sm-10 mt-5">
+      <div class="card shadow-lg border-primary">
+          <div class="card-body">
+              <h4 class="card-title text-center mb-4" style="color: #555; font-weight: 8000; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">Login Form</h4>
+              <hr class="mb-4">
+              <form [formGroup]="loginForm" (ngSubmit)="login()">
+                  <div class="mb-3">
+                      <label for="email" class="form-label">Email address</label>
+                      <input type="email" class="form-control" id="email" placeholder="Enter your email"
+                          formControlName="email">
+                      <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+                          class="invalid-feedback">
+                          <div *ngIf="loginForm.get('email')?.errors?.['required']">This field is required!</div>
+                          <div *ngIf="loginForm.get('email')?.errors?.['email']">Please enter a valid email!</div>
+                      </div>
+                  </div>
+                  <div class="mb-3">
+                      <label for="password" class="form-label">Password</label>
+                      <input type="password" class="form-control" id="password" placeholder="Enter your password"
+                          formControlName="password">
+                      <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+                          class="invalid-feedback">
+                          <div *ngIf="loginForm.get('password')?.errors?.['required']">This field is required!</div>
+                      </div>
+                      <div>
+                          <p class="text-danger" *ngIf="errorMsg">{{ errorMsg }}</p>
+                      </div>
+                  </div>
+                  <div class="d-grid">
+                      <button type="submit" class="btn btn-primary btn-lg mb-3"
+                          [disabled]="loginForm.invalid">Login</button>
+                      <a class="btn btn-outline-primary btn-lg" routerLink="/signup">New User?</a>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
