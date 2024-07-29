@@ -40,5 +40,6 @@ export class AuthService {
     return this.http.delete<any>(`${this.apiUrl}/user/deleteUser/${id}`)
   }
 
+  
 
 }

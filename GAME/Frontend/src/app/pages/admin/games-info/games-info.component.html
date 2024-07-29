@@ -1,0 +1,61 @@
+<div class="container mt-2">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Game ID</th>
+          <th>Grid Size</th>
+          <th>Players</th>
+          <th>Colors</th>
+          <th>Scores</th>
+          <th>Current Player</th>
+          <th>Game Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let game of games">
+          <td>{{ game._id }}</td>
+          <td>{{ game.size }}</td>
+          <td>
+            <ul>
+              <li *ngFor="let player of game.players">
+                {{ player.name }}
+              </li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li *ngFor="let player of game.players">
+                {{ player.color }}
+              </li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li *ngFor="let player of game.players">
+                {{ player.score }}
+              </li>
+            </ul>
+          </td>
+          <td>{{ game.players[game.currentPlayerIndex]?.name }}</td>
+          <td>{{ game.gameStatus }}</td>
+          <td>
+            <button class="btn btn-primary btn-sm" (click)="viewGameDetails(game._id)">View</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <style>
+    .grid-table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    .grid-table td {
+      border: 1px solid #ddd;
+      text-align: center;
+      padding: 5px;
+    }
+  </style>
+  

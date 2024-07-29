@@ -1,0 +1,24 @@
+<div *ngIf="game">
+    <div class="player-details">
+      <h3>Players</h3>
+      <ul>
+        <li *ngFor="let player of game.players" class="player-item">
+          <div class="color-box" [ngStyle]="{'background-color': player.color}"></div>
+          <span>{{ player.name }}</span> - Score: {{ player.score }}
+        </li>
+      </ul>
+    </div>
+    
+    <div class="grid-container mx-auto mt-4">
+      <div *ngFor="let row of game.grid; let rowIndex = index" class="w-100 d-flex">
+        <div *ngFor="let cell of row; let colIndex = index"
+             class="col p-0"
+             [ngClass]="{'occupied': isCellOccupied(rowIndex, colIndex)}"
+             [ngStyle]="{'background-color': getCellColor(rowIndex, colIndex)}"
+             style="flex: 1 1 0; aspect-ratio: 1; border: 1px solid #ffffff; display: flex; justify-content: center; align-items: center;">
+        </div>
+      </div>
+    </div>
+
+
+  

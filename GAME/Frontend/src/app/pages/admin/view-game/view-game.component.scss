@@ -1,0 +1,41 @@
+.player-details {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .player-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .color-box {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border: 1px solid #000;
+  }
+
+  .grid-container {
+    max-width: 800px;
+    margin: auto;
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
+  .row {
+    display: flex;
+  }
+
+  .col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  .occupied {
+    cursor: default;
+  }
