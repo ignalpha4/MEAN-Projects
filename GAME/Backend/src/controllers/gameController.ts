@@ -183,36 +183,48 @@ const calculateAndAssignScores = async (game: any) => {
         });
     }
 
-    // right to left 
-    sameColor = true;
-    gridColor;
-    for (let i = 0; i < n; i++) {
 
-        let color = grid[0][n-1];
 
-        gridColor =color;
-        for (let j = 0; j < n; j++) {
-            if((i+j)==(n-1)){
-                if (grid[i][j] !== color) {
-                    sameColor = false;
-                    break;
-                }
-            }
+    let times = n;
 
-        }
-    }
-    console.log(sameColor);
+    while(times--){
+
+        // right to left 
+        sameColor = true;
+        gridColor;
+
+        for (let i = 0; i < n; i++) {
+
+            let color = grid[0][n-1];
     
-    if (sameColor) {
-        players.forEach((player: any) => {
-            if (player.color === gridColor) {
-                player.score += 1;
-                console.log(`Player ${player.color} score updated: ${player.score}`);
-               
+            gridColor =color;
+            for (let j = 0; j < n; j++) {
+                if((i+j)==(n-1)){
+                    if (grid[i][j] !== color) {
+                        sameColor = false;
+                        break;
+                    }
+                }
+    
             }
-        });
-    }
+        }
+
+        
+            console.log(sameColor);
+            
+            if (sameColor) {
+                players.forEach((player: any) => {
+                    if (player.color === gridColor) {
+                        player.score += 1;
+                        console.log(`Player ${player.color} score updated: ${player.score}`);
+                    }
+                });
+            }
    
+
+    }
+
+
 
 
 
