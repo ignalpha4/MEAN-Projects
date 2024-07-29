@@ -16,7 +16,7 @@ export class DashboardComponent {
   selectedFile: File | null = null;
   showModal: boolean = false;
   userForm!: FormGroup;
-  isEditMode: boolean = true; // Profile edit mode
+  isEditMode: boolean = true; 
 
   @ViewChild('userModal') userModal!: ElementRef;
 

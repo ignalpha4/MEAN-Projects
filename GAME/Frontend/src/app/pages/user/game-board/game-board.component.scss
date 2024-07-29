@@ -1,16 +1,19 @@
-.current-player {
-  margin-bottom: 10px;
-  font-weight: bold;
+.grid-container {
+  max-width: 800px; 
+  margin: auto;
 }
 
-.cell {
+.container {
+  max-width: 100%;
+}
+
+.row {
   display: flex;
-  align-items: center;
+}
+
+.col {
+  display: flex;
   justify-content: center;
-  cursor: pointer;
-  
-  &.occupied {
-    cursor: not-allowed;
-    background-color: #cccccc;
-  }
+  align-items: center;
+  height: 100%;
 }

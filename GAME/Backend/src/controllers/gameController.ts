@@ -67,57 +67,141 @@ export const makeMove = async (req: Request, res: Response) => {
     }
 };
 
+
 const calculatePoints = (grid: string[][], row: number, col: number, color: string): number => {
     let points = 0;
     const size = grid.length;
 
-    for (let i = 0; i < size; i++) {
-        if (grid[row][i] !== color) break;
-        if (i === size - 1) points += 1;
+  
+    let rowPoints = 1;
+    let rowStart = col;
+    while (rowStart > 0 && grid[row][rowStart - 1] === color) {
+        rowPoints++;
+        rowStart--;
     }
-    for (let i = 0; i < size; i++) {
-        if (grid[i][col] !== color) break;
-        if (i === size - 1) points += 1;
+    rowStart = col + 1;
+    while (rowStart < size && grid[row][rowStart] === color) {
+        rowPoints++;
+        rowStart++;
     }
-
- 
-    if (row === col) {
-        for (let i = 0; i < size; i++) {
-            if (grid[i][i] !== color) break;
-            if (i === size - 1) points += 1;
-        }
-    }
-
-
-    if (row + col === size - 1) {
-        for (let i = 0; i < size; i++) {
-            if (grid[i][(size - 1) - i] !== color) break;
-            if (i === size - 1) points += 1;
-        }
+    if (rowPoints === size) {
+        points++;
+        console.log("For row");
     }
 
-    
-    for (let i = 0; i < size; i++) {
-       
-        if (row - col === i - i) {
-            for (let j = 0; j < size; j++) {
-                if (grid[j][j] !== color) break;
-                if (j === size - 1) points += 1;
+
+    let colPoints = 1;
+    let colStart = row;
+    while (colStart > 0 && grid[colStart - 1][col] === color) {
+        colPoints++;
+        colStart--;
+    }
+    colStart = row + 1;
+    while (colStart < size && grid[colStart][col] === color) {
+        colPoints++;
+        colStart++;
+    }
+    if (colPoints === size) {
+        points++;
+        console.log("For col");
+    }
+
+    let mainDiagPoints = 1;
+    let mainDiagRow = row;
+    let mainDiagCol = col;
+    while (mainDiagRow > 0 && mainDiagCol > 0 && grid[mainDiagRow - 1][mainDiagCol - 1] === color) {
+        mainDiagPoints++;
+        mainDiagRow--;
+        mainDiagCol--;
+    }
+    mainDiagRow = row + 1;
+    mainDiagCol = col + 1;
+    while (mainDiagRow < size && mainDiagCol < size && grid[mainDiagRow][mainDiagCol] === color) {
+        mainDiagPoints++;
+        mainDiagRow++;
+        mainDiagCol++;
+    }
+    if (mainDiagPoints === size) {
+        points++;
+        console.log("For main diagonal");
+    }
+
+    let antiDiagPoints = 1;
+    let antiDiagRow = row;
+    let antiDiagCol = col;
+    while (antiDiagRow > 0 && antiDiagCol < size - 1 && grid[antiDiagRow - 1][antiDiagCol + 1] === color) {
+        antiDiagPoints++;
+        antiDiagRow--;
+        antiDiagCol++;
+    }
+    antiDiagRow = row + 1;
+    antiDiagCol = col - 1;
+    while (antiDiagRow < size && antiDiagCol >= 0 && grid[antiDiagRow][antiDiagCol] === color) {
+        antiDiagPoints++;
+        antiDiagRow++;
+        antiDiagCol--;
+    }
+    if (antiDiagPoints === size) {
+        points++;
+        console.log("For anti diagonal");
+    }
+
+
+    const smallerDiagonalOffsets = [
+        { deltaRow: -1, deltaCol: 1 }, 
+        { deltaRow: -1, deltaCol: -1 }, 
+        { deltaRow: 1, deltaCol: 1 },
+        { deltaRow: 1, deltaCol: -1 }
+    ];
+
+    for (const { deltaRow, deltaCol } of smallerDiagonalOffsets) {
+        let smallerDiagPoints = 0;
+        let smallerDiagRow = row;
+        let smallerDiagCol = col;
+
+
+        while (smallerDiagRow >= 0 && smallerDiagRow < size && smallerDiagCol >= 0 && smallerDiagCol < size) {
+            if (grid[smallerDiagRow][smallerDiagCol] === color) {
+                smallerDiagPoints++;
+            } else {
+                break; 
             }
+            smallerDiagRow += deltaRow;
+            smallerDiagCol += deltaCol;
         }
 
-        if (row + col === i + (size - 1 - i)) {
-            for (let j = 0; j < size; j++) {
-                if (grid[j][(size - 1) - j] !== color) break;
-                if (j === size - 1) points += 1;
+  
+        smallerDiagRow = row - deltaRow;
+        smallerDiagCol = col - deltaCol;
+        while (smallerDiagRow >= 0 && smallerDiagRow < size && smallerDiagCol >= 0 && smallerDiagCol < size) {
+            if (grid[smallerDiagRow][smallerDiagCol] === color) {
+                smallerDiagPoints++;
+            } else {
+                break; 
+            }
+            smallerDiagRow -= deltaRow;
+            smallerDiagCol -= deltaCol;
+        }
+
+       
+        if (smallerDiagPoints >= 2) {
+            
+            const startRow = row + deltaRow * (smallerDiagPoints - 1);
+            const startCol = col + deltaCol * (smallerDiagPoints - 1);
+            const endRow = row - deltaRow * (smallerDiagPoints - 1);
+            const endCol = col - deltaCol * (smallerDiagPoints - 1);
+
+     
+            if ((startRow >= 0 && startRow < size && startCol >= 0 && startCol < size) &&
+                (endRow >= 0 && endRow < size && endCol >= 0 && endCol < size)) {
+                points++;
+                console.log("For small diagonals");
             }
         }
     }
 
     return points;
 };
-
-
 
 
 const isGridFull = (grid: any) => {

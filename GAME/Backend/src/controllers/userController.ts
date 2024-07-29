@@ -5,7 +5,7 @@ import { generateUserToken } from '../utils/jwtToken';
 import uploadProfile from '../middleware/profileUpload';
 import player from '../models/game.model';
 
-// User signup
+
 export const signup = (req: Request, res: Response) => {
 
   uploadProfile (req, res, async (err:any) => {
@@ -35,7 +35,7 @@ export const signup = (req: Request, res: Response) => {
   });
 };
 
-// User login
+// login
 export const login = async (req: Request, res: Response) => {
   try {
     const email = req.body.email;
@@ -61,7 +61,7 @@ export const login = async (req: Request, res: Response) => {
       role: foundUser.role,
     };
 
-    //creating the token 
+
     const token = await generateUserToken(payload);
 
     return res.json({ success: true, message: 'User logged in successfully', token, role: foundUser.role });

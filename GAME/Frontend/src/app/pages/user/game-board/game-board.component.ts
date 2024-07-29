@@ -54,6 +54,10 @@ export class GameBoardComponent implements OnInit {
   }
 
   getCellColor(row: number, col: number) {
-    return this.game.grid[row][col] || '#f0f0f0'; // Default color if cell is empty
+    return this.game.grid[row][col] || '#f0f0f0'; 
+  }
+
+  getRanks() {
+    return this.game.players.sort((a: any, b: any) => b.score - a.score);
   }
 }

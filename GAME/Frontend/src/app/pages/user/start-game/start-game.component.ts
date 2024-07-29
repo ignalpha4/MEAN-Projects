@@ -10,7 +10,7 @@ import { UserService } from 'src/app/core/services/user.service';
 })
 export class StartGameComponent implements OnInit {
   gameForm: FormGroup;
-  colors: string[] = ['Red', 'Blue', 'Green', 'Yellow', 'Black', 'White'];
+  colors: string[] = ['Red', 'Blue', 'Green', 'Yellow', 'Black', 'Orange' , 'Purple', 'Pink'];
 
   constructor(private fb: FormBuilder, private userService: UserService,private router:Router) {
     this.gameForm = this.fb.group({
@@ -20,6 +20,7 @@ export class StartGameComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.addPlayer(); 
     this.addPlayer(); 
   }
 
@@ -51,7 +52,6 @@ export class StartGameComponent implements OnInit {
 
           console.log("this is the game component",game._id);
           
-
           alert('Game created successfully');
           this.router.navigate(['/pages/user/dashboard/game-board'], { queryParams: { gameId:game._id } });
         } 
