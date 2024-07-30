@@ -2,6 +2,7 @@ import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-manage-users',
@@ -21,7 +22,8 @@ export class ManageUsersComponent {
     private userService: AuthService,
     private renderer: Renderer2,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toastr:ToastrService
   ) {}
 
   ngOnInit() {
@@ -95,21 +97,23 @@ export class ManageUsersComponent {
     if (this.isEditMode) {
       this.userService.updateUser(this.userId, formData).subscribe((res: any) => {
         if (res.success) {
-          alert('User updated successfully');
+          this.toastr.success('User updated successfully');
           this.fetchUsers();
           this.closeModal();
         } else {
           console.log('Error updating user:', res.message);
+          this.toastr.error(res.message);
         }
       });
     } else {
       this.userService.signup(formData).subscribe((res: any) => {
         if (res.success) {
-          alert('User added successfully');
+          this.toastr.success('User added successfully');
           this.fetchUsers();
           this.closeModal();
         } else {
           console.log('Error adding user:', res.message);
+          this.toastr.error(res.message);
         }
       });
     }
@@ -118,10 +122,11 @@ export class ManageUsersComponent {
   deleteUser(userId: string) {
     this.userService.deleteUser(userId).subscribe((res: any) => {
       if (res.success) {
-        alert('User deleted successfully');
+        this.toastr.success('User deleted successfully');
         this.fetchUsers();
       } else {
         console.log('Error deleting user:', res.message);
+        this.toastr.error(res.message);
       }
     });
   }

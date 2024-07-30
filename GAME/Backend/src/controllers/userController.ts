@@ -3,7 +3,6 @@ import userModel from '../models/user.model';
 import { Request, Response } from 'express';
 import { generateUserToken } from '../utils/jwtToken';
 import uploadProfile from '../middleware/profileUpload';
-import player from '../models/game.model';
 
 
 export const signup = (req: Request, res: Response) => {

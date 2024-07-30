@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
@@ -12,7 +13,7 @@ export class StartGameComponent implements OnInit {
   gameForm: FormGroup;
   colors: string[] = ['Red', 'Blue', 'Green', 'Yellow', 'Black', 'Orange' , 'Purple', 'Pink'];
 
-  constructor(private fb: FormBuilder, private userService: UserService,private router:Router) {
+  constructor(private fb: FormBuilder,private toastr:ToastrService, private userService: UserService,private router:Router) {
     this.gameForm = this.fb.group({
       size: ['', [Validators.required, Validators.min(3)]],
       players: this.fb.array([])
@@ -52,12 +53,17 @@ export class StartGameComponent implements OnInit {
 
           console.log("this is the game component",game._id);
           
-          alert('Game created successfully');
+          this.toastr.success('Game created successfully');
           this.router.navigate(['/pages/user/dashboard/game-board'], { queryParams: { gameId:game._id } });
+        }else{
+          this.toastr.error(res.message);
+          console.log(res.message);
+          
         } 
       },
       (error: any) => {
         console.log(error);
+        this.toastr.error(error.message);
       }
     );
   }

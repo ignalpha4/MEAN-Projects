@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
@@ -13,7 +14,7 @@ export class GameBoardComponent implements OnInit {
   game: any;
   currentPlayer: any;
 
-  constructor(private route: ActivatedRoute, private userService: UserService) {}
+  constructor(private route: ActivatedRoute,private toastr:ToastrService, private userService: UserService) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -31,6 +32,7 @@ export class GameBoardComponent implements OnInit {
         this.currentPlayer = this.game.players[this.game.currentPlayerIndex];
       } else {
         console.error('Failed to load game');
+        this.toastr.error('Failed to load game',res.message);
       }
     });
   }
@@ -46,6 +48,7 @@ export class GameBoardComponent implements OnInit {
         this.currentPlayer = this.game.players[this.game.currentPlayerIndex];
       } else {
         console.error('Failed to make move');
+        this.toastr.error('error in making move:',res.error);
       }
     });
   }
@@ -60,5 +63,13 @@ export class GameBoardComponent implements OnInit {
 
   getRanks() {
     return this.game.players.sort((a: any, b: any) => b.score - a.score);
+  }
+  
+  getRank(index: number) :any{
+    const ranks = this.getRanks();
+    if (index === 0) return 1;
+    const previousScore = ranks[index - 1].score;
+    const currentScore = ranks[index].score;
+    return previousScore === currentScore ? this.getRank(index - 1) : index + 1;
   }
 }

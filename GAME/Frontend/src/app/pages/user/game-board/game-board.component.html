@@ -1,27 +1,51 @@
 <div *ngIf="game">
-  <div class="current-player mb-3">
-   <strong> Current Player: </strong>  {{ currentPlayer.name }} ({{ currentPlayer.color }})
-  </div>
-  
-  <div class="grid-container mx-auto">
-    <div *ngFor="let row of game.grid; let rowIndex = index" class="w-100 d-flex">
-      <div *ngFor="let cell of row; let colIndex = index"
-           class="col p-0"
-           [ngClass]="{'occupied': isCellOccupied(rowIndex, colIndex)}"
-           [ngStyle]="{'background-color': getCellColor(rowIndex, colIndex)}"
-           (click)="makeMove(rowIndex, colIndex)"
-           style="flex: 1 1 0; aspect-ratio: 1; border: 1px solid #ffffff; cursor: pointer;">
+  <div class="row">
+    <div class="col-lg-3 column-with-border">
+      <!-- current player  -->
+      <div class="current-player mb-3 d-flex align-items-center mt-5">
+        <strong>Current Player:</strong>
+        <div class="player-info">
+          <span class="player-name">{{ currentPlayer.name }}</span>
+          <span class="player-color-badge" [style.background-color]="currentPlayer.color"></span>
+          <span class="player-color-text">({{ currentPlayer.color }})</span>
+        </div>
+      </div>
+
+      <div *ngIf="game.gameStatus === 'completed'" class="mt-3">
+        <h4 style="text-align: center;color: red;">Game Over!</h4>
+        <hr />
+        <div class="results-container">
+          <div *ngFor="let player of getRanks(); let i = index" class="result-card">
+            <div class="color-bar" [style.background-color]="player.color"></div>
+            <div class="card-body">
+              <div *ngIf="getRank(i) == 1" style="color: green;"> <i class="fa-solid fa-large fa-trophy"></i> WINNER</div>
+              <div class="player-rank">Rank: {{ getRank(i) }}</div>
+              <div class="player-name">{{ player.name }}</div>
+              <div class="player-score">Score: {{ player.score }} points</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  
-  <div *ngIf="game.gameStatus === 'completed'" class="alert alert-danger mt-3">
-    Game Over! The game is completed.
-    <h4>Results:</h4>
-    <ul>
-      <li *ngFor="let player of getRanks()">
-        <strong> {{ player.name }}</strong> : {{player.color}} - {{ player.score }} points
-      </li>
-    </ul>
+
+    <div class="col-lg-9">
+      <div class="grid-container mx-auto mt-4">
+        <div *ngFor="let row of game.grid; let rowIndex = index" class="w-100 d-flex">
+          <div
+            *ngFor="let cell of row; let colIndex = index"
+            class="col p-0"
+            [ngClass]="{ occupied: isCellOccupied(rowIndex, colIndex) }"
+            [ngStyle]="{ 'background-color': getCellColor(rowIndex, colIndex) }"
+            (click)="makeMove(rowIndex, colIndex)"
+            style="
+              flex: 1 1 0;
+              aspect-ratio: 1;
+              border: 1px solid #ffffff;
+              cursor: pointer;
+            "
+          ></div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

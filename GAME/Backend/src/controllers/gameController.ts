@@ -2,8 +2,6 @@ import { Request, Response } from 'express';
 import Game from '../models/game.model';
 
 
-
-
 export const getGameDetails = async (req: Request, res: Response) => {
     try {
         const gameId = req.params.gameId;
@@ -23,7 +21,7 @@ export const getGameDetails = async (req: Request, res: Response) => {
 
 export const getAllGameDetails = async (req: Request, res: Response) => {
     try {
-        const games = await Game.find({ gameStatus: 'completed' }).populate('players');
+        const games = await Game.find().populate('players');
 
         if (!games) {
             return res.json({ success: false, message: "No completed games found" });
@@ -86,7 +84,7 @@ export const makeMove = async (req: Request, res: Response) => {
         const currentPlayer = game.players[game.currentPlayerIndex];
         game.grid[row][col] = currentPlayer.color;
 
-        // Check game status
+        
         if (isGridFull(game.grid)) {
             game.gameStatus = 'completed';
             await calculateAndAssignScores(game); 
@@ -112,7 +110,7 @@ const calculateAndAssignScores = async (game: any) => {
     console.log(grid);
     console.log(players);
 
-    // Check rows
+    // check rows
     for (let i = 0; i < n; i++) {
         let color = grid[i][0];
         let sameColor = true;
@@ -134,7 +132,7 @@ const calculateAndAssignScores = async (game: any) => {
         }
     }
 
-    // Check columns
+    // check columns
     for (let j = 0; j < grid[0].length; j++) {
         let color = grid[0][j];
         let sameColor = true;
@@ -156,7 +154,7 @@ const calculateAndAssignScores = async (game: any) => {
         }
     }
 
-    // Check all diagonals from top-left to bottom-right
+    // check all diagonals from top-left to bottom-right
 
     //first half
     for (let start = 0; start < n; start++) {

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
@@ -11,7 +12,7 @@ export class ViewGameComponent implements OnInit {
   gameId!: string;
   game: any;
 
-  constructor(private route: ActivatedRoute, private userService: UserService) {}
+  constructor(private route: ActivatedRoute,private toastr:ToastrService, private userService: UserService) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -28,6 +29,7 @@ export class ViewGameComponent implements OnInit {
         this.game = res.game;
       } else {
         console.error('Failed to load game');
+        this.toastr.error('Failed to load the game');
       }
     });
   }

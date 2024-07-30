@@ -2,6 +2,7 @@ import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,7 +21,7 @@ export class DashboardComponent {
 
   @ViewChild('userModal') userModal!: ElementRef;
 
-  constructor(private router: Router, private userService: AuthService, private fb: FormBuilder, private renderer: Renderer2) {
+  constructor(private router: Router,private toastr:ToastrService,private userService: AuthService, private fb: FormBuilder, private renderer: Renderer2) {
     this.userService.getCurrentUser().subscribe((currentUserRes) => {
       this.username = currentUserRes.user.name;
       this.useremail = currentUserRes.user.email;
@@ -94,12 +95,13 @@ export class DashboardComponent {
 
     this.userService.updateProfileImage(formData).subscribe((res: any) => {
       if (res.success) {
-        alert('Profile updated successfully');
+        this.toastr.success('Profile updated successfully');
         this.profileImage = res.profileImage; 
         this.username = this.userForm.get('name')?.value;
         this.closeModal();
       } else {
         console.log('Error updating profile:', res.message);
+        this.toastr.error(res.message);
       }
     });
   }

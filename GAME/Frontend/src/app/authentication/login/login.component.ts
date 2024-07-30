@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
@@ -16,6 +17,7 @@ export class LoginComponent {
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
+    private toastr:ToastrService
   ) {
     this.initForm();
 
@@ -34,7 +36,8 @@ export class LoginComponent {
     this.authService.login(this.loginForm.value).subscribe((res: any) => {
       
         if (res.success) {
-          alert('Login successful');
+          
+          this.toastr.success('Login Done')
 
           this.loginForm.reset();
 
@@ -44,18 +47,20 @@ export class LoginComponent {
           
           
           if(res.role=='user'){
-            this.router.navigate(['/pages/user/dashboard'])
+            this.router.navigate(['/pages/user/dashboard/start-game'])
           }else{
             this.router.navigate(['/pages/admin/dashboard'])
           }
           
         } else {
           this.errorMsg = res.message;
+          this.toastr.error(res.message);
         }
 
       },
       (error:any) => {   
         console.error('Error:', error);
+        this.toastr.error(error.message);
       }
     );
   }
