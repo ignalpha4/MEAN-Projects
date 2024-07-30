@@ -128,7 +128,7 @@ const calculateAndAssignScores = async (game: any) => {
             players.forEach((player: any) => {
                 if (player.color === color) {
                     player.score += 1;
-                    console.log(`Player ${player.color} score updated: ${player.score}`);
+                    console.log(`Player ${player.color} score updated for (row): ${player.score}`);
                 }
             });
         }
@@ -150,88 +150,105 @@ const calculateAndAssignScores = async (game: any) => {
             players.forEach((player: any) => {
                 if (player.color === color) {
                     player.score += 1;
-                    console.log(`Player ${player.color} score updated: ${player.score}`);
+                    console.log(`Player ${player.color} score updated for (col): ${player.score}`);
                 }
             });
         }
     }
 
-    //left to right diagonal
-    let sameColor = true;
-    let gridColor:any;
-    for (let i = 0; i < n; i++) {
-        let color = grid[0][0];
-        gridColor =color;
-        for (let j = 0; j < n; j++) {
-            if(i==j){
+    // Check all diagonals from top-left to bottom-right
 
-                if (grid[i][j] !== color) {
-                    sameColor = false;
-                    break;
-                }
-            }
+    //first half
+    for (let start = 0; start < n; start++) {
+        let color = grid[start][0];
+        let sameColor = true;
 
-        }
-    }
-    if (sameColor) {
-        players.forEach((player: any) => {
-            if (player.color === gridColor) {
-                player.score += 1;
-                console.log(`Player ${player.color} score updated: ${player.score}`);
-               
-            }
-        });
-    }
-
-
-
-    let times = n;
-
-    while(times--){
-
-        // right to left 
-        sameColor = true;
-        gridColor;
-
-        for (let i = 0; i < n; i++) {
-
-            let color = grid[0][n-1];
-    
-            gridColor =color;
-            for (let j = 0; j < n; j++) {
-                if((i+j)==(n-1)){
-                    if (grid[i][j] !== color) {
-                        sameColor = false;
-                        break;
-                    }
-                }
-    
+        for (let i = start, j = 0; i < n && j < n; i++, j++) {
+            if (grid[i][j] !== color) {
+                sameColor = false;
+                break;
             }
         }
 
-        
-            console.log(sameColor);
-            
-            if (sameColor) {
-                players.forEach((player: any) => {
-                    if (player.color === gridColor) {
-                        player.score += 1;
-                        console.log(`Player ${player.color} score updated: ${player.score}`);
-                    }
-                });
-            }
-   
+    
 
+        if (sameColor && start < n-1) {
+            players.forEach((player: any) => {
+                if (player.color === color) {
+                    player.score += 1;
+                    console.log(`Player ${player.color} score updated top-left to bottom-right:(1st part): ${player.score}`);
+                }
+            });
+        }
+    }
+    //second half
+    for (let start = 1; start < n; start++) {
+        let color = grid[0][start];
+        let sameColor = true;
+
+        for (let i = 0, j = start; i < n && j < n; i++, j++) {
+            if (grid[i][j] !== color) {
+                sameColor = false;
+                break;
+            }
+        }
+
+        if (sameColor && start < n-1) {
+            players.forEach((player: any) => {
+                if (player.color === color) {
+                    player.score += 1;
+                    console.log(`Player ${player.color} score updated top-left to bottom-right(2nd part) : ${player.score}`);
+                }
+            });
+        }
     }
 
+    // check all diagonals from bottom-left to top-right
 
+    //first half
+    for (let start = 0; start < n; start++) {
+        let color = grid[start][0];
+        let sameColor = true;
 
+        for (let i = start, j = 0; i >= 0 && j < n; i--, j++) {
+            if (grid[i][j] !== color) {
+                sameColor = false;
+                break;
+            }
+        }
 
+        if (sameColor && start>0) {
+            players.forEach((player: any) => {
+                if (player.color === color) {
+                    player.score += 1;
+                    console.log(`Player ${player.color} score updated bottom-left to top-right (1st part) : ${player.score}`);
+                }
+            });
+        }
+    }
 
+    //second half
+    for (let start = 1; start < n; start++) {
+        let color = grid[n - 1][start];
+        let sameColor = true;
+
+        for (let i = n - 1, j = start; i >= 0 && j < n; i--, j++) {
+            if (grid[i][j] !== color) {
+                sameColor = false;
+                break;
+            }
+        }
+
+        if (sameColor && start < n-1) {
+            players.forEach((player: any) => {
+                if (player.color === color) {
+                    player.score += 1;
+                    console.log(`Player ${player.color} score updated bottom-left to top-right (2nd part) : ${player.score}`);
+                }
+            });
+        }
+    }
 };
-
-
-
 
 
 const isGridFull = (grid: (string | null)[][]): boolean => {

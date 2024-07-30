@@ -8,6 +8,7 @@ import { UserService } from 'src/app/core/services/user.service';
   styleUrls: ['./game-board.component.scss']
 })
 export class GameBoardComponent implements OnInit {
+  
   gameId!: string;
   game: any;
   currentPlayer: any;
