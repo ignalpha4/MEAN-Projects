@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/core/services/user.service';
+import { uniqueColorsValidator } from 'src/app/core/validators/colorValidator';
 
 @Component({
   selector: 'app-start-game',
@@ -16,7 +17,7 @@ export class StartGameComponent implements OnInit {
   constructor(private fb: FormBuilder,private toastr:ToastrService, private userService: UserService,private router:Router) {
     this.gameForm = this.fb.group({
       size: ['', [Validators.required, Validators.min(3)]],
-      players: this.fb.array([])
+      players: this.fb.array([],uniqueColorsValidator)
     });
   }
 
@@ -44,7 +45,15 @@ export class StartGameComponent implements OnInit {
   }
 
   submit(): void {
+
+    console.log(this.gameForm);
+    if (this.gameForm.invalid) {
+      this.toastr.error('Please fix the errors in the form');
+      return;
+    }
+
     const formData = this.gameForm.value;
+    
     this.userService.createGame(formData).subscribe(
       (res:any) => {
         if (res.success) {

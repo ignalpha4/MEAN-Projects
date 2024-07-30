@@ -4,7 +4,18 @@
       <form [formGroup]="gameForm">
         <div class="form-group mb-3">
           <label for="size" class="form-label">Size of grid</label>
-          <input type="number" class="form-control" id="size" placeholder="Value of N" formControlName="size">
+          <input type="number" class="form-control" id="size" placeholder="Value of N" formControlName="size" max="100">
+
+          <div *ngIf="gameForm.get('size')?.invalid && gameForm.get('size')?.touched">
+            <div *ngIf="gameForm.get('size')?.errors?.['required']">
+                <p style="color: red;">This field is required !!!</p>
+            </div>
+          </div>
+
+          <div *ngIf="gameForm.get('size')?.errors?.['max']">
+            <p style="color: red;">Max size 100!!!</p>
+          </div>
+
         </div>
 
         <h3>Add the players</h3>
@@ -20,6 +31,11 @@
                 <option value="">Select Color</option>
                 <option *ngFor="let color of colors" [value]="color">{{ color }}</option>
               </select>
+
+              <div *ngIf="gameForm.get('players')?.errors?.['uniqueColors'] && gameForm.get('players')?.touched">
+                <p style="color: red;">Same colour not allowed</p>
+              </div>
+    
             </div>
             <div class="col-lg-2 mb-2 d-flex align-items-end mt-4">
               <button class="btn btn-danger w-100" type="button" (click)="removePlayer(i)" *ngIf="i >= 2">-</button>
