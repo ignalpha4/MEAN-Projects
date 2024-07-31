@@ -6,8 +6,6 @@ import { Response, NextFunction } from 'express';
 const secretKey = 'shubham_bankar'; 
 
 //authenticate the user
-
-
  export const  verifyToken = (req: any, res: Response, next: NextFunction) => {
     
         const token = req.header('Authorization')?.replace('Bearer ', '');

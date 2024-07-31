@@ -1,9 +1,12 @@
 import mongoose from "mongoose";
+import {config} from 'dotenv';
+
+config()
 
 export const connect_db = ()=>{
     mongoose
   .connect(
-    "mongodb+srv://shubhamtempacc:kjkszpj@cluster0.dzumnro.mongodb.net/game?retryWrites=true&w=majority&appName=Cluster0"
+     process.env.dbURL as string
   )
   .then(() => {
     console.log("Database Connected");

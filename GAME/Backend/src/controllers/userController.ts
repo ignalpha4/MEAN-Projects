@@ -2,9 +2,7 @@ import bcrypt from "bcrypt";
 import userModel from "../models/user.model";
 import { Request, Response } from "express";
 import { generateUserToken } from "../utils/jwtToken";
-import uploadProfile from "../middleware/profileUpload";
 import { controller, httpDelete, httpGet, httpPatch, httpPost, httpPut } from "inversify-express-utils";
-import { moduleType } from "../utils/module.type";
 import { verifyToken } from "../middleware/authentication";
 import upload from "../middleware/profileUpload";
 
@@ -20,15 +18,14 @@ export class userController {
       try {
         const { name, email, password, role } = req.body;
         const profileImage = req.file
-          ? `/uploads/profileImg/${req.file.filename}`
+          ? `/uploads/${req.file.filename}`
           : "";
 
-        const hashedPassword = await bcrypt.hash(password, 10);
 
         const createdUser = await userModel.create({
           name,
           email,
-          password: hashedPassword,
+          password,
           role,
           profileImage,
         });
@@ -117,7 +114,7 @@ export class userController {
       try {
         const userId = req.user.id;
         const profileImage = req.file
-          ? `/uploads/profileImg/${req.file.filename}`
+          ? `/uploads/${req.file.filename}`
           : "";
 
         const updatedUser = await userModel.findByIdAndUpdate(
@@ -169,15 +166,14 @@ export class userController {
 
         const { name, email, password, role } = req.body;
         const profileImage = req.file
-          ? `/uploads/profileImg/${req.file.filename}`
+          ? `/uploads/${req.file.filename}`
           : "";
 
-        const hashedPassword = await bcrypt.hash(password, 10);
 
         const updatedUserDetails = await userModel.findByIdAndUpdate(id, {
           name,
           email,
-          password: hashedPassword,
+          password,
           role,
           profileImage,
         });

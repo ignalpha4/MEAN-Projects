@@ -2,8 +2,11 @@ import multer from 'multer';
 import path from 'path';
 
 
+
+
 const storage = multer.diskStorage({
-  destination: './uploads/',
+  destination: './src/uploads',
+
   filename: function(req:any, file:any, cb:any) {
     cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
   }

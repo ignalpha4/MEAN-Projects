@@ -7,8 +7,6 @@ import { gameController } from "./controllers/gameController";
 const container = new Container();
 
 container.bind<userController>(TYPES.userController).to(userController)
-// container.bind<userController>(TYPES.userController).to()
-
 container.bind<gameController>(TYPES.gameController).to(gameController)
 
 

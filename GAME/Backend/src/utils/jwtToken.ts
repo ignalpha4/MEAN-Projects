@@ -1,6 +1,9 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { config } from "dotenv";
 
-const secretKey = "shubham_bankar"
+config()
+
+const secretKey = process.env.secretKey as string;
 
 export const generateUserToken= (payload:any)=>{
     const token = jwt.sign(payload,secretKey);

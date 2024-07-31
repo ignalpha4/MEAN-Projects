@@ -1,33 +1,28 @@
 import { Request, Response } from "express";
 import Game from "../models/game.model";
 import { controller, httpGet, httpPost } from "inversify-express-utils";
-import { moduleType } from "../utils/module.type";
 import { verifyToken } from "../middleware/authentication";
 
 
-@controller('/user',moduleType('user'))
+@controller('/user')
 export class gameController {
 
-  constructor() {}
+  constructor() { }
 
-  @httpGet('/games/:gameId',verifyToken)
-  async getGameDetails(req: Request, res: Response){
+  @httpGet('/games/:gameId', verifyToken)
+  async getGameDetails(req: Request, res: Response) {
     try {
       const gameId = req.params.gameId;
       const game = await Game.findById(gameId).populate("players");
 
       if (!game) {
-        return res
-          .status(404)
-          .json({ success: false, message: "Game not found" });
+        throw new Error('Game not found')
       }
 
       return res.status(200).json({ success: true, game });
     } catch (error: any) {
       console.log(error.message);
-      return res
-        .status(500)
-        .json({
+      return res.status(500).json({
           success: false,
           message: "Error fetching game details",
           error: error.message,
@@ -36,8 +31,8 @@ export class gameController {
   };
 
 
-  @httpGet('getAllGameDetails',verifyToken)
-  async getAllGameDetails(req: Request, res: Response){
+  @httpGet('getAllGameDetails', verifyToken)
+  async getAllGameDetails(req: Request, res: Response) {
     try {
       const games = await Game.find().populate("players");
 
@@ -65,8 +60,8 @@ export class gameController {
     }
   };
 
-  @httpPost('/games',verifyToken)
-  async  createGame (req: Request, res: Response) {
+  @httpPost('/games', verifyToken)
+  async createGame(req: Request, res: Response) {
     try {
       const { size, players } = req.body;
 
@@ -113,8 +108,8 @@ export class gameController {
     }
   };
 
-  @httpPost('/games/move',verifyToken)
-  async makeMove(req: Request, res: Response){
+  @httpPost('/games/move', verifyToken)
+  async makeMove(req: Request, res: Response) {
     try {
       const { gameId, row, col } = req.body;
       const game = await Game.findById(gameId);
