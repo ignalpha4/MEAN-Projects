@@ -21,8 +21,8 @@ export class DashboardComponent {
 
   @ViewChild('userModal') userModal!: ElementRef;
 
-  constructor(private router: Router,private toastr:ToastrService,private userService: AuthService, private fb: FormBuilder, private renderer: Renderer2) {
-    this.userService.getCurrentUser().subscribe((currentUserRes) => {
+  constructor(private router: Router,private toastr:ToastrService,private authService: AuthService, private fb: FormBuilder, private renderer: Renderer2) {
+    this.authService.getCurrentUser().subscribe((currentUserRes) => {
       this.username = currentUserRes.user.name;
       this.useremail = currentUserRes.user.email;
       this.role = currentUserRes.user.role;
@@ -93,7 +93,9 @@ export class DashboardComponent {
       formData.append(key, this.userForm.get(key)?.value);
     });
 
-    this.userService.updateProfileImage(formData).subscribe((res: any) => {
+    this.authService.updateProfileImage(formData).subscribe((res: any) => {
+      console.log(res);
+      
       if (res.success) {
         this.toastr.success('Profile updated successfully');
         this.profileImage = res.profileImage; 

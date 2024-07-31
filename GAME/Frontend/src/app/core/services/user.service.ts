@@ -18,13 +18,14 @@ export class UserService {
 
   getGame(gameId: string): Observable<any> {
     console.log(gameId);
-    
     return this.http.get(`${this.apiUrl}/user/games/${gameId}`);
   }
 
   makeMove(gameId: string, row: number, col: number): Observable<any> {
     return this.http.post(`${this.apiUrl}/user/games/move`, { gameId, row, col });
   }
+
+
 
 
 }
