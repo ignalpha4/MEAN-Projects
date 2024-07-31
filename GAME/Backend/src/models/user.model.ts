@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
+import { IUser } from "../interfaces/user.interface";
 
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema<IUser>({
     
     name: {
         type: String,

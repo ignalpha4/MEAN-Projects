@@ -1,16 +1,18 @@
 import multer from 'multer';
 import path from 'path';
 
+
 const storage = multer.diskStorage({
-  destination: './uploads/profileImg/',
+  destination: './uploads/',
   filename: function(req:any, file:any, cb:any) {
     cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
   }
 });
 
-const uploadProfile = multer({
+// Initialize upload
+const upload = multer({
   storage: storage,
-  limits: { fileSize: 10000000 }, 
+  limits: { fileSize: 10000000 }, // 10MB file size limit
   fileFilter: function(req:any, file:any, cb:any) {
     checkFileType(file, cb);
   }
@@ -29,4 +31,4 @@ function checkFileType(file:any, cb:any) {
   }
 }
 
-export default uploadProfile;
+export default upload;

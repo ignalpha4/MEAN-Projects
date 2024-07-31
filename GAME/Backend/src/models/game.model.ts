@@ -1,26 +1,16 @@
 import mongoose, { Document, Schema } from 'mongoose';
+import { IPlayer } from '../interfaces/player.interface';
+import { IGame } from '../interfaces/game.interface';
 
-interface PlayerInfo {
-    name: string;
-    color: string;
-    score: number;
-}
-
-interface Game extends Document {
-    size: number;
-    players: PlayerInfo[];
-    grid: string[][];
-    currentPlayerIndex: number;
-    gameStatus: string;
-}
-
-const playerInfoSchema = new Schema({
+//player 
+const playerInfoSchema = new Schema<IPlayer>({
     name: { type: String, required: true },
     color: { type: String, required: true },
     score: { type: Number, default: 0 }
 });
 
-const gameSchema = new Schema<Game>({
+//game
+const gameSchema = new Schema<IGame>({
     size: { type: Number, required: true },
     players: [playerInfoSchema],
     grid: { type: [[String]], required: true },
@@ -28,6 +18,6 @@ const gameSchema = new Schema<Game>({
     gameStatus: { type: String, default: 'in-progress' }
 });
 
-const Game = mongoose.model<Game>('Game', gameSchema);
+const Game = mongoose.model<IGame>('Game', gameSchema);
 
 export default Game;
