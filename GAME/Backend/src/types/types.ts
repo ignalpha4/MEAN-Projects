@@ -1,4 +1,3 @@
-
 export const TYPES = {
 
     //controllers 
@@ -8,8 +7,9 @@ export const TYPES = {
     //middlewares
 
     authenticationMiddleware :Symbol.for('authenticationMiddleware'),
-    authorizationMiddleware:Symbol.for('authorizationMiddleware')
+    authorizationMiddleware:Symbol.for('authorizationMiddleware'),     
 
-        
-
+    //services
+    userService:Symbol.for('userService'),
+    gameService:Symbol.for('gameService')
 }

@@ -1,214 +1,126 @@
-import bcrypt from "bcrypt";
-import userModel from "../models/user.model";
 import { Request, Response } from "express";
-import { generateUserToken } from "../utils/jwtToken";
 import { controller, httpDelete, httpGet, httpPatch, httpPost, httpPut } from "inversify-express-utils";
+import { inject } from "inversify";
+import { TYPES } from "../types/types";
+import { userService } from "../services/user.services";
 import { verifyToken } from "../middleware/authentication";
 import upload from "../middleware/profileUpload";
-
 
 @controller('/user')
 export class userController {
 
-  constructor(){};
+  constructor(@inject<userService>(TYPES.userService) private userService: userService) {}
 
-  //signup
-  @httpPost('/signup',upload)
-  async signup(req: Request, res: Response){
+  @httpPost('/signup', upload)
+  async signup(req: Request, res: Response) {
       try {
         const { name, email, password, role } = req.body;
-        const profileImage = req.file
-          ? `/uploads/${req.file.filename}`
-          : "";
+        const profileImage = req.file ? `/uploads/${req.file.filename}` : "";
 
-
-        const createdUser = await userModel.create({
+        const userInfo = {
           name,
           email,
           password,
           role,
           profileImage,
-        });
+        };
 
-        if (!createdUser) {
-          console.log("Error creating the user");
-          throw new Error('User Creation Error')
-        }
+        const createdUser = await this.userService.signup(userInfo);
 
-        console.log("User Signup successful!");
         return res.json({ success: true, message: "User Signup successful!" });
       } catch (error) {
         console.log(error);
-        res
-          .status(500)
-          .json({ success: false, message: "Internal Server Error" });
+        res.status(500).json({ success: false, message: "Internal Server Error" });
       }
-    };
-  
+  }
 
   @httpPost('/login')
-  async login(req: Request, res: Response){
+  async login(req: Request, res: Response) {
     try {
-      const email = req.body.email;
-      const password = req.body.password;
+      const { email, password } = req.body;
 
-      const foundUser = await userModel.findOne({ email });
-
-      if (!foundUser) {
-        console.log("No user found with this email");
-        return res.json({
-          message: "User not found with this email!",
-          success: false,
-        });
-      }
-
-      const matchedPassword = await bcrypt.compare(
-        password,
-        foundUser.password
-      );
-
-      if (!matchedPassword) {
-        console.log("Incorrect Password");
-        return res.json({ success: false, message: "Incorrect Password" });
-      }
-
-      const payload = {
-        email: foundUser.email,
-        id: foundUser._id,
-        role: foundUser.role,
-      };
-
-      const token = generateUserToken(payload);
+      const { token, role } = await this.userService.login(email, password);
 
       return res.json({
         success: true,
         message: "User logged in successfully",
         token,
-        role: foundUser.role,
+        role,
       });
-    } catch (error) {
-      return res.json({ success: false, message: "Internal Server Error" });
+    } catch (error:any) {
+      return res.status(500).json({ success: false, message: error.message });
     }
-  };
+  }
 
-  //getcurrent user info
-  @httpGet('/currentuser',verifyToken)
-  async getCurrentUser(req: any, res: Response){
+  @httpGet('/currentuser', verifyToken)
+  async getCurrentUser(req: any, res: Response) {
     try {
-      let id = req.user.id;
-
-      let user = await userModel.findById(id);
-
-      if (!user) {
-        return res.json({ success: false, message: "No current user found" });
-      }
-      return res.json({ success: true, message: "current user found", user });
+      const user = await this.userService.getCurrentUser(req.user.id);
+      return res.json({ success: true, message: "Current user found", user });
+      
     } catch (error) {
       console.log(error);
+      res.status(500).json({ success: false, message: "Internal Server Error" });
     }
-  };
+  }
 
-  //update Profile Image
-  @httpPut('/updateProfileImage',verifyToken,upload)
-  async updateProfileImage(req: any, res: any) {
-      try {
-        const userId = req.user.id;
-        const profileImage = req.file
-          ? `/uploads/${req.file.filename}`
-          : "";
-
-        const updatedUser = await userModel.findByIdAndUpdate(
-          userId,
-          { profileImage },
-          { new: true }
-        );
-
-        if (!updatedUser) {
-          console.log("Error updating the user");
-          throw new Error('User update error');
-        }
-
-        console.log("Profile image updated successfully!");
-        res.json({success: true,message: "Profile image updated successfully!"});
-      } catch (error) {
-        console.log(error);
-        res.status(500).json({ success: false, message: "Internal Server Error" });
-      }
-    }
-
-  //get all users
-  @httpGet('/listusers',verifyToken)
-  async listUsers(req: any, res: Response){
+  @httpPut('/updateProfileImage', verifyToken, upload)
+  async updateProfileImage(req: any, res: Response) {
     try {
-      let users = await userModel.find({ role: "user" });
+      const userId = req.user.id;
+      const profileImage = req.file ? `/uploads/${req.file.filename}` : "";
 
-      if (!users) {
-        return res.json({ success: false, message: "No  users found" });
-      }this.signup
-      return res.json({ success: true, message: "current user found", users });
+      const updatedUser = await this.userService.updateProfileImage(userId, profileImage);
+
+      return res.json({ success: true, message: "Profile image updated successfully!", updatedUser });
     } catch (error) {
       console.log(error);
+      res.status(500).json({ success: false, message: "Internal Server Error" });
     }
-  };
+  }
 
-  //update users
-  @httpPatch('/updateUser/:id',upload)
-  async updateUser(req: any, res: any) {
-      try {
-        const id = req.params.id;
+  @httpGet('/listusers', verifyToken)
+  async listUsers(req: any, res: Response) {
+    try {
+      const users = await this.userService.listUsers();
 
-        const exisitingUser = await userModel.findById(id);
+      return res.json({ success: true, message: "Users found", users });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+  }
 
-        if (!exisitingUser) {
-          console.log("No user found to update");
-          throw new Error('No user found to update');
-        } 
+  @httpPatch('/updateUser/:id', upload)
+  async updateUser(req: any, res: Response) {
+    try {
+      const id = req.params.id;
+      const userInfo = req.body;
 
-        const { name, email, password, role } = req.body;
-        const profileImage = req.file
-          ? `/uploads/${req.file.filename}`
-          : "";
-
-
-        const updatedUserDetails = await userModel.findByIdAndUpdate(id, {
-          name,
-          email,
-          password,
-          role,
-          profileImage,
-        });
-
-         res.json({
-          success: true,
-          message: "user updated",
-          user: updatedUserDetails,
-        });
-      } catch (error) {
-        console.log("Error updating the user");
-         res.json({
-          success: false,
-          message: "Error updating user",
-          error,
-        });
+      if (req.file) {
+        userInfo.profileImage = `/uploads/${req.file.filename}`;
       }
-    }
- 
 
-  @httpDelete('/deleteUser/:id',verifyToken)
-  async deleteUser(req: any, res: Response){
+      const updatedUserDetails = await this.userService.updateUser(id, userInfo);
+
+      return res.json({ success: true, message: "User updated", user: updatedUserDetails });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+  }
+
+  @httpDelete('/deleteUser/:id', verifyToken)
+  async deleteUser(req: any, res: Response) {
     try {
       const id = req.params.id;
 
-      const deletedUser = await userModel.findByIdAndDelete(id);
+      await this.userService.deleteUser(id);
 
-      if (!deletedUser) {
-        return res.json({ success: false, message: "No user found to delete" });
-      }
-
-      return res.json({ success: true, message: "user deleted successfully" });
+      return res.json({ success: true, message: "User deleted successfully" });
     } catch (error) {
       console.log(error);
-      return res.json({ message: "Error while deleting", error });
+      res.status(500).json({ success: false, message: "Internal Server Error" });
     }
-  };
+  }
 }
