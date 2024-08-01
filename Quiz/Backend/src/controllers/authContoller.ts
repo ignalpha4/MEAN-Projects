@@ -1,4 +1,3 @@
-import { error } from "console";
 import user from "../models/usersModel";
 import { ErrorHandling } from "../utils/errorHelper";
 import bcrypt from "bcrypt";
@@ -11,6 +10,7 @@ const errorObj = new ErrorHandling();
 export const signup = async (req: any, res: Response) => {
   upload(req, res, async (error: any) => {
     if (error) {
+      console.log("multer error",error);
       return res.status(400).json({ status: false, message: error });
     }
 
@@ -34,7 +34,7 @@ export const signup = async (req: any, res: Response) => {
           email,
           password,
           role,
-          profile:profileImage
+          profileImage:profileImage
         }
     
         const newUser = await user.create(userObj);
@@ -43,15 +43,13 @@ export const signup = async (req: any, res: Response) => {
           throw new Error("Error creating new user");
         }
     
-        return res.json({ status: true, message: "user signup successfully" });
+        return res.json({ status: true, message: "user signup successfull" });
       } catch (error: any) {
         const errormsg = errorObj.getErrorMsg(error) || error.message;
         return res.json({ status: false, message: errormsg });
       }
 
-
   });
-
 
 };
 
@@ -119,11 +117,9 @@ export const getAllUsers = async(req:Request,res:Response)=>{
   
   try {
     const users =  await user.find();
-
     if(!users){
       throw new Error("No users found");
     }
-
     return res.status(200).json({status:true,message:"Users List",users});
 
   } catch (error:any) {  

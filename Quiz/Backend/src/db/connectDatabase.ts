@@ -1,8 +1,13 @@
 import mongoose from "mongoose"
+import {config} from "dotenv";
+
+config();
+
+const URL =  process.env.DBurl as string;
 
 export const connect_db =()=>{
 
-    mongoose.connect('mongodb+srv://shubhamtempacc:kjkszpj@cluster0.dzumnro.mongodb.net/quiz?retryWrites=true&w=majority&appName=Cluster0')
+    mongoose.connect(URL)
     .then(()=>{
         console.log("Connected to Database");
     })

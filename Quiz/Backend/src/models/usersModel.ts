@@ -20,7 +20,7 @@ export const userSchema = new mongoose.Schema({
         enum:['admin','user'],
         required:true,
     },
-    profile:{
+    profileImage:{
         type:String,
     }
 })
