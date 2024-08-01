@@ -13,7 +13,6 @@ export const verifyToken = (req: any, res: Response, next: NextFunction) => {
     if (!token) {
         return res.status(401).json({ message: 'no token' });
     }
-
     try {
         const decoded = jwt.verify(token, secretKey) as { id: string, email: string, role: string };
         req.user = decoded; 
@@ -21,4 +20,5 @@ export const verifyToken = (req: any, res: Response, next: NextFunction) => {
     } catch (error) {
         res.status(400).json({ message: 'token is not valid.' });
     }
+    
 };
