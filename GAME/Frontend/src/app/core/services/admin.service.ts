@@ -8,9 +8,7 @@ import { Observable } from 'rxjs';
 export class AdminService {
 
   private apiUrl = 'http://localhost:5000';
-
   constructor(private http: HttpClient) { }
-
 
   getAllGamesDetails():Observable<any>{
     return  this.http.get(`${this.apiUrl}/user/getAllGameDetails`)

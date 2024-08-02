@@ -11,7 +11,6 @@ export class UserService {
 
   private apiUrl = 'http://localhost:5000';
 
-
   createGame(gameData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/user/games`, gameData);
   }
@@ -24,8 +23,5 @@ export class UserService {
   makeMove(gameId: string, row: number, col: number): Observable<any> {
     return this.http.post(`${this.apiUrl}/user/games/move`, { gameId, row, col });
   }
-
-
-
 
 }

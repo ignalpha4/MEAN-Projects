@@ -10,8 +10,9 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
+
   loginForm!: FormGroup;
-  errorMsg: string = ' ';
+  errorMsg!: string;
 
   constructor(
     private fb: FormBuilder,
@@ -52,15 +53,10 @@ export class LoginComponent {
             this.router.navigate(['/pages/admin/dashboard'])
           }
           
-        } else {
-          this.errorMsg = res.message;
-          this.toastr.error(res.message);
         }
-
       },
       (error:any) => {   
-        console.error('Error:', error);
-        this.toastr.error(error.message);
+        this.errorMsg = error;
       }
     );
   }

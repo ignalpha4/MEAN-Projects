@@ -4,23 +4,22 @@ import bcrypt from "bcrypt";
 import { Response, Request } from "express";
 import { generateUserToken } from "../utils/jwt";
 import upload from "../middlewares/profileUpload";
-import { controller } from "inversify-express-utils";
+import { controller, httpGet, httpPost } from "inversify-express-utils";
+import { verifyToken } from "../middlewares/authenticate";
 
 const errorObj = new ErrorHandling();
 
-
-@controller("/user")
+@controller('/user')
 export class userController{
 
-  signup = async (req: any, res: Response) => {
-    upload(req, res, async (error: any) => {
-  
-      if (error) {
-        console.log("multer error",error);
-        return res.status(400).json({ status: false, message: error });
-      }
+  constructor(){};
+
+  @httpPost('/signup',upload)
+  async signup(req: any, res: Response){
   
       try {
+          console.log("inside signup");
+          
           const { name, email, password, role } = req.body;
   
           const profileImage = req.file ? `/uploads/${req.file.filename}` : '';
@@ -53,15 +52,16 @@ export class userController{
   
         } catch (error: any) {
           const errormsg = errorObj.getErrorMsg(error) || error.message;
+          console.log(errormsg)
           return res.json({ status: false, message: errormsg });
         }
-  
-    });
-  
   };
   
-  login = async (req: Request, res: Response) => {
+  @httpPost('/login')
+  async login(req: Request, res: Response){
     try {
+
+      
       const { email, password } = req.body;
   
       const foundUser = await user.findOne({ email });
@@ -84,20 +84,26 @@ export class userController{
   
       const token = generateUserToken(payload);
   
+      
       return res
         .status(200)
         .json({
           status: true,
           message: "User logged in successfully",
           token: token,
+          user: foundUser,
         });
     } catch (error: any) {
-      const errormsg = errorObj.getErrorMsg(error) || error.message;
-      return res.status(500).json({ status: false, message: errormsg });
+
+      const errormsg = errorObj.getErrorMsg(error) || error.error;
+      console.log(errormsg);
+      
+      return res.json({ status: false, message: errormsg });
     }
   };
   
-  getCurrentUser = async (req: any, res: Response) => {
+  @httpGet('/getCurrentUser',verifyToken)
+  async getCurrentUser(req: any, res: Response){
     try {
       const id = req.user.id;
   
@@ -111,17 +117,16 @@ export class userController{
         throw new Error("User not found with this ID");
       }
   
-      return res
-        .status(200)
-        .json({ status: true, message: "User details found", user: foundUser });
+      return res.status(200).json({ status: true, message: "User details found", user: foundUser });
+
     } catch (error: any) {
-      const errormsg = errorObj.getErrorMsg(error) || error.message;
-      return res.status(500).json({ status: false, message: errormsg });
+      const errormsg = errorObj.getErrorMsg(error) || error.error;
+      return res.json({ status: false, message: errormsg });
     }
   };
   
-  getAllUsers = async(req:Request,res:Response)=>{
-    
+  @httpGet('getAllUsers',verifyToken)
+  async getAllUsers(req:Request,res:Response){
     try {
       const users =  await user.find();
       if(!users){
@@ -133,9 +138,7 @@ export class userController{
       const errormsg =  errorObj.getErrorMsg(error) || error.message;
       return res.status(500).json({status:false,message:errormsg});
     }
-  
   }
-
 }
 
 

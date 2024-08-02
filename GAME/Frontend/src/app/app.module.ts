@@ -11,6 +11,7 @@ import { PagesModule } from './pages/pages.module';
 import { AuthInterceptor } from './core/interceptor/auth.interceptor';
 import { AgGridAngular } from 'ag-grid-angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ErrorHandlerInterceptor } from './core/interceptor/error-handler.interceptor';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorHandlerInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

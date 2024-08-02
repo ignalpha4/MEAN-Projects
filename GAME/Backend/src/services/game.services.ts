@@ -7,7 +7,7 @@ export class gameService {
     async getGameById(gameId: any) {
         try{
             return await Game.findById(gameId).populate('players');
-        } catch (error:any) {
+        }catch (error:any) {
             throw  Error(`Error fetching game with ID ${gameId}: ${error.message}`);
         }
     }

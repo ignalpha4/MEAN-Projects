@@ -12,12 +12,13 @@ export class GamesInfoComponent {
 
   constructor(private adminService: AdminService, private router: Router) {
     this.adminService.getAllGamesDetails().subscribe((res: any) => {
+      console.log(res);
+      
       this.games = res.games;
     });
   }
 
   viewGameDetails(gameId: string) {
-
     this.router.navigate(['pages/admin/dashboard/view-game'],{queryParams: {gameId:gameId },});
   }
 }
