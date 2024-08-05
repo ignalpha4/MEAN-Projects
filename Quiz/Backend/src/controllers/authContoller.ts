@@ -15,14 +15,17 @@ export class userController{
   constructor(){};
 
   @httpPost('/signup',upload)
-  async signup(req: any, res: Response){
+  async signup(req: Request, res: Response){
   
       try {
           console.log("inside signup");
           
           const { name, email, password, role } = req.body;
-  
-          const profileImage = req.file ? `/uploads/${req.file.filename}` : '';
+
+          console.log(req.file);
+          
+          
+          const profileImage = req.file ? `/uploads/${req.file.filename}` : "";
   
           if (!name || !email || !password || !role) {
             throw new Error("Required fields are not provided!");
@@ -39,10 +42,12 @@ export class userController{
             email,
             password,
             role,
-            profileImage:profileImage
+            profileImage,
           }
       
           const newUser = await user.create(userObj);
+
+          
       
           if (!newUser) {
             throw new Error("Error creating new user");
@@ -125,13 +130,17 @@ export class userController{
     }
   };
   
-  @httpGet('getAllUsers',verifyToken)
+  @httpGet('/getAllUsers',verifyToken)
   async getAllUsers(req:Request,res:Response){
     try {
       const users =  await user.find();
+
       if(!users){
         throw new Error("No users found");
       }
+
+      console.log("thsese are all users",users);
+      
       return res.status(200).json({status:true,message:"Users List",users});
   
     } catch (error:any) {  

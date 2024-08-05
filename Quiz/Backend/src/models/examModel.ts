@@ -14,6 +14,14 @@ const answerSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Question',
         required: true
+    },
+    difficulty: {
+        type:Number,
+        required:true
+    },
+    correctOption:{
+        type:String,
+        required:true
     }
 });
 
@@ -37,7 +45,11 @@ const examSchema = new mongoose.Schema({
         required: true,
         default: 0
     },
-    answers: [answerSchema]
+    answers: [answerSchema],
+    difficulty: {
+        type:Number,
+        required:true
+    },
 });
 
 const Exam = mongoose.model('Exam', examSchema);

@@ -102,5 +102,24 @@ export class questionsController{
 
     }
 
+    @httpGet('/getQuestion/:q_no',verifyToken)
+    async getQuestion(req:Request,res:Response){    
+        try {
 
+            const q_no = req.params.q_no;
+
+            const foundQuestion = await questionModel.findOne({q_no});
+
+            if(!foundQuestion){
+                throw new Error('No question found');
+            }
+
+            return res.json({status:true,message:'Found question',question:foundQuestion});
+            
+        } catch (error:any) {
+            const errormsg = errorObj.getErrorMsg(error) || error.message;
+            return res.json({status:false,message:errormsg});
+        }
+
+    }
 }

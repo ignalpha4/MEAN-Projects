@@ -3,36 +3,51 @@ import { ErrorHandling } from "../utils/errorHelper";
 import {Request, Response } from "express";
 import Exam from "../models/examModel";
 import Question from "../models/questionsModel";
+import { verifyToken } from "../middlewares/authenticate";
+import mongoose from "mongoose";
 
 
 const errorObj =  new ErrorHandling();
 
 @controller('/exam')
 export class examController{
-   
+
+
+    @httpGet('/loadQuestions',verifyToken)
     async loadQuestions(@request() req: any, @response() res: Response) {
         try {
-            const userEmail = req.user.email; // assuming user email is available in request object
+            const userEmail = req.user.email; 
 
-            // Get the last exam of the user
             const lastExam = await Exam.findOne({ userEmail }).sort({ date: -1 });
 
-            let difficulty = 1; // default difficulty level
+            let difficulty = 1;
+            let lastDifficulty = lastExam?.difficulty || 1;
 
-            console.log(lastExam);
+            console.log("Last exam:",lastExam?.difficulty);
 
             if (lastExam) {
+              if (lastDifficulty < 10 && lastDifficulty > 1) {
                 if (lastExam.score >= 7) {
-                    // difficulty = lastDifficulty + 1;
+                  difficulty = lastDifficulty + 1;
                 } else {
-                    // difficulty = lastDifficulty - 1;
+                  difficulty = lastDifficulty - 1;
                 }
+              } else if (lastDifficulty === 1) {
+                if (lastExam.score >= 7) {
+                  difficulty = lastDifficulty + 1;
+                }
+              } else if (lastDifficulty === 10) {
+                difficulty = lastDifficulty;
+                if (lastExam.score < 7) {
+                  difficulty = lastDifficulty - 1;
+                }
+              }
             }
 
-            // Ensure difficulty is within bounds (1 to 10)
-            difficulty = Math.max(1, Math.min(10, difficulty));
-
-            // Fetch 10 questions based on the calculated difficulty
+            console.log("last difficulty",lastDifficulty);
+            
+            console.log("updated difficulty",difficulty);
+            
             const questions = await Question.aggregate([
                 { $match: { difficulty: difficulty } },
                 { $sample: { size: 10 } }
@@ -71,12 +86,15 @@ export class examController{
                 };
             }));
 
+            console.log("Detailed answers:",detailedAnswers);
+            
             const exam = new Exam({
                 userEmail,
                 userName,
                 date: new Date(),
                 score,
-                answers: detailedAnswers
+                answers: detailedAnswers,
+                difficulty: detailedAnswers[0].difficulty 
             });
 
             await exam.save();
@@ -85,8 +103,127 @@ export class examController{
 
         } catch (error: any) {
             const errorMsg = errorObj.getErrorMsg(error) || error.message;
+            console.log(errorMsg);
+            
             return res.status(500).json({ status: false, message: errorMsg });
         }
     }
     
+    @httpGet('/getResults',verifyToken)
+    async getResults(@request() req: any, @response() res: Response) {
+        try {
+            const userEmail = req.user.email;
+            const exams = await Exam.find({ userEmail }).sort({ date: -1 });
+            return res.status(200).json({ status: true, exams });
+        } catch (error: any) {
+            const errorMsg = errorObj.getErrorMsg(error) || error.message;
+            return res.status(500).json({ status: false, message: errorMsg });
+        }
+    }
+
+    @httpGet('/getAllResults',verifyToken)
+    async getAllResults(@request() req: any, @response() res: Response) {
+        try {
+            const exams = await Exam.find({}).sort({ date: -1 });
+            return res.status(200).json({ status: true, exams });
+        } catch (error: any) {
+            const errorMsg = errorObj.getErrorMsg(error) || error.message;
+            return res.status(500).json({ status: false, message: errorMsg });
+        }
+    }
+
+    @httpGet('/getExamById/:id',verifyToken)
+    async getExamById(@request() req: Request, @response() res: Response) {
+        try {
+            const id = req.params.id;
+            // const exam = await Exam.findById(id);
+            // console.log("Exam:",exam);
+
+            let exam = await Exam.aggregate(
+                [
+                    {
+                      $match: {
+                        _id: new mongoose.Types.ObjectId(id)
+                      }
+                    },
+                    {
+                      $lookup: {
+                        from: "questions",
+                        localField: "answers.questionId",
+                        foreignField: "_id",
+                        as: "questionDetails"
+                      }
+                    },
+                    {
+                      $unwind: "$answers"
+                    },
+                    {
+                      $lookup: {
+                        from: "questions",
+                        localField: "answers.questionId",
+                        foreignField: "_id",
+                        as: "answers.question"
+                      }
+                    },
+                    {
+                      $unwind: "$answers.question"
+                    },
+                    {
+                      $project: {
+                        _id: 1,
+                        date: 1,
+                        difficulty: 1,
+                        score: 1,
+                        userEmail: 1,
+                        userName: 1,
+                        answers: {
+                          answer: "$answers.answer",
+                          isCorrect: "$answers.isCorrect",
+                          difficulty: "$answers.difficulty",
+                          correctOption: "$answers.correctOption",
+                          q_no: "$answers.question.q_no",
+                          o1: "$answers.question.o1",
+                          o2: "$answers.question.o2",
+                          o3: "$answers.question.o3",
+                          o4: "$answers.question.o4",
+                        questionText:"$answers.question.questionText"
+                        }
+                      }
+                    },
+                    {
+                      $group: {
+                        _id: {
+                          _id: "$_id",
+                          date: "$date",
+                          difficulty: "$difficulty",
+                          score: "$score",
+                          userEmail: "$userEmail",
+                          userName: "$userName"
+                        },
+                        answers: { $push: "$answers" }
+                      }
+                    },
+                    {
+                      $project: {
+                        _id: "$_id._id",
+                        date: "$_id.date",
+                        difficulty: "$_id.difficulty",
+                        score: "$_id.score",
+                        userEmail: "$_id.userEmail",
+                        userName: "$_id.userName",
+                        answers: 1
+                      }
+                    }
+                  ]
+            );
+
+
+            return res.status(200).json({ status: true, exam });
+        } catch (error: any) {
+            const errorMsg = errorObj.getErrorMsg(error) || error.message;
+            return res.status(500).json({ status: false, message: errorMsg });
+        }
+
+    }
+
 }
