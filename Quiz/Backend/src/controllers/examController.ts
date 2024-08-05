@@ -12,7 +12,6 @@ const errorObj =  new ErrorHandling();
 @controller('/exam')
 export class examController{
 
-
     @httpGet('/loadQuestions',verifyToken)
     async loadQuestions(@request() req: any, @response() res: Response) {
         try {
