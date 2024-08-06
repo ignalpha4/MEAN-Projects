@@ -1,0 +1,502 @@
+[
+    {
+        "q_no": 1,
+        "question": "What is the capital of France?",
+        "o1": "London",
+        "o2": "Paris",
+        "o3": "Berlin",
+        "o4": "Madrid",
+        "correctOption": "2",
+        "difficulty": 2
+    },
+    {
+        "q_no": 2,
+        "question": "Who painted the Mona Lisa?",
+        "o1": "Vincent van Gogh",
+        "o2": "Leonardo da Vinci",
+        "o3": "Pablo Picasso",
+        "o4": "Michelangelo",
+        "correctOption": "2",
+        "difficulty": 5
+    },
+    {
+        "q_no": 3,
+        "question": "Which planet is known as the Red Planet?",
+        "o1": "Earth",
+        "o2": "Mars",
+        "o3": "Venus",
+        "o4": "Jupiter",
+        "correctOption": "2",
+        "difficulty": 3
+    },
+    {
+        "q_no": 4,
+        "question": "What is the tallest mountain in the world?",
+        "o1": "Mount Everest",
+        "o2": "K2",
+        "o3": "Kangchenjunga",
+        "o4": "Makalu",
+        "correctOption": "1",
+        "difficulty": 4
+    },
+    {
+        "q_no": 5,
+        "question": "Who wrote the play 'Hamlet'?",
+        "o1": "William Shakespeare",
+        "o2": "Charles Dickens",
+        "o3": "Jane Austen",
+        "o4": "Mark Twain",
+        "correctOption": "1",
+        "difficulty": 9
+    },
+    {
+        "q_no": 6,
+        "question": "Which country is famous for kangaroos?",
+        "o1": "Brazil",
+        "o2": "Australia",
+        "o3": "Canada",
+        "o4": "South Africa",
+        "correctOption": "2",
+        "difficulty": 1
+    },
+    {
+        "q_no": 7,
+        "question": "Who invented the telephone?",
+        "o1": "Thomas Edison",
+        "o2": "Alexander Graham Bell",
+        "o3": "Albert Einstein",
+        "o4": "Nikola Tesla",
+        "correctOption": "2",
+        "difficulty": 3
+    },
+    {
+        "q_no": 8,
+        "question": "Which is the largest ocean on Earth?",
+        "o1": "Indian Ocean",
+        "o2": "Atlantic Ocean",
+        "o3": "Arctic Ocean",
+        "o4": "Pacific Ocean",
+        "correctOption": "4",
+        "difficulty": 2
+    },
+    {
+        "q_no": 9,
+        "question": "Who wrote 'The Adventures of Tom Sawyer'?",
+        "o1": "Mark Twain",
+        "o2": "Charles Dickens",
+        "o3": "Jane Austen",
+        "o4": "Leo Tolstoy",
+        "correctOption": "1",
+        "difficulty": 3
+    },
+    {
+        "q_no": 10,
+        "question": "Which is the largest desert in the world?",
+        "o1": "Sahara Desert",
+        "o2": "Arabian Desert",
+        "o3": "Gobi Desert",
+        "o4": "Kalahari Desert",
+        "correctOption": "1",
+        "difficulty": 5
+    },
+    {
+        "q_no": 11,
+        "question": "Who developed the theory of relativity?",
+        "o1": "Isaac Newton",
+        "o2": "Albert Einstein",
+        "o3": "Galileo Galilei",
+        "o4": "Stephen Hawking",
+        "correctOption": "2",
+        "difficulty": 10
+    },
+    {
+        "q_no": 12,
+        "question": "Which gas do plants absorb from the atmosphere?",
+        "o1": "Nitrogen",
+        "o2": "Carbon Dioxide",
+        "o3": "Oxygen",
+        "o4": "Hydrogen",
+        "correctOption": "2",
+        "difficulty": 1
+    },
+    {
+        "q_no": 13,
+        "question": "Who wrote 'Pride and Prejudice'?",
+        "o1": "George Orwell",
+        "o2": "Jane Austen",
+        "o3": "Emily Bronte",
+        "o4": "Charlotte Bronte",
+        "correctOption": "2",
+        "difficulty": 3
+    },
+    {
+        "q_no": 14,
+        "question": "Which is the longest river in the world?",
+        "o1": "Yangtze River",
+        "o2": "Nile River",
+        "o3": "Amazon River",
+        "o4": "Mississippi River",
+        "correctOption": "3",
+        "difficulty": 4
+    },
+    {
+        "q_no": 15,
+        "question": "Who discovered penicillin?",
+        "o1": "Alexander Fleming",
+        "o2": "Louis Pasteur",
+        "o3": "Marie Curie",
+        "o4": "Florence Nightingale",
+        "correctOption": "1",
+        "difficulty": 6
+    },
+    {
+        "q_no": 16,
+        "question": "Who painted the 'Starry Night'?",
+        "o1": "Pablo Picasso",
+        "o2": "Vincent van Gogh",
+        "o3": "Claude Monet",
+        "o4": "Edvard Munch",
+        "correctOption": "2",
+        "difficulty": 7
+    },
+    {
+        "q_no": 17,
+        "question": "What is the chemical symbol for water?",
+        "o1": "Wa",
+        "o2": "H2O",
+        "o3": "H2",
+        "o4": "O2",
+        "correctOption": "2",
+        "difficulty": 10
+    },
+    {
+        "q_no": 18,
+        "question": "Which country is famous for the Great Wall?",
+        "o1": "Japan",
+        "o2": "China",
+        "o3": "Russia",
+        "o4": "India",
+        "correctOption": "2",
+        "difficulty": 4
+    },
+    {
+        "q_no": 19,
+        "question": "Who invented the light bulb?",
+        "o1": "Thomas Edison",
+        "o2": "Nikola Tesla",
+        "o3": "Benjamin Franklin",
+        "o4": "Isaac Newton",
+        "correctOption": "1",
+        "difficulty": 3
+    },
+    {
+        "q_no": 20,
+        "question": "Which is the largest animal on Earth?",
+        "o1": "Blue Whale",
+        "o2": "Elephant",
+        "o3": "Giraffe",
+        "o4": "Hippopotamus",
+        "correctOption": "1",
+        "difficulty": 9
+    },
+    {
+        "q_no": 21,
+        "question": "Who wrote 'The Great Gatsby'?",
+        "o1": "F. Scott Fitzgerald",
+        "o2": "Ernest Hemingway",
+        "o3": "John Steinbeck",
+        "o4": "Harper Lee",
+        "correctOption": "1",
+        "difficulty": 10
+    },
+    {
+        "q_no": 22,
+        "question": "What is the currency of Japan?",
+        "o1": "Dollar",
+        "o2": "Yen",
+        "o3": "Euro",
+        "o4": "Pound",
+        "correctOption": "2",
+        "difficulty": 2
+    },
+    {
+        "q_no": 23,
+        "question": "Who founded Microsoft?",
+        "o1": "Steve Jobs",
+        "o2": "Bill Gates",
+        "o3": "Larry Page",
+        "o4": "Mark Zuckerberg",
+        "correctOption": "2",
+        "difficulty": 6
+    },
+    {
+        "q_no": 24,
+        "question": "What is the largest organ in the human body?",
+        "o1": "Brain",
+        "o2": "Heart",
+        "o3": "Skin",
+        "o4": "Lungs",
+        "correctOption": "3",
+        "difficulty": 1
+    },
+    {
+        "q_no": 25,
+        "question": "Who wrote '1984'?",
+        "o1": "George Orwell",
+        "o2": "Aldous Huxley",
+        "o3": "Ray Bradbury",
+        "o4": "J.K. Rowling",
+        "correctOption": "1",
+        "difficulty": 4
+    },
+    {
+        "q_no": 26,
+        "question": "Which is the largest continent by land area?",
+        "o1": "Europe",
+        "o2": "Africa",
+        "o3": "Asia",
+        "o4": "South America",
+        "correctOption": "3",
+        "difficulty": 5
+    },
+    {
+        "q_no": 27,
+        "question": "Who discovered America?",
+        "o1": "Christopher Columbus",
+        "o2": "Marco Polo",
+        "o3": "Vasco da Gama",
+        "o4": "Amerigo Vespucci",
+        "correctOption": "1",
+        "difficulty": 7
+    },
+    {
+        "q_no": 28,
+        "question": "What is the largest planet in our solar system?",
+        "o1": "Earth",
+        "o2": "Venus",
+        "o3": "Jupiter",
+        "o4": "Mars",
+        "correctOption": "3",
+        "difficulty": 6
+    },
+    {
+        "q_no": 29,
+        "question": "Who is known as the 'Father of Computers'?",
+        "o1": "Alan Turing",
+        "o2": "Charles Babbage",
+        "o3": "Steve Jobs",
+        "o4": "Tim Berners-Lee",
+        "correctOption": "2",
+        "difficulty": 8
+    },
+    {
+        "q_no": 30,
+        "question": "What is the largest species of bear?",
+        "o1": "Polar Bear",
+        "o2": "Black Bear",
+        "o3": "Grizzly Bear",
+        "o4": "Kodiak Bear",
+        "correctOption": "4",
+        "difficulty": 6
+    },
+    {
+        "q_no": 31,
+        "question": "Who wrote 'To Kill a Mockingbird'?",
+        "o1": "Harper Lee",
+        "o2": "John Steinbeck",
+        "o3": "F. Scott Fitzgerald",
+        "o4": "Ernest Hemingway",
+        "correctOption": "1",
+        "difficulty": 10
+    },
+    {
+        "q_no": 32,
+        "question": "Which planet is known as the 'Morning Star'?",
+        "o1": "Mars",
+        "o2": "Venus",
+        "o3": "Jupiter",
+        "o4": "Saturn",
+        "correctOption": "2",
+        "difficulty": 5
+    },
+    {
+        "q_no": 33,
+        "question": "Who discovered the theory of evolution?",
+        "o1": "Charles Darwin",
+        "o2": "Isaac Newton",
+        "o3": "Albert Einstein",
+        "o4": "Gregor Mendel",
+        "correctOption": "1",
+        "difficulty": 7
+    },
+    {
+        "q_no": 34,
+        "question": "What is the chemical symbol for gold?",
+        "o1": "Go",
+        "o2": "Gd",
+        "o3": "Au",
+        "o4": "Ag",
+        "correctOption": "3",
+        "difficulty": 2
+    },
+    {
+        "q_no": 35,
+        "question": "Who painted the ceiling of the Sistine Chapel?",
+        "o1": "Raphael",
+        "o2": "Leonardo da Vinci",
+        "o3": "Michelangelo",
+        "o4": "Donatello",
+        "correctOption": "3",
+        "difficulty": 8
+    },
+    {
+        "q_no": 36,
+        "question": "Which country is known as the 'Land of the Rising Sun'?",
+        "o1": "China",
+        "o2": "Russia",
+        "o3": "Japan",
+        "o4": "India",
+        "correctOption": "3",
+        "difficulty": 4
+    },
+    {
+        "q_no": 37,
+        "question": "Who composed 'The Four Seasons'?",
+        "o1": "Johann Sebastian Bach",
+        "o2": "Wolfgang Amadeus Mozart",
+        "o3": "Ludwig van Beethoven",
+        "o4": "Antonio Vivaldi",
+        "correctOption": "4",
+        "difficulty": 6
+    },
+    {
+        "q_no": 38,
+        "question": "What is the chemical symbol for iron?",
+        "o1": "Fe",
+        "o2": "Ir",
+        "o3": "In",
+        "o4": "I",
+        "correctOption": "1",
+        "difficulty": 10
+    },
+    {
+        "q_no": 39,
+        "question": "Who was the first man to walk on the moon?",
+        "o1": "Buzz Aldrin",
+        "o2": "Neil Armstrong",
+        "o3": "Yuri Gagarin",
+        "o4": "Alan Shepard",
+        "correctOption": "2",
+        "difficulty": 9
+    },
+    {
+        "q_no": 40,
+        "question": "Which is the largest bird in the world?",
+        "o1": "Emu",
+        "o2": "Ostrich",
+        "o3": "Eagle",
+        "o4": "Albatross",
+        "correctOption": "2",
+        "difficulty": 8
+    },
+    {
+        "q_no": 41,
+        "question": "Who painted 'The Last Supper'?",
+        "o1": "Raphael",
+        "o2": "Leonardo da Vinci",
+        "o3": "Michelangelo",
+        "o4": "Vincent van Gogh",
+        "correctOption": "2",
+        "difficulty": 7
+    },
+    {
+        "q_no": 42,
+        "question": "What is the chemical symbol for sodium?",
+        "o1": "So",
+        "o2": "Na",
+        "o3": "Sn",
+        "o4": "Si",
+        "correctOption": "2",
+        "difficulty": 4
+    },
+    {
+        "q_no": 43,
+        "question": "Who wrote 'The Canterbury Tales'?",
+        "o1": "Geoffrey Chaucer",
+        "o2": "John Milton",
+        "o3": "William Shakespeare",
+        "o4": "Charles Dickens",
+        "correctOption": "1",
+        "difficulty": 5
+    },
+    {
+        "q_no": 44,
+        "question": "Which is the largest tree in the world?",
+        "o1": "Giant Sequoia",
+        "o2": "Douglas Fir",
+        "o3": "Oak",
+        "o4": "Pine",
+        "correctOption": "1",
+        "difficulty": 6
+    },
+    {
+        "q_no": 45,
+        "question": "Who composed 'Fur Elise'?",
+        "o1": "Johann Sebastian Bach",
+        "o2": "Wolfgang Amadeus Mozart",
+        "o3": "Ludwig van Beethoven",
+        "o4": "Antonio Vivaldi",
+        "correctOption": "3",
+        "difficulty": 5
+    },
+    {
+        "q_no": 46,
+        "question": "What is the chemical symbol for silver?",
+        "o1": "Sv",
+        "o2": "Sg",
+        "o3": "Si",
+        "o4": "Ag",
+        "correctOption": "4",
+        "difficulty": 2
+    },
+    {
+        "q_no": 47,
+        "question": "Who discovered penicillin?",
+        "o1": "Alexander Fleming",
+        "o2": "Marie Curie",
+        "o3": "Louis Pasteur",
+        "o4": "Florence Nightingale",
+        "correctOption": "1",
+        "difficulty": 6
+    },
+    {
+        "q_no": 48,
+        "question": "Which country is known as the 'Land of the Midnight Sun'?",
+        "o1": "Norway",
+        "o2": "Russia",
+        "o3": "Finland",
+        "o4": "Sweden",
+        "correctOption": "1",
+        "difficulty": 4
+    },
+    {
+        "q_no": 49,
+        "question": "Who wrote 'The Catcher in the Rye'?",
+        "o1": "J.D. Salinger",
+        "o2": "Ernest Hemingway",
+        "o3": "F. Scott Fitzgerald",
+        "o4": "Harper Lee",
+        "correctOption": "1",
+        "difficulty": 5
+    },
+    {
+        "q_no": 50,
+        "question": "Which is the largest animal in the world?",
+        "o1": "Blue Whale",
+        "o2": "Elephant",
+        "o3": "Giraffe",
+        "o4": "Hippopotamus",
+        "correctOption": "1",
+        "difficulty": 7
+    }
+]

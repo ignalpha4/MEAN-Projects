@@ -1,0 +1,15 @@
+
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Exams Activity</h1>
+   
+    <div class="container mt-5">
+        <ag-grid-angular
+        class="ag-theme-quartz-dark"
+        [rowData]="exams"
+        [columnDefs]="colDef"
+        style="height: 500px;width: auto;"
+        [pagination]="true"
+        ></ag-grid-angular>
+    </div>
+</div>
