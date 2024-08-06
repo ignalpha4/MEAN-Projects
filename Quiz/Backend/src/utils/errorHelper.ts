@@ -1,6 +1,7 @@
 
 export class ErrorHandling {
     getErrorMsg(error: any): string {
+
       if (error.name === 'ValidationError') {
         return this.handleValidationError(error);
       } else if (error.name === 'CastError') {
@@ -10,6 +11,7 @@ export class ErrorHandling {
       }else if(error.code === 2){
         return "User with This Name or Email does not Exists"
       } 
+      
       else {
         return error.message;
       }

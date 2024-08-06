@@ -1,154 +1,83 @@
-import user from "../models/usersModel";
-import { ErrorHandling } from "../utils/errorHelper";
-import bcrypt from "bcrypt";
 import { Response, Request } from "express";
-import { generateUserToken } from "../utils/jwt";
-import upload from "../middlewares/profileUpload";
 import { controller, httpGet, httpPost } from "inversify-express-utils";
+import { inject } from "inversify";
+import { TYPES } from "../Types/user.types";
+import { authService } from "../services/authService";
+import upload from "../middlewares/profileUpload";
 import { verifyToken } from "../middlewares/authenticate";
+import { ErrorHandling } from "../utils/errorHelper";
 
 const errorObj = new ErrorHandling();
 
 @controller('/user')
-export class userController{
+export class userController {
+  constructor(@inject(TYPES.authService) private authService: authService) {}
 
-  constructor(){};
-
-  @httpPost('/signup',upload)
-  async signup(req: Request, res: Response){
-  
-      try {
-          console.log("inside signup");
-          
-          const { name, email, password, role } = req.body;
-
-          console.log(req.file);
-          
-          
-          const profileImage = req.file ? `/uploads/${req.file.filename}` : "";
-  
-          if (!name || !email || !password || !role) {
-            throw new Error("Required fields are not provided!");
-          }
-      
-          const foundUser = await user.findOne({ email });
-      
-          if (foundUser) {
-            throw new Error("Email already exists");
-          }
-  
-          let userObj = {
-            name,
-            email,
-            password,
-            role,
-            profileImage,
-          }
-      
-          const newUser = await user.create(userObj);
-
-          
-      
-          if (!newUser) {
-            throw new Error("Error creating new user");
-          }
-      
-          return res.json({ status: true, message: "user signup successfull" });
-  
-        } catch (error: any) {
-          const errormsg = errorObj.getErrorMsg(error) || error.message;
-          console.log(errormsg)
-          return res.json({ status: false, message: errormsg });
-        }
-  };
-  
-  @httpPost('/login')
-  async login(req: Request, res: Response){
+  @httpPost('/signup', upload)
+  async signup(req: Request, res: Response) {
     try {
+      const { name, email, password, role } = req.body;
+      const profileImage = req.file ? `/uploads/${req.file.filename}` : "";
 
-      
-      const { email, password } = req.body;
-  
-      const foundUser = await user.findOne({ email });
-  
-      if (!foundUser) {
-        throw new Error("user not found with this email");
+      if (!name || !email || !password || !role) {
+        throw new Error("Required fields are not provided!");
       }
-  
-      const matchedPass = await bcrypt.compare(password, foundUser.password);
-  
-      if (!matchedPass) {
-        throw new Error("Incorrect Password");
-      }
-  
-      const payload = {
-        email: foundUser.email,
-        id: foundUser._id,
-        role: foundUser.role,
-      };
-  
-      const token = generateUserToken(payload);
-  
-      
-      return res
-        .status(200)
-        .json({
-          status: true,
-          message: "User logged in successfully",
-          token: token,
-          user: foundUser,
-        });
+
+      const result = await this.authService.signup({ name, email, password, role, profileImage });
+
+      return res.json({ status: true, message: "User signup successful", user: result });
     } catch (error: any) {
-
-      const errormsg = errorObj.getErrorMsg(error) || error.error;
+      const errormsg = errorObj.getErrorMsg(error) || error.message;
       console.log(errormsg);
-      
       return res.json({ status: false, message: errormsg });
     }
-  };
-  
-  @httpGet('/getCurrentUser',verifyToken)
-  async getCurrentUser(req: any, res: Response){
+  }
+
+  @httpPost('/login')
+  async login(req: Request, res: Response) {
+    try {
+      const { email, password } = req.body;
+      const result = await this.authService.login(email, password);
+
+      return res.status(200).json({
+        status: true,
+        message: "User logged in successfully",
+        token: result.token,
+        user: result.user,
+      });
+    } catch (error: any) {
+      const errormsg = errorObj.getErrorMsg(error) || error.message;
+      console.log(errormsg);
+      return res.json({ status: false, message: errormsg });
+    }
+  }
+
+  @httpGet('/getCurrentUser', verifyToken)
+  async getCurrentUser(req: any, res: Response) {
     try {
       const id = req.user.id;
-  
       if (!id) {
-        throw new Error("ID Paramater not provided!");
+        throw new Error("ID Parameter not provided!");
       }
-  
-      const foundUser = await user.findById(id);
-  
-      if (!foundUser) {
-        throw new Error("User not found with this ID");
-      }
-  
-      return res.status(200).json({ status: true, message: "User details found", user: foundUser });
 
+      const user = await this.authService.getCurrentUser(id);
+
+      return res.status(200).json({ status: true, message: "User details found", user });
     } catch (error: any) {
-      const errormsg = errorObj.getErrorMsg(error) || error.error;
+      const errormsg = errorObj.getErrorMsg(error) || error.message;
       return res.json({ status: false, message: errormsg });
     }
-  };
-  
-  @httpGet('/getAllUsers',verifyToken)
-  async getAllUsers(req:Request,res:Response){
+  }
+
+  @httpGet('/getAllUsers', verifyToken)
+  async getAllUsers(req: Request, res: Response) {
     try {
-      const users =  await user.find();
+      const users = await this.authService.getAllUsers();
 
-      if(!users){
-        throw new Error("No users found");
-      }
-
-      console.log("thsese are all users",users);
-      
-      return res.status(200).json({status:true,message:"Users List",users});
-  
-    } catch (error:any) {  
-      const errormsg =  errorObj.getErrorMsg(error) || error.message;
-      return res.status(500).json({status:false,message:errormsg});
+      return res.status(200).json({ status: true, message: "Users List", users });
+    } catch (error: any) {
+      const errormsg = errorObj.getErrorMsg(error) || error.message;
+      return res.status(500).json({ status: false, message: errormsg });
     }
   }
 }
-
-
-
