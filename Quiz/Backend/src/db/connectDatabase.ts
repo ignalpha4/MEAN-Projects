@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 import {config} from "dotenv";
+import { seedAdminUser } from "../utils/seedAdmin";
 
 config();
 
@@ -10,6 +11,7 @@ export const connect_db =()=>{
     mongoose.connect(URL)
     .then(()=>{
         console.log("Connected to Database");
+        seedAdminUser()
     })
     .catch((error)=>{
         console.log(error);

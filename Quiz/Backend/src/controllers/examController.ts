@@ -28,8 +28,13 @@ export class examController {
                     difficulty = lastExam.score >= 7 ? lastDifficulty + 1 : lastDifficulty - 1;
                 } else if (lastDifficulty === 1) {
                     difficulty = lastExam.score >= 7 ? lastDifficulty + 1 : lastDifficulty;
-                } else if (lastDifficulty === 10 && lastExam.score < 7) {
-                    difficulty = lastDifficulty - 1;
+                } else if (lastDifficulty === 10 ) {
+
+                    difficulty = lastDifficulty
+
+                    if(lastExam.score<7){
+                        difficulty = lastDifficulty - 1;
+                    }
                 }
             }
 

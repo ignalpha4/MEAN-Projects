@@ -67,7 +67,7 @@ export class questionsController {
     }
   }
 
-  // get question using quuestion no
+  // get question using question no
   @httpGet('/getQuestion/:q_no', verifyToken)
   async getQuestion(req: Request, res: Response) {
     try {
