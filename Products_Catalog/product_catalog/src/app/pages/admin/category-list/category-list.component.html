@@ -1,0 +1,19 @@
+<br><br><br>
+<app-category-form  [editCat]="selectedCat"></app-category-form>
+
+<hr>
+<div class="container mt-5" style="height: 440px;width: 100%;">
+    <h3 style="text-align: center;"> Categories List</h3>
+
+    <ag-grid-angular
+        [rowData]="categories"
+        [columnDefs]="colDefs"
+        style="width: 100%; height: 440px;"
+        class="ag-theme-quartz mt-4"
+        [pagination]="true"
+        [paginationPageSize]="20">
+        
+    </ag-grid-angular>
+
+</div>
+

@@ -1,0 +1,19 @@
+<br><br><br>
+<app-supplier-form  [editedSupp]="selectedSupplier"></app-supplier-form>
+<hr>
+
+<div class="container mt-2" style="height: 440px;width: 100%;">
+
+    <h3 style="text-align: center;"> Suppliers List</h3>
+    
+    <ag-grid-angular
+    [rowData]="suppliers"
+    [columnDefs]="colDefs"
+    style="height: 440px; width:100%"
+    class="ag-theme-quartz mt-4"
+    [pagination]="true"
+    [paginationPageSize]="20"    
+    >
+    </ag-grid-angular>
+
+</div>

@@ -1,0 +1,32 @@
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container justify-content-between">
+      <a class="navbar-brand" routerLink="/pages/admin/dashboard/dashboardContent">ADMIN DASHBOARD</a>
+      <button class="btn btn-danger" (click)="logout()">Logout</button>
+  </div>
+</nav>
+
+<div class="container-fluid main-container">
+<div class="row flex-grow-1">
+  <div class="col-lg-2 col-md-3 col-sm-4 sidebar bg-secondary" style="height: 120vh;">
+    <div class="list-group mt-5">
+      <h5 class="text-center">Welcome <strong>{{username | uppercase}}</strong></h5>
+      <br><br>
+      <button type="button" class="list-group-item btn" routerLink="manageProducts">
+        Manage Products
+      </button>
+      <br>
+      <button type="button" class="list-group-item btn" routerLink="manageCategories">
+        Manage Categories
+      </button>
+      <br>
+      <button type="button" class="list-group-item btn" routerLink="manageSuppliers">
+        Manage Suppliers
+      </button>
+      <br>
+    </div>
+  </div>
+  <div class="col-lg-10 col-md-9 col-sm-8 main-content mb-2">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+</div>

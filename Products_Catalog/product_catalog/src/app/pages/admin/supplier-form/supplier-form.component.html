@@ -1,0 +1,46 @@
+<h3 style="text-align: center;">Supplier Details</h3>
+
+<div class="container">
+  <form [formGroup]="SuppForm" (ngSubmit)="submit()" class="form-control mt-4">
+    <h3>Suppliers Details</h3>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <label for="S_Id">Supplier ID :</label>
+        <input type="number" class="form-control" formControlName="S_Id" id="S_Id" />
+        <div *ngIf="SuppForm.get('S_Id')?.invalid && SuppForm.get('S_Id')?.touched">
+          <p style="color: red;">This field is required </p>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <label for="S_Name">Supplier Name</label>
+        <input type="text" class="form-control" formControlName="S_Name" id="S_Name" />
+        <div *ngIf="SuppForm.get('S_Name')?.invalid && SuppForm.get('S_Name')?.touched">
+          <p style="color: red;">This field is required </p>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-lg-6">
+        <label for="S_Contact">Supplier Contact :</label>
+        <input type="number" class="form-control" formControlName="S_Contact" id="S_Contact" />
+        <div *ngIf="SuppForm.get('S_Contact')?.invalid && SuppForm.get('S_Contact')?.touched">
+          <p style="color: red;">This field is required </p>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <label for="S_Address">Supplier Address</label>
+        <input type="text" class="form-control" formControlName="S_Address" id="S_Address" />
+        <div *ngIf="SuppForm.get('S_Address')?.invalid && SuppForm.get('S_Address')?.touched">
+          <p style="color: red;">This field is required </p>
+        </div>
+      </div>
+    </div>
+    <hr />
+    <div class="submitButton">
+      <button type="submit" class="btn btn-primary" [disabled]="SuppForm.invalid">Submit</button>
+    </div>
+  </form>
+  <br />
+</div>

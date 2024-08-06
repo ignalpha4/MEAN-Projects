@@ -1,0 +1,33 @@
+<h3 style="text-align: center;">Category Details</h3>
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <form [formGroup]="Cat_Form" class="form-control" (ngSubmit)="submit()">
+        <div class="row mt-4">
+          <div class="col-lg">
+            <label for="C_Id">Category ID</label>
+            <input type="number" class="form-control" id="C_Id" formControlName="C_Id" />
+            <div *ngIf="Cat_Form.get('C_Id')?.invalid && Cat_Form.get('C_Id')?.touched">
+              <p style="color: red;">This field is required </p>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-lg">
+            <label for="C_Name">Category Name</label>
+            <input type="text" class="form-control" id="C_Name" formControlName="C_Name" />
+            <div *ngIf="Cat_Form.get('C_Name')?.invalid && Cat_Form.get('C_Name')?.touched">
+              <p style="color: red;">This field is required </p>
+            </div>
+          </div>
+        </div>
+        <hr/>
+        <div class="submitButton">
+          <button type="submit" class="btn btn-primary" [disabled]="Cat_Form.invalid">Submit</button>
+        </div>
+      </form>
+      <br/>
+    </div>
+  </div>
+</div>

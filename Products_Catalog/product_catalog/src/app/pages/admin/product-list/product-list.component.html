@@ -1,0 +1,22 @@
+
+
+<br><br><br>
+<app-product-form  [editProduct]="selectedProduct"></app-product-form>
+
+<hr>
+
+
+<div class="container mt-2" style="height:440px;width: 100%;">
+
+    <h3 style="text-align: center;"> Products List</h3>
+    <ag-grid-angular
+    [rowData]="products"
+    [columnDefs]="ColDef"
+    style="width: 100%; height: 440px;"
+    class="ag-theme-quartz mt-4"
+    [pagination]="true"
+    [paginationPageSize]="20">
+    </ag-grid-angular>
+
+</div>
+
