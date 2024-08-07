@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ColDef, ColGroupDef } from 'ag-grid-community';
-import { ISupplier } from 'src/app/core/interfaces/supplier.interface';
 import { SupplierService } from 'src/app/core/services/supplier.service';
 
 @Component({
@@ -11,15 +10,15 @@ import { SupplierService } from 'src/app/core/services/supplier.service';
 export class SupplierListComponent {
 
 
-  suppliers: ISupplier[] = [];
-  selectedSupplier !:ISupplier;
+  suppliers: any[] = [];
+  selectedSupplier !:any;
 
   constructor(private supplierService:SupplierService){
 
   }
 
   colDefs : (ColDef | ColGroupDef)[] = [
-    {headerName:"Supplier ID: ",field:"S_Id",minWidth:200},
+    {headerName:"Supplier ID: ",field:"_id",minWidth:200},
     {headerName:"Supplier Name :",field:"S_Name",minWidth:280},
     {headerName:"Supplier Contact: ",field:"S_Contact"},
     {headerName:"Supplier Address",field:"S_Address",minWidth:400},
@@ -44,8 +43,9 @@ export class SupplierListComponent {
   ]
 
   ngOnInit():void{
-    this.supplierService.suppliers$.subscribe(suppliers=>{
-      this.suppliers = suppliers;
+
+    this.supplierService.listSuppliers().subscribe((res)=>{
+      this.suppliers =  res.suppliers;
     })
   }
 

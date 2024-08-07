@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ColDef, ColGroupDef } from 'ag-grid-community';
-import { IProduct } from 'src/app/core/interfaces/product.interface';
 import { ProductService } from 'src/app/core/services/product.service';
 
 @Component({
@@ -11,8 +10,8 @@ import { ProductService } from 'src/app/core/services/product.service';
 })
 export class ProductListComponent {
 
-  products:IProduct[] = [];
-  selectedProduct!: IProduct ;
+  products:any[] = [];
+  selectedProduct!: any ;
 
   constructor(private productService:ProductService){};
 

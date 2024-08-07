@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ColDef, ColGroupDef } from 'ag-grid-community';
-import { ICat } from 'src/app/core/interfaces/category.interface';
 import { CategoryService } from 'src/app/core/services/category.service';
 
 
@@ -13,13 +12,13 @@ import { CategoryService } from 'src/app/core/services/category.service';
 
 export class CategoryListComponent implements OnInit {
 
-  categories: ICat[] = [];
-  selectedCat!: ICat;
+  categories: any[] = [];
+  selectedCat!: any;
 
   constructor(private categoryService:CategoryService) {}
 
   colDefs: (ColDef | ColGroupDef)[] = [
-    { headerName: 'Category ID', field: 'C_Id', minWidth: 500 },
+    { headerName: 'Category ID', field: '_id', minWidth: 500 },
     { headerName: 'Category Name', field: 'C_Name', minWidth: 600 },
     {
       headerName: 'Action',
@@ -42,9 +41,10 @@ export class CategoryListComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.categoryService.categories$.subscribe(categories => {
-      this.categories = categories;
-    });
+
+    this.categoryService.listCategory().subscribe((res:any)=>{
+      this.categories = res.categories;
+    })
 
   }
 
@@ -54,7 +54,7 @@ export class CategoryListComponent implements OnInit {
 
   editCategory(Id: number): void {
 
-    const foundCategory = this.categories.find((cat:ICat) => cat.C_Id === Id);
+    const foundCategory = this.categories.find((cat:any) => cat.C_Id === Id);
 
     if (foundCategory) {
       this.selectedCat = foundCategory;

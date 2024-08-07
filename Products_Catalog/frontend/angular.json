@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "product_catalog": {
+    "quiz": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/product_catalog",
+            "outputPath": "dist/quiz",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -34,7 +34,7 @@
               "node_modules/bootstrap/scss/bootstrap.scss"
             ],
             "scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ]
           },
           "configurations": {
@@ -68,10 +68,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "product_catalog:build:production"
+              "browserTarget": "quiz:build:production"
             },
             "development": {
-              "browserTarget": "product_catalog:build:development"
+              "browserTarget": "quiz:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -79,7 +79,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "product_catalog:build"
+            "browserTarget": "quiz:build"
           }
         },
         "test": {
@@ -103,5 +103,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "ccae675f-50ad-4ab0-ba6c-c8ade2114074"
   }
 }

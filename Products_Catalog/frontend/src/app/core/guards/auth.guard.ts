@@ -1,26 +1,39 @@
-import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { inject } from '@angular/core';
 
 export const authGuard: CanActivateFn = (route, state) => {
+
   const userAuthService = inject(AuthService);
   const router = inject(Router);
+  let currentUser: any = null;
 
-  const currentUser =  userAuthService.getCurrentUser();
-  const requiredRoles = route.data?.['roles'];
+  userAuthService.getCurrentUser().subscribe((res:any)=>{
 
+    if(res.success){
 
-  if(!currentUser){
-    alert('Login is required');
-    router.navigate(['/login']);
-    return false;
-  }
+      currentUser = res.user;
+      console.log(currentUser);
 
-  if(requiredRoles && !requiredRoles.includes(currentUser.role)){
-    alert("User not authorized");
-    router.navigate(['/login']);
-    return false;
-  }
+      if(!currentUser){
+        alert('Please login first!');
+        router.navigate(['/login']);
+        return false;
+      }
+
+      const requiredRoles = route.data?.['roles'];
+
+      if(requiredRoles && !requiredRoles.includes(currentUser.role)){
+        alert("User not authorized");
+        router.navigate(['/login']);
+        return false;
+      }
+
+    }
+    
+    return true;
+  });
 
   return true;
+
 };

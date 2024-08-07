@@ -1,6 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ISupplier } from 'src/app/core/interfaces/supplier.interface';
 import { SupplierService } from 'src/app/core/services/supplier.service';
 
 
@@ -13,7 +12,7 @@ export class SupplierFormComponent implements OnChanges {
 
   SuppForm !: FormGroup;
 
-  @Input() editedSupp!:ISupplier;
+  @Input() editedSupp!:any;
   
   constructor(private fb:FormBuilder,private supplierService: SupplierService){
     this.initForm();
@@ -27,7 +26,6 @@ export class SupplierFormComponent implements OnChanges {
 
   initForm():void{
     this.SuppForm = this.fb.group({
-      S_Id:['',Validators.required],
       S_Name:['',Validators.required],
       S_Contact:['',Validators.required],
       S_Address:['',Validators.required]
@@ -36,10 +34,19 @@ export class SupplierFormComponent implements OnChanges {
 
   submit():void{
     const formData = this.SuppForm.value;
-    
-    this.supplierService.addData(formData);
 
+    this.supplierService.addSupplier(formData).subscribe((res:any)=>{
+      if(res.status){
+        alert("Supplier added successfully");
+        
     this.SuppForm.reset();
+      }else{
+        alert(res.message);
+      }
+    })
+
+
+
   }
 
 }

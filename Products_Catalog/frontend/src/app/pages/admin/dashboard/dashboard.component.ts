@@ -9,11 +9,11 @@ import { AuthService } from 'src/app/core/services/auth.service';
 })
 export class DashboardComponent {
 
-  username:string
+  username:string = '';
 
   constructor(private authService:AuthService,private router:Router){
     let user = this.authService.getCurrentUser();
-    this.username = user.name;
+    // this.username = user.name;
   }
 
 

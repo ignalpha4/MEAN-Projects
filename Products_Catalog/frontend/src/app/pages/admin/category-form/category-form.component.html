@@ -4,15 +4,7 @@
   <div class="row justify-content-center">
     <div class="col-lg-6">
       <form [formGroup]="Cat_Form" class="form-control" (ngSubmit)="submit()">
-        <div class="row mt-4">
-          <div class="col-lg">
-            <label for="C_Id">Category ID</label>
-            <input type="number" class="form-control" id="C_Id" formControlName="C_Id" />
-            <div *ngIf="Cat_Form.get('C_Id')?.invalid && Cat_Form.get('C_Id')?.touched">
-              <p style="color: red;">This field is required </p>
-            </div>
-          </div>
-        </div>
+        
         <div class="row mt-4">
           <div class="col-lg">
             <label for="C_Name">Category Name</label>

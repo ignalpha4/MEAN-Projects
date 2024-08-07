@@ -1,6 +1,6 @@
 <div class="container">
   <h3 style="text-align: center;">Product Details</h3>
-  <form [formGroup]="form" (ngSubmit)="submit()" class="form-control mt-4">
+  <form [formGroup]="form" (ngSubmit)="submit()" class="form-control mt-4" enctype="multipart/form-data">
     <div class="row mt-4">
       <div class="col-lg-4">
         <label for="P_Id">Product ID:</label>
@@ -19,7 +19,7 @@
       <div class="col-lg-4">
         <label for="P_Category">Product Category</label>
         <select id="P_Category" formControlName="P_Category" class="form-control">
-          <option *ngFor="let category of categories" [value]="category.C_Name">{{ category.C_Name }}</option>
+          <option *ngFor="let category of categories" [value]="category._id">{{ category.C_Name }}</option>
         </select>
         <div *ngIf="form.get('P_Category')?.invalid && form.get('P_Category')?.touched">
           <p style="color: red;">This field is required </p>
@@ -40,18 +40,17 @@
       <div class="col-lg-4">
         <label for="P_Supplier">Product Supplier</label>
         <select id="P_Supplier" formControlName="P_Supplier" class="form-control">
-          <option *ngFor="let supplier of suppliers" [value]="supplier.S_Name">{{ supplier.S_Name }}</option>
+          <option *ngFor="let supplier of suppliers" [value]="supplier._id">{{ supplier.S_Name }}</option>
         </select>
         <div *ngIf="form.get('P_Supplier')?.invalid && form.get('P_Supplier')?.touched">
           <p style="color: red;">This field is required </p>
         </div>
       </div>
       <div class="col-lg-4">
-        <label for="P_Image">Product Image</label>
-        <input type="file" id="P_Image" (change)="onImageChange($event)" class="form-control" />
-        <div *ngIf="form.get('P_Image')?.invalid && form.get('P_Image')?.touched">
-          <p style="color: red;">This field is required </p>
-        </div>
+
+          <label for="P_Image" class="form-label">Product Image</label>
+          <input type="file" id="P_Image" formControlName="P_Image" (change)="onFileChange($event)" class="form-control form-control-lg">
+
       </div>
     </div>
 

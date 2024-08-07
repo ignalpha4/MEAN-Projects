@@ -2,8 +2,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ICat } from 'src/app/core/interfaces/category.interface';
-import { IProduct } from 'src/app/core/interfaces/product.interface';
 import { CategoryService } from 'src/app/core/services/category.service';
 import { ProductService } from 'src/app/core/services/product.service';
 
@@ -16,9 +14,9 @@ export class ViewProductsComponent {
 
   filterForm!: FormGroup;
   searchKey: string = '';
-  products: IProduct[] = [];
-  filteredProducts: IProduct[] = [];
-  categories: ICat[] = [];
+  products: any[] = [];
+  filteredProducts: any[] = [];
+  categories: any[] = [];
 
   constructor(private productService: ProductService,private categoryService: CategoryService,private router: Router,private fb: FormBuilder) {
     this.initForm();
@@ -76,7 +74,7 @@ export class ViewProductsComponent {
     );
   }
 
-  viewProduct(product: IProduct) {
+  viewProduct(product: any) {
     localStorage.setItem('currentItem', JSON.stringify(product));
     this.router.navigate(['pages/user/dashboard/product-details']);
   }

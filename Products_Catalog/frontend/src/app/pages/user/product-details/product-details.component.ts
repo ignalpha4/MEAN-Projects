@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { IProduct } from 'src/app/core/interfaces/product.interface';
 
 @Component({
   selector: 'app-product-details',
@@ -7,7 +6,7 @@ import { IProduct } from 'src/app/core/interfaces/product.interface';
   styleUrls: ['./product-details.component.scss']
 })
 export class ProductDetailsComponent implements OnInit {
-  currentItem?: IProduct;
+  currentItem?: any;
 
   ngOnInit() {
     const item = localStorage.getItem('currentItem');

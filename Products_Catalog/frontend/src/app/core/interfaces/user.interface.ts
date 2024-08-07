@@ -1,8 +1,7 @@
-
-
-export interface IUser{
-    email: string,
-    name: string,
-    password: string,
-    role: string
+export interface IUser {
+    name: string;
+    email: string;
+    password: string;
+    role: 'admin' | 'user'; 
+    profileImage: string;
 }

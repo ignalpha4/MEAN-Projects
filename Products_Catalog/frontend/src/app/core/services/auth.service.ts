@@ -1,61 +1,40 @@
 import { Injectable } from '@angular/core';
-import { IUser } from '../interfaces/user.interface';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class AuthService {
-  constructor() { }
 
-  getUsers(){
-    let users = localStorage.getItem('users')
-    return users ? JSON.parse(users) : []; 
+  private baseUrl: string = 'http://localhost:5000';
+
+  constructor(private http: HttpClient) { }
+
+  signup(user: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/user/signup`, user);
   }
 
-  addUser(newUser:IUser){
-    let users = this.getUsers();
-
-    let user = users.find((user:IUser)=>user.email === newUser.email);
-
-    if(user){
-      return false;
-    }
-
-    users.push(newUser);
-    localStorage.setItem('users',JSON.stringify(users));
-    return true;
+  login(user:any):Observable<any>{
+    return this.http.post(`${this.baseUrl}/user/login`,user);
   }
 
-  userLogin(loginUser:IUser){
 
-    let users = this.getUsers();
-
-    let user =  users.find((user:IUser)=>user.email === loginUser.email && user.password ===loginUser.password);
-
-    if(user){
-      return true;
-    }
-    return false;
+  getCurrentUser(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/user/getCurrentUser`);
   }
 
-  setCurrentUser(loginUser:IUser){
-    localStorage.setItem('currentUser',loginUser.email);
+  getAllUsers(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/user/getAllUsers`);
   }
 
-  getCurrentUser(){
-
-    let users =  this.getUsers();
-
-    let currentuser = localStorage.getItem('currentUser');
-
-    let user = users.find((user:IUser)=>user.email === currentuser);
-
-    return user;
+  updateProfileImage(data: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/user/updateProfileImage`, data);
   }
 
-  logout(){
-    localStorage.removeItem('currentUser');
+  logout(): void {
+    localStorage.removeItem('token');
   }
-
+  
 }

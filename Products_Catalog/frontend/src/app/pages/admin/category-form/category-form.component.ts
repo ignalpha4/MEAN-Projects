@@ -1,6 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ICat } from 'src/app/core/interfaces/category.interface';
 import { CategoryService } from 'src/app/core/services/category.service';
 
 
@@ -12,7 +11,7 @@ import { CategoryService } from 'src/app/core/services/category.service';
 export class CategoryFormComponent implements OnChanges {
   Cat_Form!: FormGroup;
 
-  @Input() editCat!: ICat;
+  @Input() editCat!: any;
 
   constructor(private fb: FormBuilder, private categoryService:CategoryService) {
     this.initForm();
@@ -26,14 +25,21 @@ export class CategoryFormComponent implements OnChanges {
 
   initForm(): void {
     this.Cat_Form = this.fb.group({
-      C_Id: ['',Validators.required],
       C_Name: ['',Validators.required],
     });
   }
 
   submit(): void {
     const formData = this.Cat_Form.value;
-    this.categoryService.addData(formData);
-    this.Cat_Form.reset();
+
+    this.categoryService.addCategory(formData).subscribe((res:any)=>{
+      if(res.status){
+        alert("category added successfully!!!!!!!!!!")
+        this.Cat_Form.reset();
+      }else{
+        alert(res.message);
+      }
+    })
+
   }
 }
