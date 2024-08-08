@@ -17,16 +17,20 @@ export class ViewProductsComponent {
   products: any[] = [];
   filteredProducts: any[] = [];
   categories: any[] = [];
+  productImageURL:any ='http://localhost:5000';
 
   constructor(private productService: ProductService,private categoryService: CategoryService,private router: Router,private fb: FormBuilder) {
     this.initForm();
-    this.productService.products$.subscribe(products => {
-      this.products = products;
-      this.filteredProducts = products;
-    });
-    this.categoryService.categories$.subscribe(categories => {
-      this.categories = categories;
-    });
+
+    this.productService.listProducts().subscribe((res:any)=>{
+      this.products = res.products;
+      this.filteredProducts = res.products;
+    })
+
+    this.categoryService.listCategory().subscribe((res:any)=>{
+      this.categories = res.categories;
+    })
+    
   }
 
   initForm() {
@@ -42,7 +46,7 @@ export class ViewProductsComponent {
       this.filteredProducts = this.products;
     } else {
       this.filteredProducts = this.products.filter(product =>
-        product.P_Category.includes(selectedCategory)
+        product.category_details.C_Name.includes(selectedCategory)
       );
     }
   }
@@ -75,7 +79,6 @@ export class ViewProductsComponent {
   }
 
   viewProduct(product: any) {
-    localStorage.setItem('currentItem', JSON.stringify(product));
-    this.router.navigate(['pages/user/dashboard/product-details']);
+    this.router.navigate(['pages/user/dashboard/product-details'],{queryParams: {id:product._id}});
   }
 }

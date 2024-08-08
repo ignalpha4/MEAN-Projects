@@ -26,6 +26,11 @@ export class CategoryService {
   }
 
 
+  
+  deleteCategory(id:any):Observable<any>{
+    return this.http.delete(`${this.baseUrl}/category/delete/${id}`);
+  }
+
   getData(): any[] {
     const data = localStorage.getItem(this.localStorageKey);
     return data ? JSON.parse(data) : [];

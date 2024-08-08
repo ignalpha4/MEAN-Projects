@@ -34,7 +34,7 @@ export class CategoryFormComponent implements OnChanges {
 
     this.categoryService.addCategory(formData).subscribe((res:any)=>{
       if(res.status){
-        alert("category added successfully!!!!!!!!!!")
+        alert(res.message);
         this.Cat_Form.reset();
       }else{
         alert(res.message);

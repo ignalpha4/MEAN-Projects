@@ -31,10 +31,10 @@ export class CategoryListComponent implements OnInit {
       },
       onCellClicked: (params: any) => {
         if (params.event.target.dataset.actionType === 'edit') {
-          this.editCategory(params.data.C_Id);
+          this.editCategory(params.data._id);
         }
         if (params.event.target.dataset.actionType === 'delete') {
-          this.deleteCategory(params.data.C_Id);
+          this.deleteCategory(params.data._id);
         }
       }
     }
@@ -49,12 +49,18 @@ export class CategoryListComponent implements OnInit {
   }
 
   deleteCategory(Id: number): void {
-    this.categoryService.deleteData(Id);
+   this.categoryService.deleteCategory(Id).subscribe((res:any)=>{
+      if(res.status){
+        alert(res.message);
+      }else{
+        alert(res.message);
+      }
+   })
   }
 
   editCategory(Id: number): void {
 
-    const foundCategory = this.categories.find((cat:any) => cat.C_Id === Id);
+    const foundCategory = this.categories.find((cat:any) => cat._id === Id);
 
     if (foundCategory) {
       this.selectedCat = foundCategory;

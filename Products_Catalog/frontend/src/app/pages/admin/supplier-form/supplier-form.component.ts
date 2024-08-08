@@ -37,7 +37,7 @@ export class SupplierFormComponent implements OnChanges {
 
     this.supplierService.addSupplier(formData).subscribe((res:any)=>{
       if(res.status){
-        alert("Supplier added successfully");
+        alert(res.message);
         
     this.SuppForm.reset();
       }else{

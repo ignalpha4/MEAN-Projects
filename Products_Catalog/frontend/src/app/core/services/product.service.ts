@@ -21,6 +21,21 @@ export class ProductService {
     return this.http.post(`${this.baseUrl}/products/add`,data);
   }
 
+  listProducts():Observable<any>{
+    return this.http.get(`${this.baseUrl}/products/listProducts`)
+  }
+
+  getProductById(id:any):Observable<any>{
+
+    console.log(id,"from service");
+  
+    return this.http.get(`${this.baseUrl}/products/productById/${id}`)
+  }
+
+  deleteProduct(id:any):Observable<any>{
+    return this.http.delete(`${this.baseUrl}/products/delete/${id}`);
+  }
+
   getData():any[]{
     const data = localStorage.getItem(this.localStorageKey);
     return data ? JSON.parse(data):[];

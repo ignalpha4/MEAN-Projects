@@ -2,14 +2,15 @@
     <div class="row">
       <div class="col-md-8 offset-md-2">
         <div class="card">
-          <img [src]="currentItem?.P_Image" class="card-img-top img-fluid" style="height: 400px; object-fit: cover;" alt="Product Image">
+          <img [src]="productImageURL + currentItem.P_Image" class="card-img-top img-fluid" style="height: 400px; object-fit: cover;" alt="Product Image">
           <div class="card-body">
             <h5 class="card-title">{{ currentItem?.P_Name }}</h5><br>
             <p class="card-text">
-              <strong>Category:</strong> {{ currentItem?.P_Category }}<br><br>
+              <strong>Category:</strong> {{ currentItem?.category_details.C_Name }}<br><br>
               <strong>Price:</strong> {{ currentItem?.P_Price }}<br><br>
               <strong>Description:</strong> {{ currentItem?.P_Desc }}<br><br>
-              <strong>Supplier:</strong> {{ currentItem?.P_Supplier }}<br><br>
+              <strong>Supplier:</strong> {{ currentItem?.supplier_details.S_Name }}<br><br>
+              <button class="btn btn-primary" (click)="buy()">BUY</button>
             </p>
           </div>
         </div>

@@ -39,7 +39,6 @@ export class ProductFormComponent implements OnInit, OnChanges {
 
   initForm() {
     this.form = this.fb.group({
-      P_Id: ['', Validators.required],
       P_Name: ['', Validators.required],
       P_Category: ['', Validators.required],
       P_Price: ['', [Validators.required, Validators.min(0)]],
@@ -57,6 +56,8 @@ export class ProductFormComponent implements OnInit, OnChanges {
 
   onImageChange(event: any) {
     const file = event.target.files[0];
+
+    
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -79,14 +80,16 @@ export class ProductFormComponent implements OnInit, OnChanges {
       return;
     }
 
+  
     const formData = new FormData();
     Object.keys(this.form.controls).forEach(key => {
       formData.append(key, this.form.get(key)?.value);
     });
 
+    
     this.productService.addProduct(formData).subscribe((res:any)=>{
       if(res.status){
-        alert('Product Added successfully !!!!');
+        alert(res.message);
         this.form.reset();
 
       }else{

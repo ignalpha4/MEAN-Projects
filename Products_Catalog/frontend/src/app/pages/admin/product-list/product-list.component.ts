@@ -16,12 +16,12 @@ export class ProductListComponent {
   constructor(private productService:ProductService){};
 
   ColDef: (ColDef | ColGroupDef)[] = [
-    { headerName: 'ID', field: 'P_Id', maxWidth: 90 },
+    { headerName: 'ID', field: '_id', maxWidth: 90 },
     { headerName: 'Name', field: 'P_Name' },
-    { headerName: 'Category', field: 'P_Category' },
+    { headerName: 'Category', field: 'category_details.C_Name' },
     {headerName:'Description', field: 'P_Desc'},
     { headerName: 'Price', field: 'P_Price' },
-    { headerName: 'Supplier', field: 'P_Supplier' },
+    { headerName: 'Supplier', field: 'supplier_details.S_Name' },
     {
       headerName: 'Actions',
       field: 'actions',
@@ -33,28 +33,35 @@ export class ProductListComponent {
       },
       onCellClicked: (params: any) => {
         if (params.event.target.dataset.actionType === 'edit') {
-          this.editProduct(params.data.P_Id);
+          this.editProduct(params.data._id);
         }
 
         if (params.event.target.dataset.actionType === 'delete') {
-          this.deleteProduct(params.data.P_Id);
+          this.deleteProduct(params.data._id);
         }
       },
     },
   ];
 
   ngOnInit():void{
-    this.productService.products$.subscribe(products=>{
-      this.products = products;
+
+    this.productService.listProducts().subscribe((res:any)=>{
+        this.products = res.products;
     })
   }
 
   deleteProduct = (Id: number):void => {
-    this.productService.deleteData(Id);
+   this.productService.deleteProduct(Id).subscribe((res:any)=>{
+    if(res.status){
+      alert(res.message);
+    }else{
+      alert(res.message);
+    }
+   })
   };
 
   editProduct = (Id: number) :void=> {
-    const foundProduct = this.products.find((pro)=>pro.P_Id===Id)
+    const foundProduct = this.products.find((pro)=>pro._id===Id)
 
     if(foundProduct){
       this.selectedProduct = foundProduct;

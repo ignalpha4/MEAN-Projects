@@ -30,6 +30,10 @@ export class SupplierService {
     return this.http.get(`${this.baseUrl}/supplier/listSuppliers`);
   }
 
+  deleteSupplier(id:any):Observable<any>{
+    return this.http.delete(`${this.baseUrl}/supplier/delete/${id}`);
+  }
+
 
   addData(supplier :any):void{
     const suppliers = this.getData();

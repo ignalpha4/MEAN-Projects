@@ -2,13 +2,7 @@
   <h3 style="text-align: center;">Product Details</h3>
   <form [formGroup]="form" (ngSubmit)="submit()" class="form-control mt-4" enctype="multipart/form-data">
     <div class="row mt-4">
-      <div class="col-lg-4">
-        <label for="P_Id">Product ID:</label>
-        <input type="number" id="P_Id" formControlName="P_Id" class="form-control" />
-        <div *ngIf="form.get('P_Id')?.invalid && form.get('P_Id')?.touched">
-          <p style="color: red;">This field is required </p>
-        </div>
-      </div>
+      
       <div class="col-lg-4">
         <label for="P_Name">Product Name</label>
         <input type="text" id="P_Name" formControlName="P_Name" class="form-control" />

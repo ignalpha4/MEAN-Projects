@@ -33,10 +33,10 @@ export class SupplierListComponent {
       },
       onCellClicked:(params:any)=>{
         if(params.event.target.dataset.actionType==="edit"){
-          this.editSupplier(params.data.S_Id);
+          this.editSupplier(params.data._id);
         }
         if(params.event.target.dataset.actionType==="delete"){
-          this.deleteSupplier(params.data.S_Id);
+          this.deleteSupplier(params.data._id);
         }
       }
     }
@@ -50,12 +50,19 @@ export class SupplierListComponent {
   }
 
   deleteSupplier(Id:number){
-    this.supplierService.deleteData(Id);
+   this.supplierService.deleteSupplier(Id).subscribe((res:any)=>{
+
+    if(res.status){
+      alert(res.message);
+    }else{
+      alert(res.message);
+    }
+   })
   }
 
   editSupplier=(Id:number)=>{
 
-    const foundSupplier = this.suppliers.find((sup)=>sup.S_Id===Id);
+    const foundSupplier = this.suppliers.find((sup)=>sup._id===Id);
     if(foundSupplier){
       this.selectedSupplier = foundSupplier;
       console.log(this.selectedSupplier);

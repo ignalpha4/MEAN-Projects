@@ -10,6 +10,7 @@ import { container } from './inversify.config';
 config();
 connect_db();
 
+
 const PORT =  process.env.PORT || 5000;
 const app = new InversifyExpressServer(container);
 
