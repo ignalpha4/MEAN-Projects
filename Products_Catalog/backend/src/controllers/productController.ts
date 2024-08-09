@@ -204,4 +204,19 @@ export class productController {
 
     }
 
+    @httpGet('/filteredProducts/:key',verifyToken)
+    async filteredProducts(req:any,res:Response){
+
+      try {
+
+        const key =  
+
+
+      } catch (error) {
+
+
+      }
+
+    }
+
 }
