@@ -88,6 +88,7 @@ export const getCurrentUser = async(req:any,res:any)=>{
   }
 }
 
+//this is not used anywhere check before deletion
 export const updateProfileImage = (req: any, res: Response) => {
 
   uploadProfile(req, res, async (err:any) => {
